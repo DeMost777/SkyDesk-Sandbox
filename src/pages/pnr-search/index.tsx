@@ -1,10 +1,12 @@
 import * as React from 'react'
-import { Home, ChevronDown, ArrowUp, Info, AlertCircle } from 'lucide-react'
+import { ArrowUp, Info, AlertCircle } from 'lucide-react'
 import {
   GDS_OPTIONS,
   SCENARIO_PNR_MAP,
   type GDS,
 } from '@/mocks/pnr-search.mock'
+import { OfficeSelector } from '@/components/ui/office-selector'
+import { MOCK_OFFICES, type OfficeSelection } from '@/mocks/offices.mock'
 
 type UIState = 'default' | 'typing' | 'loading' | 'select-gds' | 'not-found' | 'error'
 
@@ -36,6 +38,7 @@ export default function PnrSearchPage() {
   const [pnr, setPnr] = React.useState('')
   const [state, setState] = React.useState<UIState>('default')
   const [forcedState, setForcedState] = React.useState<UIState | null>(null)
+  const [selectedOffice, setSelectedOffice] = React.useState<OfficeSelection | null>(null)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
   const active = forcedState ?? state
@@ -134,17 +137,13 @@ export default function PnrSearchPage() {
               {/* Row 2: Office combobox + Submit button */}
               <div className="flex items-center justify-between">
 
-                {/* Office combobox */}
-                <button
-                  type="button"
-                  className="flex items-center gap-1 h-8 px-3 py-2 rounded-lg hover:bg-accent transition-colors"
-                >
-                  <Home className="size-4 text-foreground shrink-0" strokeWidth={1.5} />
-                  <span className="text-sm text-foreground leading-5 whitespace-nowrap">Select office</span>
-                  <span className="flex items-center ml-2">
-                    <ChevronDown className="size-4 text-foreground opacity-50" strokeWidth={1.5} />
-                  </span>
-                </button>
+                {/* Office selector */}
+                <OfficeSelector
+                  offices={MOCK_OFFICES}
+                  value={selectedOffice}
+                  onChange={setSelectedOffice}
+                  disabled={active === 'loading'}
+                />
 
                 {/* Submit button — 40×40, rounded-[12px], teal */}
                 <button
