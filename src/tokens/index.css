@@ -1,0 +1,116 @@
+/*
+  Design Tokens — Skydesk Sandbox
+  Source: Figma "shadcn-kit---Trava" (node 115:5992)
+  Extracted: 2026-09-22
+
+  Base palette: shadcn/ui Zinc theme
+  Brand accent: Trava teal (#2a9d90)
+*/
+
+@layer base {
+  :root {
+    /* Base */
+    --background: 0 0% 100%;          /* #ffffff */
+    --foreground: 240 10% 4%;         /* zinc-950 #09090b */
+
+    /* Card / Popover */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+
+    /* Primary: zinc-900 */
+    --primary: 240 6% 10%;            /* #18181b */
+    --primary-foreground: 0 0% 98%;   /* zinc-50 #fafafa */
+
+    /* Secondary: zinc-100 */
+    --secondary: 240 5% 96%;          /* #f4f4f5 */
+    --secondary-foreground: 240 6% 10%;
+
+    /* Muted: zinc-100 */
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;   /* zinc-500 #71717a */
+
+    /* Accent: zinc-100 */
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
+
+    /* Destructive: red-600 */
+    --destructive: 0 72% 51%;         /* #dc2626 */
+    --destructive-foreground: 0 0% 98%;
+
+    /* Border / Input / Ring */
+    --border: 240 6% 90%;             /* zinc-200 #e4e4e7 */
+    --input: 240 6% 90%;
+    --ring: 240 5% 65%;               /* zinc-400 #a1a1aa */
+
+    /* Border variants */
+    --border-destructive: 0 72% 51%;
+    --border-primary: 240 6% 10%;
+
+    /* Radius — matches shadcn default, adjust to match Figma */
+    --radius: 0.5rem;
+
+    /* Brand / Trava teal — used for interactive elements, active states */
+    --brand: 174 58% 39%;             /* #2a9d90 */
+    --brand-foreground: 0 0% 98%;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;   /* zinc-50 */
+    --sidebar-foreground: 240 5% 35%; /* zinc-700 #3f3f46 */
+    --sidebar-primary: 240 6% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-border: 220 9% 91%;     /* gray-200 */
+    --sidebar-ring: 240 5% 65%;
+
+    /* Chart colors */
+    --chart-1: 14 71% 61%;            /* #e76e50 */
+    --chart-2: 174 58% 39%;           /* #2a9d90 teal */
+    --chart-3: 200 34% 24%;           /* #274754 */
+    --chart-4: 43 74% 66%;            /* #e8c468 */
+    --chart-5: 27 82% 66%;            /* #f4a463 */
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 4%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 4%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 6% 10%;
+
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 240 5% 84%;
+
+    --brand: 174 58% 39%;
+    --brand-foreground: 0 0% 98%;
+
+    --sidebar-background: 240 6% 10%;
+    --sidebar-foreground: 240 5% 65%;
+    --sidebar-primary: 174 58% 39%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4% 16%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 240 5% 65%;
+  }
+}
