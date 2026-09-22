@@ -1,88 +1,93 @@
 import * as React from 'react'
-import { Search, Loader2, AlertCircle, ServerCrash } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
+import { Home, ChevronDown, ArrowUp, Info, AlertCircle } from 'lucide-react'
 import {
   GDS_OPTIONS,
   SCENARIO_PNR_MAP,
-  type SearchScenario,
   type GDS,
 } from '@/mocks/pnr-search.mock'
 
-// Sandbox state switcher — only visible in dev
-const SCENARIOS: { value: SearchScenario; label: string }[] = [
+type UIState = 'default' | 'typing' | 'loading' | 'select-gds' | 'not-found' | 'error'
+
+const SANDBOX_STATES: { value: UIState; label: string }[] = [
   { value: 'default', label: 'Default' },
-  { value: 'ready', label: 'Ready' },
+  { value: 'typing', label: 'Ready (Type4)' },
   { value: 'loading', label: 'Loading' },
   { value: 'select-gds', label: 'Select GDS' },
   { value: 'not-found', label: 'Not Found' },
   { value: 'error', label: 'Error' },
 ]
 
+const BRAILLE_FRAMES = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
+
+function BrailleLoader() {
+  const [frame, setFrame] = React.useState(0)
+  React.useEffect(() => {
+    const id = setInterval(() => setFrame((f) => (f + 1) % BRAILLE_FRAMES.length), 80)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <span className="text-base leading-none select-none text-muted-foreground" aria-hidden>
+      {BRAILLE_FRAMES[frame]}
+    </span>
+  )
+}
+
 export default function PnrSearchPage() {
   const [pnr, setPnr] = React.useState('')
-  const [scenario, setScenario] = React.useState<SearchScenario>('default')
-  const [forcedScenario, setForcedScenario] = React.useState<SearchScenario | null>(null)
+  const [state, setState] = React.useState<UIState>('default')
+  const [forcedState, setForcedState] = React.useState<UIState | null>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
-  const handleSearch = () => {
-    if (!pnr.trim()) return
-    const mapped = SCENARIO_PNR_MAP[pnr.toUpperCase()]
-    if (mapped) {
-      setScenario('loading')
-      setTimeout(() => setScenario(mapped), 1200)
-    } else {
-      setScenario('loading')
-      setTimeout(() => setScenario('not-found'), 1200)
-    }
-  }
+  const active = forcedState ?? state
+  const hasActiveRing = active === 'loading' || active === 'select-gds'
+  const displayValue = forcedState && forcedState !== 'default' ? (pnr || '7JRWT4') : pnr
 
-  const handlePnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
     setPnr(val)
-    if (val.trim()) {
-      setScenario('ready')
-    } else {
-      setScenario('default')
-    }
-    setForcedScenario(null)
+    setForcedState(null)
+    setState(val.trim() ? 'typing' : 'default')
+  }
+
+  const handleSubmit = () => {
+    if ((!pnr.trim() && !forcedState) || active === 'loading') return
+    setState('loading')
+    setForcedState(null)
+    const pnrKey = (pnr || '7JRWT4').toUpperCase()
+    setTimeout(() => {
+      setState((SCENARIO_PNR_MAP[pnrKey] as UIState) ?? 'not-found')
+    }, 1500)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleSearch()
+    if (e.key === 'Enter') handleSubmit()
   }
 
-  const handleGdsSelect = (_gds: GDS) => {
-    // In real app: navigate to booking with selected GDS context
-    alert(`Opening booking in ${_gds.toUpperCase()}`)
+  const handleGdsSelect = (gds: GDS) => {
+    // In real app: open booking in selected GDS context
+    alert(`Opening booking in ${gds.charAt(0).toUpperCase() + gds.slice(1)}`)
   }
 
-  const handleReset = () => {
-    setPnr('')
-    setScenario('default')
-    setForcedScenario(null)
+  const forceState = (s: UIState) => {
+    setForcedState(s)
+    if (s === 'default') setPnr('')
+    else setPnr('7JRWT4')
   }
-
-  const displayScenario = forcedScenario ?? scenario
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Sandbox state switcher */}
-      <div className="border-b border-border bg-muted/30 px-4 py-2 flex items-center gap-2 flex-wrap">
+      <div className="border-b border-border bg-[#fafaf9] px-4 py-2 flex items-center gap-2 flex-wrap shrink-0">
         <span className="text-xs text-muted-foreground font-medium shrink-0">Sandbox:</span>
-        {SCENARIOS.map((s) => (
+        {SANDBOX_STATES.map((s) => (
           <button
             key={s.value}
-            onClick={() => {
-              setForcedScenario(s.value)
-              if (s.value === 'ready') setPnr('ABC123')
-              if (s.value === 'default') setPnr('')
-            }}
+            onClick={() => forceState(s.value)}
             className={[
               'rounded px-2 py-0.5 text-xs font-medium transition-colors',
-              displayScenario === s.value
+              active === s.value
                 ? 'bg-primary text-primary-foreground'
-                : 'bg-background border border-border text-foreground hover:bg-accent',
+                : 'bg-white border border-border text-foreground hover:bg-accent',
             ].join(' ')}
           >
             {s.label}
@@ -90,166 +95,128 @@ export default function PnrSearchPage() {
         ))}
       </div>
 
-      {/* Main content */}
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-md space-y-6">
-          {/* Brand */}
-          <div className="text-center space-y-1">
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Skydesk</h1>
-            <p className="text-sm text-muted-foreground">Travel agent workspace</p>
-          </div>
+      {/* Main page */}
+      <div className="flex-1 flex justify-center pt-[140px] px-6">
+        <div className="flex flex-col items-center gap-8 w-full max-w-[838px]">
 
-          {/* Search card */}
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4">
-            <div className="space-y-1.5">
-              <label htmlFor="pnr-input" className="text-sm font-medium text-foreground">
-                Booking reference (PNR)
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  id="pnr-input"
-                  placeholder="e.g. ABC123"
-                  value={pnr}
-                  onChange={handlePnrChange}
+          {/* Heading — Figma: 30px, weight 500, tracking -0.4px */}
+          <h1 className="text-[30px] font-medium leading-8 tracking-[-0.4px] text-foreground text-center w-full">
+            How can I help with your reservation today?
+          </h1>
+
+          {/* Search widget */}
+          <div
+            className={[
+              'w-full bg-[#fafaf9] rounded-[16px] drop-shadow-[0px_1px_1.5px_rgba(0,0,0,0.05)] flex flex-col',
+              hasActiveRing ? 'border-2 border-primary' : '',
+            ].join(' ')}
+          >
+            {/* Inner card — always has 1px stone-200 border */}
+            <div className="border border-border rounded-[16px] flex flex-col gap-1 pl-4 pr-2 py-2 w-full">
+
+              {/* Row 1: Text input */}
+              <div className="flex items-center h-10 pr-3 py-1">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={displayValue}
+                  onChange={handleChange}
                   onKeyDown={handleKeyDown}
-                  className="font-mono uppercase tracking-widest"
-                  disabled={displayScenario === 'loading'}
+                  placeholder="Enter a PNR number to find a reservation"
+                  disabled={active === 'loading'}
                   autoComplete="off"
                   autoCorrect="off"
                   spellCheck={false}
+                  className="flex-1 min-w-0 bg-transparent border-0 outline-none p-0 text-sm font-normal leading-5 text-foreground placeholder:text-muted-foreground disabled:cursor-default"
                 />
-                <Button
-                  onClick={handleSearch}
-                  disabled={!pnr.trim() || displayScenario === 'loading'}
-                  size="icon"
-                  aria-label="Search"
-                >
-                  {displayScenario === 'loading' ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <Search />
-                  )}
-                </Button>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Try: <code className="bg-muted px-1 rounded text-foreground">ABC123</code> (multi-GDS) ·{' '}
-                <code className="bg-muted px-1 rounded text-foreground">XYZ789</code> (not found) ·{' '}
-                <code className="bg-muted px-1 rounded text-foreground">ERR000</code> (error)
-              </p>
+
+              {/* Row 2: Office combobox + Submit button */}
+              <div className="flex items-center justify-between">
+
+                {/* Office combobox */}
+                <button
+                  type="button"
+                  className="flex items-center gap-1 h-8 px-3 py-2 rounded-lg hover:bg-accent transition-colors"
+                >
+                  <Home className="size-4 text-foreground shrink-0" strokeWidth={1.5} />
+                  <span className="text-sm text-foreground leading-5 whitespace-nowrap">Select office</span>
+                  <span className="flex items-center ml-2">
+                    <ChevronDown className="size-4 text-foreground opacity-50" strokeWidth={1.5} />
+                  </span>
+                </button>
+
+                {/* Submit button — 40×40, rounded-[12px], teal */}
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={active === 'loading'}
+                  aria-label="Search booking"
+                  className="bg-primary flex items-center justify-center h-10 w-10 rounded-[12px] shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
+                >
+                  <ArrowUp className="size-4 text-primary-foreground" strokeWidth={2} />
+                </button>
+              </div>
             </div>
 
-            {/* State panels */}
-            <StatePanel
-              scenario={displayScenario}
-              onGdsSelect={handleGdsSelect}
-              onReset={handleReset}
-            />
+            {/* Footer: Loading */}
+            {active === 'loading' && (
+              <div className="flex items-center px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <BrailleLoader />
+                  <span className="text-sm leading-5 bg-gradient-to-r from-[#78716c] to-[#e5e5e5] bg-clip-text text-transparent whitespace-nowrap">
+                    Loading...
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Footer: Select GDS */}
+            {active === 'select-gds' && (
+              <div className="flex items-center gap-4 px-3 py-2">
+                <div className="flex items-center gap-2 shrink-0">
+                  {GDS_OPTIONS.map((gds) => (
+                    <button
+                      key={gds.id}
+                      type="button"
+                      onClick={() => handleGdsSelect(gds.id)}
+                      className="bg-[#fafaf9] border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap"
+                    >
+                      {gds.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
+                  <p className="text-sm text-muted-foreground leading-5">
+                    To continue the search, please select the GDS where this PNR was created.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Footer: Not Found */}
+            {active === 'not-found' && (
+              <div className="flex items-center gap-2 px-3 py-2">
+                <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
+                <p className="text-sm text-muted-foreground leading-5">
+                  Booking not found. Check the PNR and try again.
+                </p>
+              </div>
+            )}
+
+            {/* Footer: Error */}
+            {active === 'error' && (
+              <div className="flex items-center gap-2 px-3 py-2">
+                <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={1.5} />
+                <p className="text-sm text-destructive leading-5">
+                  Something went wrong. Please try again.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
-  )
-}
-
-interface StatePanelProps {
-  scenario: SearchScenario
-  onGdsSelect: (gds: GDS) => void
-  onReset: () => void
-}
-
-function StatePanel({ scenario, onGdsSelect, onReset }: StatePanelProps) {
-  if (scenario === 'default' || scenario === 'ready') return null
-
-  if (scenario === 'loading') {
-    return (
-      <div className="flex flex-col items-center gap-3 py-4 text-muted-foreground">
-        <BrailleLoader />
-        <span className="text-sm">Looking up booking…</span>
-      </div>
-    )
-  }
-
-  if (scenario === 'select-gds') {
-    return (
-      <div className="space-y-3">
-        <div className="space-y-1">
-          <p className="text-sm font-medium text-foreground">Select booking system</p>
-          <p className="text-xs text-muted-foreground">
-            This PNR was found in multiple GDS. Choose where to open it.
-          </p>
-        </div>
-        <div className="space-y-2">
-          {GDS_OPTIONS.map((gds) => (
-            <button
-              key={gds.id}
-              onClick={() => onGdsSelect(gds.id)}
-              className="w-full flex items-center justify-between rounded-lg border border-border bg-background px-4 py-3 text-left transition-colors hover:bg-accent hover:border-primary/40 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            >
-              <div>
-                <p className="text-sm font-medium text-foreground">{gds.label}</p>
-                <p className="text-xs text-muted-foreground">{gds.description}</p>
-              </div>
-              <Badge variant="outline" className="text-xs shrink-0 ml-3">
-                Open
-              </Badge>
-            </button>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  if (scenario === 'not-found') {
-    return (
-      <div className="flex flex-col items-center gap-2 py-4 text-center">
-        <AlertCircle className="h-8 w-8 text-muted-foreground/50" />
-        <div className="space-y-0.5">
-          <p className="text-sm font-medium text-foreground">Booking not found</p>
-          <p className="text-xs text-muted-foreground">
-            Check the PNR and try again, or contact support.
-          </p>
-        </div>
-        <Button variant="ghost" size="sm" onClick={onReset} className="mt-1">
-          Try another PNR
-        </Button>
-      </div>
-    )
-  }
-
-  if (scenario === 'error') {
-    return (
-      <div className="flex flex-col items-center gap-2 py-4 text-center">
-        <ServerCrash className="h-8 w-8 text-destructive/70" />
-        <div className="space-y-0.5">
-          <p className="text-sm font-medium text-foreground">Something went wrong</p>
-          <p className="text-xs text-muted-foreground">
-            Unable to reach the booking system. Please try again.
-          </p>
-        </div>
-        <Button variant="outline" size="sm" onClick={onReset} className="mt-1">
-          Retry
-        </Button>
-      </div>
-    )
-  }
-
-  return null
-}
-
-// Braille loading animation — 6 dots cycling through Unicode braille patterns
-const BRAILLE_FRAMES = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
-
-function BrailleLoader() {
-  const [frame, setFrame] = React.useState(0)
-
-  React.useEffect(() => {
-    const id = setInterval(() => setFrame((f) => (f + 1) % BRAILLE_FRAMES.length), 80)
-    return () => clearInterval(id)
-  }, [])
-
-  return (
-    <span className="text-2xl leading-none select-none" aria-hidden>
-      {BRAILLE_FRAMES[frame]}
-    </span>
   )
 }
