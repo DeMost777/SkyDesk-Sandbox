@@ -1,116 +1,116 @@
 /*
   Design Tokens — Skydesk Sandbox
-  Source: Figma "shadcn-kit---Trava" (node 115:5992)
+  Source: Figma "Sky-Desk-Console---Design" (node 7764-306270)
   Extracted: 2026-09-22
 
-  Base palette: shadcn/ui Zinc theme
-  Brand accent: Trava teal (#2a9d90)
+  Base palette: stone (warm grays)
+  Primary: Trava teal #0d9488
 */
 
 @layer base {
   :root {
     /* Base */
-    --background: 0 0% 100%;          /* #ffffff */
-    --foreground: 240 10% 4%;         /* zinc-950 #09090b */
+    --background: 0 0% 100%;           /* #ffffff */
+    --foreground: 20 14% 4%;           /* stone-950 #0c0a09 */
 
     /* Card / Popover */
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 4%;
+    --card-foreground: 20 14% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 4%;
+    --popover-foreground: 20 14% 4%;
 
-    /* Primary: zinc-900 */
-    --primary: 240 6% 10%;            /* #18181b */
-    --primary-foreground: 0 0% 98%;   /* zinc-50 #fafafa */
+    /* Primary: Trava teal */
+    --primary: 174 84% 32%;            /* #0d9488 */
+    --primary-foreground: 60 9% 98%;   /* stone-50 #fafaf9 */
 
-    /* Secondary: zinc-100 */
-    --secondary: 240 5% 96%;          /* #f4f4f5 */
-    --secondary-foreground: 240 6% 10%;
+    /* Secondary: stone-100 */
+    --secondary: 60 5% 96%;            /* #f5f5f4 */
+    --secondary-foreground: 20 14% 4%;
 
-    /* Muted: zinc-100 */
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;   /* zinc-500 #71717a */
+    /* Muted: stone-100 */
+    --muted: 60 5% 96%;
+    --muted-foreground: 30 5% 32%;     /* stone-600 #57534e */
 
-    /* Accent: zinc-100 */
-    --accent: 240 5% 96%;
-    --accent-foreground: 240 6% 10%;
+    /* Accent: stone-100 */
+    --accent: 60 5% 96%;
+    --accent-foreground: 20 14% 4%;
 
     /* Destructive: red-600 */
-    --destructive: 0 72% 51%;         /* #dc2626 */
+    --destructive: 0 72% 51%;          /* #dc2626 */
     --destructive-foreground: 0 0% 98%;
 
     /* Border / Input / Ring */
-    --border: 240 6% 90%;             /* zinc-200 #e4e4e7 */
-    --input: 240 6% 90%;
-    --ring: 240 5% 65%;               /* zinc-400 #a1a1aa */
+    --border: 30 6% 90%;               /* stone-200 #e7e5e4 */
+    --input: 30 6% 90%;
+    --ring: 174 84% 32%;               /* teal — matches primary */
 
     /* Border variants */
     --border-destructive: 0 72% 51%;
-    --border-primary: 240 6% 10%;
+    --border-primary: 174 84% 32%;
 
-    /* Radius — matches shadcn default, adjust to match Figma */
+    /* Radius — matches shadcn default */
     --radius: 0.5rem;
 
-    /* Brand / Trava teal — used for interactive elements, active states */
-    --brand: 174 58% 39%;             /* #2a9d90 */
-    --brand-foreground: 0 0% 98%;
+    /* Brand — alias for primary teal */
+    --brand: 174 84% 32%;              /* #0d9488 */
+    --brand-foreground: 60 9% 98%;
 
     /* Sidebar */
-    --sidebar-background: 0 0% 98%;   /* zinc-50 */
-    --sidebar-foreground: 240 5% 35%; /* zinc-700 #3f3f46 */
-    --sidebar-primary: 240 6% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 5% 96%;
-    --sidebar-accent-foreground: 240 6% 10%;
-    --sidebar-border: 220 9% 91%;     /* gray-200 */
-    --sidebar-ring: 240 5% 65%;
+    --sidebar-background: 60 9% 98%;   /* stone-50 */
+    --sidebar-foreground: 30 5% 32%;   /* stone-600 #57534e */
+    --sidebar-primary: 174 84% 32%;
+    --sidebar-primary-foreground: 60 9% 98%;
+    --sidebar-accent: 60 5% 96%;
+    --sidebar-accent-foreground: 20 14% 4%;
+    --sidebar-border: 30 6% 90%;
+    --sidebar-ring: 174 84% 32%;
 
     /* Chart colors */
-    --chart-1: 14 71% 61%;            /* #e76e50 */
-    --chart-2: 174 58% 39%;           /* #2a9d90 teal */
-    --chart-3: 200 34% 24%;           /* #274754 */
-    --chart-4: 43 74% 66%;            /* #e8c468 */
-    --chart-5: 27 82% 66%;            /* #f4a463 */
+    --chart-1: 14 71% 61%;             /* #e76e50 */
+    --chart-2: 174 84% 32%;            /* #0d9488 teal */
+    --chart-3: 200 34% 24%;            /* #274754 */
+    --chart-4: 43 74% 66%;             /* #e8c468 */
+    --chart-5: 27 82% 66%;             /* #f4a463 */
   }
 
   .dark {
-    --background: 240 10% 4%;
-    --foreground: 0 0% 98%;
+    --background: 20 14% 4%;           /* stone-950 */
+    --foreground: 60 9% 98%;           /* stone-50 */
 
-    --card: 240 10% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 4%;
-    --popover-foreground: 0 0% 98%;
+    --card: 20 14% 4%;
+    --card-foreground: 60 9% 98%;
+    --popover: 20 14% 4%;
+    --popover-foreground: 60 9% 98%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 6% 10%;
+    --primary: 174 84% 32%;
+    --primary-foreground: 60 9% 98%;
 
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 25 6% 15%;            /* stone-900 */
+    --secondary-foreground: 60 9% 98%;
 
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 25 6% 15%;
+    --muted-foreground: 30 6% 64%;     /* stone-400 */
 
-    --accent: 240 4% 16%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 25 6% 15%;
+    --accent-foreground: 60 9% 98%;
 
     --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 60 9% 98%;
 
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 240 5% 84%;
+    --border: 25 6% 15%;
+    --input: 25 6% 15%;
+    --ring: 174 84% 32%;
 
-    --brand: 174 58% 39%;
-    --brand-foreground: 0 0% 98%;
+    --brand: 174 84% 32%;
+    --brand-foreground: 60 9% 98%;
 
-    --sidebar-background: 240 6% 10%;
-    --sidebar-foreground: 240 5% 65%;
-    --sidebar-primary: 174 58% 39%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4% 16%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 240 5% 65%;
+    --sidebar-background: 25 6% 10%;
+    --sidebar-foreground: 30 6% 64%;
+    --sidebar-primary: 174 84% 32%;
+    --sidebar-primary-foreground: 60 9% 98%;
+    --sidebar-accent: 25 6% 15%;
+    --sidebar-accent-foreground: 60 9% 98%;
+    --sidebar-border: 25 6% 15%;
+    --sidebar-ring: 174 84% 32%;
   }
 }
