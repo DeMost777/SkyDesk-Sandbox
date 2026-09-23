@@ -8,7 +8,6 @@
 | Page | Адрес | Flow doc | Код |
 |---|---|---|---|
 | PNR Search | `/` или `?page=pnr-search` | `projects/pnr-search/README.md` | `src/pages/pnr-search/` |
-| Office Selector — все состояния | `?page=office-selector` | — (витрина компонента; теперь дублирует Storybook) | `src/pages/office-selector-showcase/` |
 
 ## Storybook
 
@@ -25,7 +24,7 @@
 
 | Параметр | Значения | Что задаёт |
 |---|---|---|
-| `page` | `pnr-search` (по умолчанию), `office-selector` | Экран |
+| `page` | `pnr-search` (по умолчанию; пока единственный экран) | Экран |
 | `persona` | `agent-with-defaults` (по умолчанию), `agent-no-defaults` | Кто смотрит (см. ниже) |
 | `pnr` | любой PNR | Значение в поле поиска |
 | `office` | код Office из `src/mocks/offices.mock.ts` | Office, выбранный вручную |

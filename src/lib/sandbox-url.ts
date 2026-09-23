@@ -6,7 +6,7 @@
 
 import { GDS_LIST, type GDS } from './office'
 
-export type SandboxPage = 'pnr-search' | 'office-selector'
+export type SandboxPage = 'pnr-search'
 /** idle = form only; loading = spinner; result = run the search on load and show its outcome. */
 export type SearchView = 'idle' | 'loading' | 'result'
 
@@ -20,7 +20,7 @@ export interface SandboxParams {
   state: SearchView
 }
 
-const PAGES: SandboxPage[] = ['pnr-search', 'office-selector']
+const PAGES: SandboxPage[] = ['pnr-search']
 const VIEWS: SearchView[] = ['idle', 'loading', 'result']
 
 export const DEFAULT_PARAMS: SandboxParams = {

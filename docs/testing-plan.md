@@ -75,7 +75,7 @@ npm run typecheck && npm test && npm run build
 
 ## Office Selector
 
-`?page=office-selector` — все 9 состояний компонента на одной странице. В открытом списке сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default».
+Все состояния — в Storybook: Components / ui / Office Selector (`npm run storybook`). Story `Default` сама проверяет порядок: сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше по алфавиту.
 
 ## Последний прогон
 

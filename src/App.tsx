@@ -1,13 +1,14 @@
 import PnrSearchPage from '@/pages/pnr-search'
-import OfficeSelectorShowcase from '@/pages/office-selector-showcase'
 import { navigate, useSandboxUrl } from '@/hooks/use-sandbox-url'
 import type { SandboxPage } from '@/lib/sandbox-url'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS: { value: SandboxPage; label: string }[] = [
   { value: 'pnr-search', label: 'PNR Search' },
-  { value: 'office-selector', label: 'Office Selector' },
 ]
+
+// Storybook: served at /storybook/ on Vercel; `npm run storybook` locally.
+const STORYBOOK_URL = import.meta.env.DEV ? 'http://localhost:6006' : '/storybook/'
 
 export default function App() {
   const { params, navKey } = useSandboxUrl()
@@ -32,12 +33,17 @@ export default function App() {
             {item.label}
           </button>
         ))}
+        <a
+          href={STORYBOOK_URL}
+          className="rounded px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        >
+          Storybook
+        </a>
       </nav>
 
       <div className="flex-1">
         {/* navKey remounts the page so it re-reads its initial state from the URL */}
         {page === 'pnr-search' && <PnrSearchPage key={navKey} params={params} />}
-        {page === 'office-selector' && <OfficeSelectorShowcase />}
       </div>
     </div>
   )
