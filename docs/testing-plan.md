@@ -35,6 +35,8 @@ npm ci   # только если изменился package-lock.json
 npm run typecheck && npm test && npm run build
 ```
 
+`npm test` запускает два проекта: `unit` (доменные правила в `src/lib`) и `storybook` (каждая story рендерится в Chromium, play-функции проверяют взаимодействия). Для `storybook` нужен браузер Playwright: локально один раз `npx playwright install chromium`.
+
 ## PNR Search
 
 Открывать адреса от корня (`npm run dev` → `http://localhost:5173/…`). Для каждого — что должно быть на экране.

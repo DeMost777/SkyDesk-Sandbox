@@ -120,8 +120,10 @@ PNR + Select Office/GDS → Booking
 ```bash
 npm run dev        # http://localhost:5173
 npm run typecheck  # tsc -b
-npm test           # vitest: доменные правила в src/lib
+npm test           # vitest: unit (src/lib) + storybook (каждая story — тест в Chromium)
 npm run build      # typecheck + production build
+npm run storybook  # Storybook: http://localhost:6006
+npm run build-storybook  # статическая сборка в storybook-static/
 ```
 
 Перед каждым push — `npm run typecheck && npm test && npm run build`, результат каждого шага — в отчёт.
@@ -146,6 +148,10 @@ npm run build      # typecheck + production build
 - **Not Found — не тупик, а следующий шаг** (правило пользователя, 2026-09-23). Если GDS выбрал агент или её знал Skydesk — снова кнопки GDS, проверенные неактивны на своём месте. Все 3 проверены — «PNR … not found in any GDS. Check the PNR.» GDS задал Office — предложить сменить или убрать Office. Правило — `gdsSource`/`tried` в `searchPnr` и `allGdsTried`; адрес — параметр `tried`.
 - **Office и GDS в тексте — в том же порядке, что в Office Selector: сначала Office, потом GDS** (`5GW5 · Sabre`) (правило пользователя, 2026-09-23). Касается всех сообщений: Not Found, Found и новых. Один порядок везде — агент читает связку одинаково.
 - **Кнопка поиска всегда активна; пустой PNR — сообщение «Please provide the PNR.»** (правило пользователя, 2026-09-23). Не делать кнопку неактивной: агент должен видеть, почему поиск не начался. Правило — `pnr-required` в `searchPnr`.
+- **Storybook 10.6 установлен через `npm create storybook@latest`** (2026-09-23). Stories лежат рядом с компонентом (`*.stories.tsx`), каждая story запускается как тест в `npm test` (проект `storybook`). Preview: `src/index.css` + seed localStorage-ключа Default Offices для каждой persona — stories детерминированы.
+- **Vitest 4, не 5** (2026-09-23). `@storybook/addon-vitest` 10.6 поддерживает только Vitest 3–4; с Vitest 5 `npm install` падает (ERESOLVE). Вернуть Vitest 5 можно, когда addon начнёт его поддерживать.
+- **Playwright 1.56.1** (2026-09-23) — под Chromium, уже установленный в облачном окружении (`/opt/pw-browsers`). Локально браузер для него: `npx playwright install chromium`.
+- **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
 - **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
 
 ## Структура проекта
@@ -158,12 +164,13 @@ skydesk-sandbox/
 ├── docs/
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
+├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx
 ├── skills/                 ← инструкции под конкретные задачи
 ├── agents/                 ← субагенты для параллельных задач
 ├── projects/               ← flow doc каждой фичи
 │   └── pnr-search/         ← первый проект: поиск PNR
 └── src/                    ← React-приложение
-    ├── components/         ← компонентная библиотека
+    ├── components/         ← компонентная библиотека (+ *.stories.tsx рядом)
     ├── hooks/              ← состояние: Default Offices, адрес sandbox
     ├── lib/                ← доменные правила (чистые функции + тесты)
     ├── mocks/              ← mock-данные и personas
@@ -183,4 +190,4 @@ skydesk-sandbox/
 8. **Доменные правила — в `src/lib/`** как чистые функции с тестами. Экран их вызывает, но не повторяет.
 9. **В конце каждой задачи** — перечислить сценарии и edge cases, которые не покрыты.
 10. **Правки пользователя — это правила продукта.** Записать в «Решения и gotchas» или в flow doc и применять дальше.
-11. **Storybook** — планируется во второй фазе.
+11. **Storybook** — новый или изменённый компонент получает stories в том же изменении, рядом с компонентом (`*.stories.tsx`). Stories — это и тесты: `npm test` должен проходить.

@@ -8,7 +8,16 @@
 | Page | Адрес | Flow doc | Код |
 |---|---|---|---|
 | PNR Search | `/` или `?page=pnr-search` | `projects/pnr-search/README.md` | `src/pages/pnr-search/` |
-| Office Selector — все состояния | `?page=office-selector` | — (витрина компонента до Storybook) | `src/pages/office-selector-showcase/` |
+| Office Selector — все состояния | `?page=office-selector` | — (витрина компонента; теперь дублирует Storybook) | `src/pages/office-selector-showcase/` |
+
+## Storybook
+
+`npm run storybook` → `http://localhost:6006`. Пока не опубликован на Vercel.
+
+| Раздел | Stories |
+|---|---|
+| Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
+| Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
 ## Адреса состояний
 
