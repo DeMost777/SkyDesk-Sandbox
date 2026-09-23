@@ -4,6 +4,31 @@
 > Перед demo или в конце рабочего дня — пройти весь план на текущем build и записать регрессии.
 > Updated: 2026-09-23.
 
+## Как запустить локально
+
+Нужны Git и Node.js 20+ (проверено на 22).
+
+Первый раз:
+
+```bash
+git clone https://github.com/DeMost777/SkyDesk-Sandbox.git
+cd SkyDesk-Sandbox
+git checkout claude/eloquent-turing-7w2259
+npm ci
+npm run dev
+```
+
+Открыть `http://localhost:5173`. Сервер пересобирает страницу сам при каждом изменении файлов.
+
+Забрать новые изменения из GitHub (dev-сервер можно не останавливать):
+
+```bash
+git pull
+npm ci   # только если изменился package-lock.json
+```
+
+Проверить production-сборку, как её увидит Vercel: `npm run build && npm run preview` → `http://localhost:4173`.
+
 ## Автоматическая проверка (перед каждым push)
 
 ```bash
