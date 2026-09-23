@@ -11,7 +11,8 @@
 
 ## Storybook
 
-`npm run storybook` → `http://localhost:6006`. Пока не опубликован на Vercel.
+- На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
+- Локально: `npm run storybook` → `http://localhost:6006`.
 
 | Раздел | Stories |
 |---|---|

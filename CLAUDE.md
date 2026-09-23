@@ -132,6 +132,8 @@ npm run build-storybook  # статическая сборка в storybook-stat
 
 **Деплой** (проверено 2026-09-23): репозиторий подключён к Vercel. Ветки `main` нет; основная ветка на GitHub — `claude/hopeful-wright-0ar03b`. По умолчанию Vercel публикует основную ветку как production, а каждая другая ветка получает свою preview-ссылку. Это нужно подтвердить в настройках Vercel (open question). До подтверждения push или merge в `claude/hopeful-wright-0ar03b` — релиз, только по явной просьбе.
 
+**Storybook на Vercel** публикуется вместе с приложением по адресу `/storybook/`. Сборка — `buildCommand` в `vercel.json` (`npm run build` + `build-storybook` в `dist/storybook`). Там же: редирект `/storybook` → `/storybook/` и catch-all rewrite приложения, который не трогает `/storybook/…`.
+
 **Локально, до публикации:** `npm run dev` → `http://localhost:5173`. Изменения видны сразу, без push. Инструкция для тестирования — `docs/testing-plan.md` → «Как запустить локально».
 
 ## Решения и gotchas
