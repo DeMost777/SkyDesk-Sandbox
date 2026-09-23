@@ -113,6 +113,10 @@ PNR + Select Office/GDS → Booking
 | Default Office | Office, который агент назначил по умолчанию для одной GDS | «home office» |
 | Creation office | Office, где PNR был создан (в GDS — Creation PCC) | — |
 | GDS Required | Шаг поиска, когда Skydesk не знает GDS и спрашивает агента | «Select GDS» как название состояния |
+| GDS code | Двухсимвольный код GDS: Amadeus `1A`, Sabre `1S`, Galileo `1G` | — |
+| History | Список бронирований в sidebar, с которыми агент недавно что-то делал в Skydesk | «Recent», «Sessions» |
+| History item | Одна карточка History: PNR · GDS code, Itinerary, дата и время последнего действия | «session card» |
+| Itinerary | Маршрут бронирования по кодам аэропортов: One way `A → B`, Round `A ⇆ B`, Multi trip `A → B → C` | «route» в UI |
 | PNR Required | Поиск запущен с пустым полем PNR | «empty state» — это начальный экран, до поиска |
 
 ## Запуск и проверка
@@ -157,6 +161,9 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
 - **Accessibility-проверка в Storybook падает тестом** (`a11y.test: 'error'` в `.storybook/preview.tsx`, 2026-09-23). Исключение — stories с teal `primary` и текстом (`test: 'todo'`, open question #14): вернуть в `error`, когда design решит. Страница — в `<main>`, панель sandbox — `<aside aria-label="Sandbox controls">`; у popover-диалогов есть `aria-label`. Активное состояние в sandbox-панели и навигации — тёмное (`bg-foreground`), потому что teal + белый 12px не проходит контраст.
 - **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`. Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
+- **App Sidebar — по стандарту shadcn Sidebar, примитив написан вручную** (2026-09-23). `src/components/ui/sidebar.tsx` повторяет имена частей и разметку shadcn (`data-sidebar`), но только нужное подмножество: registry shadcn недоступен из среды. Полный shadcn можно подставить без изменения `AppSidebar`. Collapsed, Search in history, Settings — не сейчас (решение пользователя).
+- **Hover = Pressed = Active в sidebar** — фон `sidebar-accent` (Figma `4920:69057`). Active не жирный, в отличие от stock shadcn. Состояния в Storybook форсируются `storybook-addon-pseudo-states` (`parameters.pseudo`).
+- **Клики в sidebar пока без поведения** (решение пользователя, 2026-09-23). Компонент принимает `onBrandClick` / `onNewChat` / `onSelect` / `onUserClick`, экран их не передаёт. Не придумывать поведение без решения product.
 - **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
 
 ## Структура проекта

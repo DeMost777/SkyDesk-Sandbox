@@ -10,7 +10,8 @@ const config: StorybookConfig = {
     "@storybook/addon-vitest",
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
-    "@storybook/addon-mcp"
+    "@storybook/addon-mcp",
+    "storybook-addon-pseudo-states"
   ],
   "framework": "@storybook/react-vite",
   // Serves /fonts/Geist-Variable.woff2, which src/index.css loads.

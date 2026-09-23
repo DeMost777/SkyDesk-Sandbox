@@ -9,6 +9,8 @@
 |---|---|---|---|
 | PNR Search | `/` или `?page=pnr-search` | `projects/pnr-search/README.md` | `src/pages/pnr-search/` |
 
+Слева на экране — **App Sidebar** (flow doc `projects/app-sidebar/README.md`, код `src/components/skydesk/app-sidebar/`). Клики в нём пока ничего не делают.
+
 ## Storybook
 
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
@@ -17,6 +19,7 @@
 | Раздел | Stories |
 |---|---|
 | Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
+| Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
 ## Адреса состояний
@@ -62,11 +65,16 @@
 
 **Office без прав:** `X4PD` (Sabre) есть в списке Office, но не может открывать бронирования — для сценария «Error — у Office нет доступа».
 
+## Mock History
+
+Источник — `src/mocks/booking-history.mock.ts` (интерфейс `BookingHistory`), 11 бронирований из Figma. Первое — всегда «Today 15:12», остальные — фиксированные даты 10–12/03/26. Пользователь в footer — `src/mocks/user.mock.ts` (Alex Pupkin).
+
 ## Слои кода
 
 | Слой | Где | Что внутри |
 |---|---|---|
-| Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
+| Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts`, `src/lib/booking-history.ts`, `src/lib/user.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
 | Данные | `src/mocks/` | Mock-реализация `PnrDirectory`, Office, personas |
 | Состояние | `src/hooks/` | Default Offices (localStorage), адрес sandbox |
+| Компоненты | `src/components/ui/` — shadcn/ui примитивы (включая `sidebar.tsx`); `src/components/skydesk/` — компоненты Skydesk из них | UI без логики экрана |
 | Экран | `src/pages/<flow>/` | UI; локальные компоненты — в `components/` |

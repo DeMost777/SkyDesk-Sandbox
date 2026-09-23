@@ -1,0 +1,65 @@
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, fn } from 'storybook/test'
+import { createHistoryEntries } from '@/mocks/booking-history.mock'
+import { MOCK_USER } from '@/mocks/user.mock'
+import { AppSidebar } from './index'
+
+// Figma 548:16649 (Type=Default). Flow doc: projects/app-sidebar/README.md.
+
+const NOW = new Date(2026, 2, 13, 18, 0)
+const history = createHistoryEntries(NOW)
+
+const meta = {
+  title: 'Skydesk/App Sidebar',
+  component: AppSidebar,
+  tags: ['ai-generated'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    history,
+    user: MOCK_USER,
+    now: NOW,
+    onBrandClick: fn(),
+    onNewChat: fn(),
+    onSelect: fn(),
+    onUserClick: fn(),
+  },
+  decorators: [
+    (Story) => (
+      <div className="h-screen">
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Meta<typeof AppSidebar>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  play: async ({ args, canvas, userEvent }) => {
+    // Group labels are titles, not buttons (user decision, 2026-09-23).
+    await expect(canvas.queryByRole('button', { name: 'General' })).toBeNull()
+    await expect(canvas.queryByRole('button', { name: 'History' })).toBeNull()
+    await expect(canvas.getByRole('list', { name: 'History' }).children).toHaveLength(11)
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Trava Sky Desk' }))
+    await expect(args.onBrandClick).toHaveBeenCalled()
+    await userEvent.click(canvas.getByRole('button', { name: 'New chat' }))
+    await expect(args.onNewChat).toHaveBeenCalled()
+    await userEvent.click(canvas.getByRole('button', { name: /^K7Q2LM/ }))
+    await expect(args.onSelect).toHaveBeenCalledWith(history[1])
+    await userEvent.click(canvas.getByRole('button', { name: /Alex Pupkin/ }))
+    await expect(args.onUserClick).toHaveBeenCalled()
+  },
+}
+
+export const ActiveItem: Story = { args: { activePnr: 'H2N8ZT' } }
+
+export const EmptyHistory: Story = { args: { history: [] } }
+
+// More bookings than fit: History scrolls, header and footer stay.
+export const LongHistory: Story = {
+  args: {
+    history: [...history, ...history.map((e) => ({ ...e, pnr: `${e.pnr.slice(0, 5)}X` }))],
+  },
+}

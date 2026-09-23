@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { ArrowUp } from 'lucide-react'
+import { AppSidebar } from '@/components/skydesk/app-sidebar'
 import { OfficeSelector } from '@/components/ui/office-selector'
 import { cn } from '@/lib/utils'
 import { useDefaultOffices } from '@/hooks/use-default-offices'
@@ -8,8 +9,10 @@ import { withDefaultFlags, type DefaultOffices, type GDS, type OfficeSelection }
 import { allGdsTried, searchPnr, type SearchOutcome } from '@/lib/pnr-search'
 import type { SandboxParams, SearchView } from '@/lib/sandbox-url'
 import { MOCK_OFFICES } from '@/mocks/offices.mock'
+import { mockBookingHistory } from '@/mocks/booking-history.mock'
 import { mockPnrDirectory } from '@/mocks/pnr-search.mock'
 import { toPersonaId } from '@/mocks/personas.mock'
+import { MOCK_USER } from '@/mocks/user.mock'
 import { SandboxBar, type DisplayState, type PresetId } from './components/sandbox-bar'
 import {
   ErrorFooter,
@@ -62,6 +65,7 @@ function presetId(active: DisplayState, outcome: SearchOutcome | undefined): Pre
 export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const persona = toPersonaId(params.persona)
   const { defaults, setDefault, reset } = useDefaultOffices(persona)
+  const [history] = React.useState(() => mockBookingHistory.recent())
 
   const [pnr, setPnr] = React.useState(params.pnr)
   const [selectedOffice, setSelectedOffice] = React.useState(() => officeByCode(params.office))
@@ -147,99 +151,105 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const hasActiveRing = active === 'loading' || offersGdsChoice
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <SandboxBar
-        active={presetId(active, outcome)}
-        current={{ pnr, office: selectedOffice?.code ?? null, gds: pickedGds, tried, state: view }}
-        persona={persona}
-        onResetDemoData={handleResetDemoData}
-      />
+    // Figma 7936:79314: sidebar on the left, search on the right. Sidebar clicks have no
+    // behaviour yet (projects/app-sidebar/README.md).
+    <div className="flex h-full bg-background">
+      <AppSidebar history={history} user={MOCK_USER} />
 
-      {/* Main page — layout sizes from Figma: 140px top offset, 838px content width */}
-      <main className="flex-1 flex justify-center pt-[140px] px-6">
-        <div className="flex flex-col items-center gap-8 w-full max-w-[838px]">
+      <div className="flex min-w-0 flex-1 flex-col overflow-auto">
+        <SandboxBar
+          active={presetId(active, outcome)}
+          current={{ pnr, office: selectedOffice?.code ?? null, gds: pickedGds, tried, state: view }}
+          persona={persona}
+          onResetDemoData={handleResetDemoData}
+        />
 
-          <h1 className="text-heading font-medium text-foreground text-center w-full">
-            How can I help with your reservation today?
-          </h1>
+        {/* Main page — layout sizes from Figma: 140px top offset, 838px content width */}
+        <main className="flex-1 flex justify-center pt-[140px] px-6">
+          <div className="flex flex-col items-center gap-8 w-full max-w-[838px]">
 
-          {/* Search widget */}
-          <div
-            className={cn(
-              'w-full bg-surface rounded-card drop-shadow-card flex flex-col',
-              hasActiveRing && 'border-2 border-primary',
-            )}
-          >
-            {/* Inner card — always has the 1px border token */}
-            <div className="border border-border rounded-card flex flex-col gap-1 pl-4 pr-2 py-2 w-full">
+            <h1 className="text-heading font-medium text-foreground text-center w-full">
+              How can I help with your reservation today?
+            </h1>
 
-              {/* Row 1: Text input */}
-              <div className="flex items-center h-10 pr-3 py-1">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={pnr}
-                  onChange={handleChange}
-                  onKeyDown={(e) => e.key === 'Enter' && startSearch(null)}
-                  placeholder="Enter a PNR number to find a reservation"
-                  aria-label="PNR"
-                  aria-invalid={active === 'pnr-required'}
-                  disabled={active === 'loading'}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  spellCheck={false}
-                  className="flex-1 min-w-0 bg-transparent border-0 outline-none p-0 text-sm font-normal leading-5 text-foreground placeholder:text-muted-foreground disabled:cursor-default"
-                />
+            {/* Search widget */}
+            <div
+              className={cn(
+                'w-full bg-surface rounded-card drop-shadow-card flex flex-col',
+                hasActiveRing && 'border-2 border-primary',
+              )}
+            >
+              {/* Inner card — always has the 1px border token */}
+              <div className="border border-border rounded-card flex flex-col gap-1 pl-4 pr-2 py-2 w-full">
+
+                {/* Row 1: Text input */}
+                <div className="flex items-center h-10 pr-3 py-1">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={pnr}
+                    onChange={handleChange}
+                    onKeyDown={(e) => e.key === 'Enter' && startSearch(null)}
+                    placeholder="Enter a PNR number to find a reservation"
+                    aria-label="PNR"
+                    aria-invalid={active === 'pnr-required'}
+                    disabled={active === 'loading'}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    className="flex-1 min-w-0 bg-transparent border-0 outline-none p-0 text-sm font-normal leading-5 text-foreground placeholder:text-muted-foreground disabled:cursor-default"
+                  />
+                </div>
+
+                {/* Row 2: Office combobox + Submit button */}
+                <div className="flex items-center justify-between">
+                  <OfficeSelector
+                    offices={withDefaultFlags(MOCK_OFFICES, defaults)}
+                    value={selectedOffice}
+                    onChange={handleOfficeChange}
+                    disabled={active === 'loading'}
+                  />
+
+                  {/* Submit button — 40×40, control radius, teal */}
+                  <button
+                    type="button"
+                    onClick={() => startSearch(null)}
+                    disabled={active === 'loading'}
+                    aria-label="Search booking"
+                    className="bg-primary flex items-center justify-center h-10 w-10 rounded-control shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
+                  >
+                    <ArrowUp className="size-4 text-primary-foreground" strokeWidth={2} />
+                  </button>
+                </div>
               </div>
 
-              {/* Row 2: Office combobox + Submit button */}
-              <div className="flex items-center justify-between">
-                <OfficeSelector
-                  offices={withDefaultFlags(MOCK_OFFICES, defaults)}
-                  value={selectedOffice}
-                  onChange={handleOfficeChange}
-                  disabled={active === 'loading'}
+              {active === 'loading' && <LoadingFooter />}
+              {active === 'gds-required' && <GdsRequiredFooter onSelect={(gds) => startSearch(gds)} />}
+              {outcome?.status === 'not-found' && (
+                <NotFoundFooter outcome={outcome} onSelect={(gds) => startSearch(gds, outcome.tried)} />
+              )}
+              {active === 'pnr-required' && <PnrRequiredFooter />}
+              {outcome?.status === 'error' && <ErrorFooter outcome={outcome} />}
+              {outcome?.status === 'found' && (
+                <FoundFooter
+                  outcome={outcome}
+                  offerDefault={
+                    outcome.resolved.source === 'selected' &&
+                    result?.defaultBefore !== outcome.resolved.office.code
+                  }
+                  isDefault={defaults[outcome.resolved.office.gds] === outcome.resolved.office.code}
+                  onToggleDefault={(checked) =>
+                    setDefault(
+                      outcome.resolved.office.gds,
+                      checked ? outcome.resolved.office.code : result?.defaultBefore ?? null,
+                    )
+                  }
                 />
-
-                {/* Submit button — 40×40, control radius, teal */}
-                <button
-                  type="button"
-                  onClick={() => startSearch(null)}
-                  disabled={active === 'loading'}
-                  aria-label="Search booking"
-                  className="bg-primary flex items-center justify-center h-10 w-10 rounded-control shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
-                >
-                  <ArrowUp className="size-4 text-primary-foreground" strokeWidth={2} />
-                </button>
-              </div>
+              )}
             </div>
-
-            {active === 'loading' && <LoadingFooter />}
-            {active === 'gds-required' && <GdsRequiredFooter onSelect={(gds) => startSearch(gds)} />}
-            {outcome?.status === 'not-found' && (
-              <NotFoundFooter outcome={outcome} onSelect={(gds) => startSearch(gds, outcome.tried)} />
-            )}
-            {active === 'pnr-required' && <PnrRequiredFooter />}
-            {outcome?.status === 'error' && <ErrorFooter outcome={outcome} />}
-            {outcome?.status === 'found' && (
-              <FoundFooter
-                outcome={outcome}
-                offerDefault={
-                  outcome.resolved.source === 'selected' &&
-                  result?.defaultBefore !== outcome.resolved.office.code
-                }
-                isDefault={defaults[outcome.resolved.office.gds] === outcome.resolved.office.code}
-                onToggleDefault={(checked) =>
-                  setDefault(
-                    outcome.resolved.office.gds,
-                    checked ? outcome.resolved.office.code : result?.defaultBefore ?? null,
-                  )
-                }
-              />
-            )}
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   )
 }

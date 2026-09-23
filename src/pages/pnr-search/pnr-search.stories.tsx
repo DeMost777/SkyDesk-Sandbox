@@ -10,6 +10,8 @@ const meta = {
   component: PnrSearchPage,
   tags: ['ai-generated'],
   parameters: { layout: 'fullscreen' },
+  // The page fills its parent (App: viewport minus the sandbox nav).
+  decorators: [(Story) => <div className="h-screen"><Story /></div>],
   args: { params: DEFAULT_PARAMS },
 } satisfies Meta<typeof PnrSearchPage>
 

@@ -77,6 +77,20 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 Все состояния — в Storybook: Components / ui / Office Selector (`npm run storybook`). Story `Default` сама проверяет порядок: сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше по алфавиту.
 
+## App Sidebar
+
+Автоматически: `npm test` — правила `src/lib/booking-history.test.ts`, `src/lib/user.test.ts` и stories Skydesk / App Sidebar (play-функции проверяют клики, `aria-current`, доступные имена; a11y-проверка каждой story).
+
+Вручную на `/`:
+1. Sidebar слева, 229px, на всю высоту под навигацией sandbox; сверху «Trava Sky Desk», снизу Alex Pupkin.
+2. General — только New chat. General и History — заголовки, не кликаются.
+3. History: 11 бронирований, первое — «Today 15:12». Маршруты: `YYZ ⇆ LON` (K7Q2LM), `LAX → SEA` (P9D3XA), `CDG → LON → JFK` (BBV14Q).
+4. Наведение на логотип, New chat, History item, пользователя — фон `#f5f5f4`; нажатие — тот же фон; Tab — teal-кольцо.
+5. Клики ничего не меняют: URL и экран поиска остаются как были.
+6. Окно ниже списка History — History прокручивается, header и footer на месте.
+
 ## Последний прогон
+
+- 2026-09-23 (App Sidebar): typecheck, lint:tokens, test (unit + storybook), build, build-storybook — зелёные. Sidebar проверен в headless Chromium на dev-сервере: вёрстка против Figma `7936:79314`, hover / pressed / focus, stories Hover / Pressed / Focus / Round Trip / Long Name.
 
 - 2026-09-23 (после удаления кнопок из Error): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.

@@ -36,7 +36,10 @@ const config: Config = {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        border: 'hsl(var(--border))',
+        border: {
+          DEFAULT: 'hsl(var(--border))',
+          muted: 'hsl(var(--border-muted))',
+        },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         // Trava brand color (teal accent used in interactive elements)
@@ -82,6 +85,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Geist', 'system-ui', 'sans-serif'],
+        // Figma "Fonts/Font Mono" — History item
+        mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
       },
     },
   },

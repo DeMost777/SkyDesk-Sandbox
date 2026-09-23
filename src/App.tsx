@@ -15,7 +15,7 @@ export default function App() {
   const page = params.page
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       {/* Top nav */}
       <nav aria-label="Sandbox pages" className="border-b border-border bg-background px-4 py-2 flex items-center gap-1 shrink-0">
         <span className="text-xs font-semibold text-muted-foreground mr-3">Skydesk</span>
@@ -41,7 +41,7 @@ export default function App() {
         </a>
       </nav>
 
-      <div className="flex-1">
+      <div className="flex-1 min-h-0">
         {/* navKey remounts the page so it re-reads its initial state from the URL */}
         {page === 'pnr-search' && <PnrSearchPage key={navKey} params={params} />}
       </div>
