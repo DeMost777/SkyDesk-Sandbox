@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { Home, ChevronDown, Search, X, Settings, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { GDS_LIST, type Office, type OfficeSelection } from '@/lib/office'
+import { sortOfficesForPicker, type Office, type OfficeSelection } from '@/lib/office'
 
 export interface OfficeSelectorProps {
   offices?: Office[]
@@ -48,11 +48,7 @@ export function OfficeSelector({
           (o) => o.code.toLowerCase().includes(q) || o.gds.toLowerCase().includes(q),
         )
       : offices
-    return [...list].sort((a, b) => {
-      const gi = GDS_LIST.indexOf(a.gds) - GDS_LIST.indexOf(b.gds)
-      if (gi !== 0) return gi
-      return a.code.localeCompare(b.code)
-    })
+    return sortOfficesForPicker(list)
   }, [offices, query])
 
   const handleOpenChange = (next: boolean) => {
@@ -195,7 +191,7 @@ export function OfficeSelector({
                           <span className="text-[10px] leading-3 text-muted-foreground">Default</span>
                         )}
                       </div>
-                      <span className="text-sm leading-5 text-muted-foreground">{office.gds}</span>
+                      <span className="text-xs leading-4 text-muted-foreground">{office.gds}</span>
                     </button>
                   )
                 })}

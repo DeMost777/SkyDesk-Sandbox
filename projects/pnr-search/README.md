@@ -29,6 +29,8 @@
 
 Выбранный Office из другой GDS не участвует: поиск идёт только в GDS этого Office.
 
+**Список Office в Office Selector:** сначала Default Offices агента, затем все остальные Office. Обе группы — по алфавиту кода Office, без группировки по GDS. При поиске порядок тот же. Так агент сразу видит, какие Default Offices у него настроены (правило пользователя, 2026-09-23).
+
 **Default Office** — настройка агента для каждой GDS отдельно, необязательная. Когда агент открыл бронирование через Office, выбранный вручную, и этот Office ещё не его Default Office для этой GDS, предлагаем сохранить: `☐ Use this as my default office for Amadeus`. Снятие галочки возвращает прежний Default Office. В sandbox значение хранится в localStorage, отдельно для каждой persona.
 
 **Not Found** — PNR нет в той GDS, где искали. Это не общая ошибка: по спецификации нужно объяснить контекст (в какой GDS / каком Office искали) и предложить «Try another GDS» / «Choose another office». Сейчас не реализовано — см. «States».

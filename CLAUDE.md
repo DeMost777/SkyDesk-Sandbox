@@ -138,7 +138,8 @@ npm run build      # typecheck + production build
 - **URL всегда повторяет экран** (2026-09-23). Любой момент можно отправить ссылкой на review. Код помечен `SANDBOX-ONLY`.
 - **Mock-данные — через интерфейс `PnrDirectory`** (2026-09-23). Подключение реального API заменит одну реализацию, экран не изменится.
 - **Default Offices хранятся в localStorage отдельно для каждой persona** (2026-09-23). Сохранённый default переживает перезагрузку, как на реальном backend. Все обращения к storage — в try/catch, без storage sandbox работает в памяти.
-- **Порядок кнопок GDS Required — как в Figma (Amadeus, Sabre, Galileo)**, отличается от сортировки в Office Selector (Amadeus, Galileo, Sabre). Не «унифицировать» без Figma.
+- **Порядок кнопок GDS Required — как в Figma (Amadeus, Sabre, Galileo).** Не «унифицировать» с другими списками без Figma.
+- **Office Selector: сначала Default Offices, потом остальные Office; обе группы по алфавиту кода** (правило пользователя, 2026-09-23). Агент сразу видит свои Default Offices. Правило — `sortOfficesForPicker` в `src/lib/office.ts`, работает и при поиске. Название GDS в строке — мелким (`text-xs`), главное в строке — код Office.
 
 ## Структура проекта
 

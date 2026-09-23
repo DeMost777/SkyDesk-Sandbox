@@ -32,12 +32,13 @@ npm run typecheck && npm test && npm run build
 - **B целиком:** на `/` ввести `abc123` → Enter → через ~1.5 с GDS Required → Galileo → Found через `Q8L3`. URL стал `?pnr=ABC123&gds=Galileo&state=result`.
 - **Default Office сохраняется:** адрес 8 → отметить checkbox → открыть адрес 5 → теперь `E6T8` и «Your default office». В Office Selector у `E6T8` метка «Default». «Reset demo data» → снова `A2K9`.
 - **Persona:** на адресе 5 нажать «Agent without defaults» → тот же PNR открывается через `B3R7`. Кнопка «назад» в браузере → снова `A2K9`.
+- **Порядок Office:** на `/` открыть «Select office» → сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше `7MTR`, `B3R7`, `C1Z2`, `D4M5`, `E6T8`, `F9K1`, `X4PD`. После сохранения `E6T8` как default он поднимается наверх, а `A2K9` уходит в общий список. Persona без defaults — весь список по алфавиту.
 - **Смена ввода сбрасывает результат:** на любом результате изменить PNR или Office → результат исчезает.
 
 ## Office Selector
 
-`?page=office-selector` — все 9 состояний компонента на одной странице. Метки «Default» у `5GW5`, `A2K9`, `Q8L3`.
+`?page=office-selector` — все 9 состояний компонента на одной странице. В открытом списке сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default».
 
 ## Последний прогон
 
-- 2026-09-23: все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.
+- 2026-09-23 (после правки порядка Office): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.
