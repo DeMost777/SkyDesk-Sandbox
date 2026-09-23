@@ -3,12 +3,13 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { navigate } from '@/hooks/use-sandbox-url'
 import type { SandboxParams } from '@/lib/sandbox-url'
-import { SCENARIO_PNRS } from '@/mocks/pnr-search.mock'
+import { NO_ACCESS_OFFICE, SCENARIO_PNRS } from '@/mocks/pnr-search.mock'
 import { PERSONAS, type PersonaId } from '@/mocks/personas.mock'
 
 export type DisplayState =
   | 'default'
   | 'typing'
+  | 'pnr-required'
   | 'loading'
   | 'gds-required'
   | 'found'
@@ -16,12 +17,13 @@ export type DisplayState =
   | 'error'
 
 /** A DisplayState, split further where one state has several variants worth reviewing. */
-export type PresetId = DisplayState | 'not-found-all' | 'not-found-office'
+export type PresetId = DisplayState | 'not-found-all' | 'not-found-office' | 'error-access'
 
 /** Each state's address. The result states are produced by the real search on mocks. */
 const PRESETS: { id: PresetId; label: string; params: Partial<SandboxParams> }[] = [
   { id: 'default', label: 'Default', params: {} },
   { id: 'typing', label: 'Ready', params: { pnr: SCENARIO_PNRS.known } },
+  { id: 'pnr-required', label: 'PNR Required', params: { state: 'result' } },
   { id: 'loading', label: 'Loading', params: { pnr: SCENARIO_PNRS.known, state: 'loading' } },
   { id: 'gds-required', label: 'GDS Required', params: { pnr: SCENARIO_PNRS.unknown, state: 'result' } },
   { id: 'found', label: 'Found', params: { pnr: SCENARIO_PNRS.known, state: 'result' } },
@@ -37,6 +39,11 @@ const PRESETS: { id: PresetId; label: string; params: Partial<SandboxParams> }[]
     params: { pnr: SCENARIO_PNRS.known, office: '5GW5', state: 'result' },
   },
   { id: 'error', label: 'Error', params: { pnr: SCENARIO_PNRS.error, state: 'result' } },
+  {
+    id: 'error-access',
+    label: 'Error · Office access',
+    params: { pnr: SCENARIO_PNRS.noAccess, office: NO_ACCESS_OFFICE, state: 'result' },
+  },
 ]
 
 function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {

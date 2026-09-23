@@ -15,6 +15,7 @@ import {
   FoundFooter,
   LoadingFooter,
   NotFoundFooter,
+  PnrRequiredFooter,
   GdsRequiredFooter,
 } from './components/result-footer'
 
@@ -50,6 +51,7 @@ function displayState(view: SearchView, pnr: string, result: Result | null): Dis
 }
 
 function presetId(active: DisplayState, outcome: SearchOutcome | undefined): PresetId {
+  if (outcome?.status === 'error') return outcome.reason === 'access-denied' ? 'error-access' : 'error'
   if (outcome?.status !== 'not-found') return active
   if (outcome.gdsSource === 'office') return 'not-found-office'
   return allGdsTried(outcome.tried) ? 'not-found-all' : 'not-found'
@@ -65,12 +67,17 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const [pickedGds, setPickedGds] = React.useState<GDS | null>(params.gds)
   // GDS searched before pickedGds in this attempt (Not Found → another GDS).
   const [tried, setTried] = React.useState<GDS[]>(params.tried)
-  const [view, setView] = React.useState<SearchView>(params.pnr ? params.state : 'idle')
+  // ?state=result with no PNR is a valid address too: it shows PNR Required.
+  const [view, setView] = React.useState<SearchView>(
+    params.state === 'loading' && !params.pnr ? 'idle' : params.state,
+  )
   // ?state=result opens straight on the search outcome.
   const [result, setResult] = React.useState<Result | null>(() =>
     view === 'result' ? search(params.pnr, selectedOffice, params.gds, params.tried, defaults) : null,
   )
+  const [officeOpen, setOfficeOpen] = React.useState(false)
   const timer = React.useRef<number>()
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   React.useEffect(() => () => window.clearTimeout(timer.current), [])
 
@@ -88,12 +95,21 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
 
   /** `triedBefore` carries GDS already searched when the agent retries after Not Found. */
   const startSearch = (gds: GDS | null, triedBefore: GDS[] = []) => {
-    if (!pnr.trim() || view === 'loading') return
+    if (view === 'loading') return
+    window.clearTimeout(timer.current)
+    if (!pnr.trim()) {
+      // No PNR: answer at once (no loading) and send the agent back to the field.
+      setPickedGds(null)
+      setTried([])
+      setResult(search(pnr, selectedOffice, null, [], defaults))
+      setView('result')
+      inputRef.current?.focus()
+      return
+    }
     setPickedGds(gds)
     setTried(triedBefore)
     setView('loading')
     setResult(null)
-    window.clearTimeout(timer.current)
     timer.current = window.setTimeout(() => {
       setResult(search(pnr, selectedOffice, gds, triedBefore, defaults))
       setView('result')
@@ -161,12 +177,14 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
               {/* Row 1: Text input */}
               <div className="flex items-center h-10 pr-3 py-1">
                 <input
+                  ref={inputRef}
                   type="text"
                   value={pnr}
                   onChange={handleChange}
                   onKeyDown={(e) => e.key === 'Enter' && startSearch(null)}
                   placeholder="Enter a PNR number to find a reservation"
                   aria-label="PNR"
+                  aria-invalid={active === 'pnr-required'}
                   disabled={active === 'loading'}
                   autoComplete="off"
                   autoCorrect="off"
@@ -182,6 +200,8 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
                   value={selectedOffice}
                   onChange={handleOfficeChange}
                   disabled={active === 'loading'}
+                  open={officeOpen}
+                  onOpenChange={setOfficeOpen}
                 />
 
                 {/* Submit button — 40×40, rounded-[12px], teal */}
@@ -202,7 +222,14 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
             {outcome?.status === 'not-found' && (
               <NotFoundFooter outcome={outcome} onSelect={(gds) => startSearch(gds, outcome.tried)} />
             )}
-            {active === 'error' && <ErrorFooter />}
+            {active === 'pnr-required' && <PnrRequiredFooter />}
+            {outcome?.status === 'error' && (
+              <ErrorFooter
+                outcome={outcome}
+                onRetry={() => startSearch(pickedGds, tried)}
+                onChooseOffice={() => setOfficeOpen(true)}
+              />
+            )}
             {outcome?.status === 'found' && (
               <FoundFooter
                 outcome={outcome}

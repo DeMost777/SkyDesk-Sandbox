@@ -43,7 +43,16 @@
 
 Проверенные GDS накапливаются в пределах одной попытки. Смена PNR или Office начинает попытку заново. Правило — `searchPnr` возвращает `gdsSource` и `tried`, `allGdsTried` решает, остались ли варианты.
 
-**Error** — техническая проблема: GDS недоступна, ошибка соединения, нет доступа. Понятный текст и «Try again»; если проблема в Office — предложить выбрать другой. Error и Not Found — разные состояния: сбой GDS никогда не показываем как «не найдено».
+**Error** — техническая проблема. Error и Not Found — разные состояния: сбой GDS никогда не показываем как «не найдено». Что предложить, зависит от причины (`reason` в результате `searchPnr`):
+
+| Причина | Что показываем |
+|---|---|
+| GDS недоступна, ошибка соединения (`unavailable`) | «Something went wrong. Please try again.» (текст из Figma) + кнопка **Try again** — повторяет тот же поиск: тот же PNR, Office, GDS и проверенные GDS |
+| У Office нет доступа к PNR (`access-denied`) | «Office X4PD has no access to PNR K2M9QP.» + кнопка **Choose another office** — открывает Office Selector |
+
+Доступ проверяется для Office, через который идёт поиск: выбранного вручную или Default Office для этой GDS. Creation office доступа не лишается — PNR создан в нём.
+
+**PNR Required** — агент нажал поиск (или Enter) с пустым полем. Кнопка поиска при этом активна всегда — правило пользователя, 2026-09-23. Показываем «Please provide the PNR.» сразу, без Loading; фокус возвращается в поле, у поля `aria-invalid`. Сообщение исчезает, как только агент начинает вводить PNR. Правило — `searchPnr` возвращает `pnr-required` для пустого PNR, не обращаясь к GDS.
 
 **Логика живёт в `src/lib/`, не в экране.** `searchPnr` и `resolveOffice` — чистые функции с тестами. Экран только вызывает их и показывает результат. Mock-данные подключаются через интерфейс `PnrDirectory`, реальный API позже заменит только его реализацию.
 
@@ -68,6 +77,7 @@
 | State | Address | Status |
 |---|---|---|
 | Empty | `/` | ✅ |
+| PNR Required | `?state=result` | ✅ |
 | Ready | `?pnr=7JRWT4` | ✅ |
 | Loading | `?pnr=7JRWT4&state=loading` | ✅ (адрес держит состояние, таймер не запускается) |
 | GDS Required | `?pnr=ABC123&state=result` | ✅ |
@@ -79,15 +89,14 @@
 | Not Found — две GDS | `?pnr=XYZ789&tried=Amadeus&gds=Sabre&state=result` | ✅ |
 | Not Found — все GDS | `?pnr=XYZ789&tried=Amadeus,Sabre&gds=Galileo&state=result` | ✅ |
 | Not Found — выбранный Office | `?pnr=7JRWT4&office=5GW5&state=result` | ✅ |
-| Error | `?pnr=ERR000&state=result` | ⚠️ нет «Try again», нет предложения сменить Office |
+| Error — GDS недоступна | `?pnr=ERR000&state=result` | ✅ (в mock-данных `ERR000` падает всегда, «Try again» снова покажет Error) |
+| Error — у Office нет доступа | `?pnr=K2M9QP&office=X4PD&state=result` | ✅ |
 
 «Found» показывает, какой Office выбран и почему. Это заглушка до экрана Booking — она делает правило приоритета видимым для review.
 
 ## Known gaps (coverage)
 
-- Кнопка поиска должна быть неактивной при пустом поле; сейчас она активна, но ничего не делает.
 - Подсказка на GDS Required: в спецификации «To continue the search, select the GDS…», в коде «…please select the GDS…» (текст из Figma). Какой вариант верный — open question.
-- Error — нет «Try again» и нет предложения сменить Office (см. таблицу выше).
 
 ## Open questions
 
@@ -95,4 +104,4 @@
 
 ## Test cases
 
-Юнит-тесты: `src/lib/office.test.ts`, `src/lib/pnr-search.test.ts` (сценарии A–D, Not Found с повторным выбором GDS, Error). Ручная проверка в браузере — `docs/testing-plan.md`.
+Юнит-тесты: `src/lib/office.test.ts`, `src/lib/pnr-search.test.ts` (сценарии A–D, PNR Required, Not Found с повторным выбором GDS, Error обоих видов). Ручная проверка в браузере — `docs/testing-plan.md`.

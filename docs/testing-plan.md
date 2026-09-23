@@ -53,7 +53,9 @@ npm run typecheck && npm test && npm run build
 | 9a | `?pnr=XYZ789&tried=Amadeus&gds=Sabre&state=result` | «…not found in Amadeus or Sabre…», активна только Galileo |
 | 9b | `?pnr=XYZ789&tried=Amadeus,Sabre&gds=Galileo&state=result` | «PNR XYZ789 not found in any GDS. Check the PNR.», кнопок нет, рамки нет |
 | 9c | `?pnr=7JRWT4&office=5GW5&state=result` | «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.», кнопок нет |
-| 10 | `?pnr=ERR000&state=result` | «Something went wrong…» (красный) |
+| 10 | `?pnr=ERR000&state=result` | «Something went wrong. Please try again.» (красный) + кнопка «Try again» |
+| 11 | `?pnr=K2M9QP&office=X4PD&state=result` | «Office X4PD has no access to PNR K2M9QP.» + кнопка «Choose another office» |
+| 12 | `?state=result` | «Please provide the PNR.» (красный), поле пустое |
 
 **Живые сценарии**
 
@@ -64,6 +66,9 @@ npm run typecheck && npm test && npm run build
 - **Не та GDS:** ввести `ABC123` → Enter → Amadeus → «not found in Amadeus», Amadeus неактивна → Galileo → Found через `Q8L3`.
 - **Все GDS:** ввести `XYZ789` → Amadeus → Sabre → Galileo → «not found in any GDS». URL на каждом шаге содержит `tried`.
 - **Панель State:** каждая кнопка открывает своё состояние и подсвечивается, включая три варианта Not Found.
+- **Пустой PNR:** на `/` нажать кнопку поиска (или Enter) → «Please provide the PNR.», курсор в поле. Начать вводить → сообщение исчезает.
+- **Try again:** адрес 10 → «Try again» → Loading → снова Error (`ERR000` в mock-данных падает всегда).
+- **Нет доступа у Office:** адрес 11 → «Choose another office» → открывается список Office → выбрать `5GW5` → поиск → Found через `5GW5`.
 - **Смена ввода сбрасывает результат:** на любом результате изменить PNR или Office → результат исчезает.
 
 ## Office Selector
@@ -72,4 +77,4 @@ npm run typecheck && npm test && npm run build
 
 ## Последний прогон
 
-- 2026-09-23 (после Not Found с повторным выбором GDS): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.
+- 2026-09-23 (после Error с действиями и PNR Required): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.

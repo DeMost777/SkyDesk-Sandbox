@@ -113,6 +113,7 @@ PNR + Select Office/GDS → Booking
 | Default Office | Office, который агент назначил по умолчанию для одной GDS | «home office» |
 | Creation office | Office, где PNR был создан (в GDS — Creation PCC) | — |
 | GDS Required | Шаг поиска, когда Skydesk не знает GDS и спрашивает агента | «Select GDS» как название состояния |
+| PNR Required | Поиск запущен с пустым полем PNR | «empty state» — это начальный экран, до поиска |
 
 ## Запуск и проверка
 
@@ -143,6 +144,8 @@ npm run build      # typecheck + production build
 - **Порядок кнопок GDS Required — как в Figma (Amadeus, Sabre, Galileo).** Не «унифицировать» с другими списками без Figma.
 - **Office Selector: сначала Default Offices, потом остальные Office; обе группы по алфавиту кода** (правило пользователя, 2026-09-23). Агент сразу видит свои Default Offices. Правило — `sortOfficesForPicker` в `src/lib/office.ts`, работает и при поиске. Название GDS в строке — мелким (`text-xs`), главное в строке — код Office.
 - **Not Found — не тупик, а следующий шаг** (правило пользователя, 2026-09-23). Если GDS выбрал агент или её знал Skydesk — снова кнопки GDS, проверенные неактивны на своём месте. Все 3 проверены — «PNR … not found in any GDS. Check the PNR.» GDS задал Office — предложить сменить или убрать Office. Правило — `gdsSource`/`tried` в `searchPnr` и `allGdsTried`; адрес — параметр `tried`.
+- **Кнопка поиска всегда активна; пустой PNR — сообщение «Please provide the PNR.»** (правило пользователя, 2026-09-23). Не делать кнопку неактивной: агент должен видеть, почему поиск не начался. Правило — `pnr-required` в `searchPnr`.
+- **Error различает причину** (2026-09-23): GDS недоступна → «Try again» повторяет тот же поиск; у Office нет доступа → «Choose another office» открывает Office Selector (у него для этого есть необязательные `open`/`onOpenChange`).
 
 ## Структура проекта
 

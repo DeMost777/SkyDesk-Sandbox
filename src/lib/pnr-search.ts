@@ -16,8 +16,19 @@ export interface BookingSummary {
 export interface PnrDirectory {
   /** GDS of a PNR Skydesk has already processed, if any. */
   knownGds(pnr: string): GDS | undefined
-  /** Looks the PNR up in one GDS. Returns null if absent; throws on a technical failure. */
-  lookup(pnr: string, gds: GDS): BookingSummary | null
+  /**
+   * Looks the PNR up in one GDS, working from Office `via` when one is known.
+   * Returns null if absent; throws GdsError when the GDS fails or the Office has no access.
+   */
+  lookup(pnr: string, gds: GDS, via: string | null): BookingSummary | null
+}
+
+export type GdsErrorReason = 'unavailable' | 'access-denied'
+
+export class GdsError extends Error {
+  constructor(readonly reason: GdsErrorReason) {
+    super(reason)
+  }
 }
 
 export interface SearchInput {
@@ -36,6 +47,7 @@ export type GdsSource = 'office' | 'picked' | 'known'
 
 export type SearchOutcome =
   | { status: 'found'; booking: BookingSummary; resolved: ResolvedOffice }
+  | { status: 'pnr-required' }
   | { status: 'gds-required'; pnr: string }
   | {
       status: 'not-found'
@@ -46,7 +58,14 @@ export type SearchOutcome =
       /** GDS searched so far, this one included. Empty when an Office set the GDS. */
       tried: GDS[]
     }
-  | { status: 'error'; pnr: string; gds: GDS }
+  | {
+      status: 'error'
+      pnr: string
+      gds: GDS
+      reason: GdsErrorReason
+      /** The Office without access, for 'access-denied'. */
+      office: OfficeSelection | null
+    }
 
 export function normalizePnr(raw: string): string {
   return raw.trim().toUpperCase()
@@ -59,17 +78,25 @@ export function normalizePnr(raw: string): string {
  */
 export function searchPnr(input: SearchInput, directory: PnrDirectory): SearchOutcome {
   const pnr = normalizePnr(input.pnr)
+  if (!pnr) return { status: 'pnr-required' }
+
   const selected = input.selected ?? null
   const gdsSource: GdsSource | null = selected ? 'office' : input.gds ? 'picked' : null
   const gds = selected?.gds ?? input.gds ?? directory.knownGds(pnr)
 
   if (!gds) return { status: 'gds-required', pnr }
 
+  // The Office the search works from, when it is known before the lookup.
+  // (Creation office comes from the booking itself, so it never lacks access.)
+  const via = selected?.code ?? input.defaults[gds] ?? null
+
   let booking: BookingSummary | null
   try {
-    booking = directory.lookup(pnr, gds)
-  } catch {
-    return { status: 'error', pnr, gds }
+    booking = directory.lookup(pnr, gds, via)
+  } catch (e) {
+    const reason = e instanceof GdsError ? e.reason : 'unavailable'
+    const office = reason === 'access-denied' && via ? { code: via, gds } : null
+    return { status: 'error', pnr, gds, reason, office }
   }
 
   if (!booking) {

@@ -22,7 +22,7 @@
 | `office` | код Office из `src/mocks/offices.mock.ts` | Office, выбранный вручную |
 | `gds` | `Amadeus`, `Sabre`, `Galileo` | GDS, выбранная на шаге GDS Required (или повторно после Not Found) |
 | `tried` | GDS через запятую: `Amadeus,Sabre` | GDS, где PNR уже искали до `gds` в этой попытке — для состояний Not Found |
-| `state` | `idle` (по умолчанию), `loading`, `result` | `result` — сразу выполнить поиск и показать итог; `loading` — зафиксировать индикатор загрузки |
+| `state` | `idle` (по умолчанию), `loading`, `result` | `result` — сразу выполнить поиск и показать итог (без `pnr` — PNR Required); `loading` — зафиксировать индикатор загрузки |
 
 Состояния-результаты не «рисуются» флагом — их выдаёт настоящая функция `searchPnr` на mock-данных. Поэтому адрес сам по себе проверяет логику.
 
@@ -46,10 +46,12 @@
 | PNR | Где существует | Creation office | Skydesk знает GDS? | Итог поиска без контекста |
 |---|---|---|---|---|
 | `7JRWT4` | Amadeus | `B3R7` | да | Found |
-| `K2M9QP` | Sabre | `7MTR` | да | Found |
+| `K2M9QP` | Sabre | `7MTR` | да | Found. С Office `X4PD` — Error: у Office нет доступа |
 | `ABC123` | Galileo | `C1Z2` | нет | GDS Required → Galileo → Found |
 | `XYZ789` | нигде | — | нет | GDS Required → Not Found в каждой GDS → «not found in any GDS» |
-| `ERR000` | — (сбой GDS) | — | да, Amadeus | Error |
+| `ERR000` | — (сбой GDS) | — | да, Amadeus | Error: GDS недоступна. Падает всегда, «Try again» снова даёт Error |
+
+**Office без прав:** `X4PD` (Sabre) есть в списке Office, но не может открывать бронирования — для сценария «Error — у Office нет доступа».
 
 ## Слои кода
 
