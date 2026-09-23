@@ -55,7 +55,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       className={cn(
         'rounded px-2 py-0.5 text-xs font-medium transition-colors',
         active
-          ? 'bg-primary text-primary-foreground'
+          ? 'bg-foreground text-background' // sandbox chrome: dark active state (teal + white fails AA at 12px)
           : 'bg-background border border-border text-foreground hover:bg-accent',
       )}
     >
@@ -77,7 +77,10 @@ export function SandboxBar({
   onResetDemoData: () => void
 }) {
   return (
-    <div className="border-b border-border bg-muted px-4 py-2 flex items-center gap-x-4 gap-y-2 flex-wrap shrink-0">
+    <aside
+      aria-label="Sandbox controls"
+      className="border-b border-border bg-muted px-4 py-2 flex items-center gap-x-4 gap-y-2 flex-wrap shrink-0"
+    >
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs text-muted-foreground font-medium">State:</span>
         {PRESETS.map((p) => (
@@ -101,6 +104,6 @@ export function SandboxBar({
           Reset demo data
         </button>
       </div>
-    </div>
+    </aside>
   )
 }

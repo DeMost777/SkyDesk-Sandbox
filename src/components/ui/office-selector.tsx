@@ -112,6 +112,7 @@ export function OfficeSelector({
 
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
+          aria-label="Select office"
           align="start"
           sideOffset={4}
           className={cn(

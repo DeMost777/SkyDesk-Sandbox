@@ -152,6 +152,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **Vitest 4, не 5** (2026-09-23). `@storybook/addon-vitest` 10.6 поддерживает только Vitest 3–4; с Vitest 5 `npm install` падает (ERESOLVE). Вернуть Vitest 5 можно, когда addon начнёт его поддерживать.
 - **Playwright 1.56.1** (2026-09-23) — под Chromium, уже установленный в облачном окружении (`/opt/pw-browsers`). Локально браузер для него: `npx playwright install chromium`.
 - **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
+- **Accessibility-проверка в Storybook падает тестом** (`a11y.test: 'error'` в `.storybook/preview.tsx`, 2026-09-23). Исключение — stories с teal `primary` и текстом (`test: 'todo'`, open question #14): вернуть в `error`, когда design решит. Страница — в `<main>`, панель sandbox — `<aside aria-label="Sandbox controls">`; у popover-диалогов есть `aria-label`. Активное состояние в sandbox-панели и навигации — тёмное (`bg-foreground`), потому что teal + белый 12px не проходит контраст.
 - **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
 
 ## Структура проекта

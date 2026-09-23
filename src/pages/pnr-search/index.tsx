@@ -155,7 +155,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
       />
 
       {/* Main page */}
-      <div className="flex-1 flex justify-center pt-[140px] px-6">
+      <main className="flex-1 flex justify-center pt-[140px] px-6">
         <div className="flex flex-col items-center gap-8 w-full max-w-[838px]">
 
           {/* Heading — Figma: 30px, weight 500, tracking -0.4px */}
@@ -239,7 +239,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
             )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

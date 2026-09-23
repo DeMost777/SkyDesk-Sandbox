@@ -17,7 +17,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top nav */}
-      <nav className="border-b border-border bg-white px-4 py-2 flex items-center gap-1 shrink-0">
+      <nav aria-label="Sandbox pages" className="border-b border-border bg-white px-4 py-2 flex items-center gap-1 shrink-0">
         <span className="text-xs font-semibold text-muted-foreground mr-3">Skydesk</span>
         {NAV_ITEMS.map((item) => (
           <button
@@ -26,7 +26,7 @@ export default function App() {
             className={cn(
               'rounded px-2.5 py-1 text-xs font-medium transition-colors',
               page === item.value
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'text-muted-foreground hover:bg-accent hover:text-foreground',
             )}
           >

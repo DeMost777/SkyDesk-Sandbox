@@ -17,7 +17,7 @@ export const Default: Story = {
       <PopoverTrigger asChild>
         <Button variant="outline">Booking details</Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent aria-label="Booking details">
         <p className="text-sm">LINDQVIST/ANNA MRS · ARN → LHR → JFK</p>
       </PopoverContent>
     </Popover>
