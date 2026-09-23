@@ -85,7 +85,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 1. Sidebar слева, 229px, на всю высоту под навигацией sandbox; сверху «Trava Sky Desk», снизу Alex Pupkin.
 2. General — только New chat. General и History — заголовки, не кликаются.
 3. History: 11 бронирований, первое — «Today 15:12». Маршруты: `YYZ ⇆ LON` (K7Q2LM), `LAX → SEA` (P9D3XA), `CDG → LON → JFK` (BBV14Q).
-4. Наведение на логотип, New chat, History item, пользователя — фон `#f5f5f4`; нажатие — тот же фон; Tab — teal-кольцо.
+4. Без наведения — у элементов нет фона. Наведение на логотип, New chat, History item, пользователя — фон `#f5f5f4`; нажатие — тот же фон; Tab — тот же фон и teal-кольцо.
 5. Клики ничего не меняют: URL и экран поиска остаются как были.
 6. Окно ниже списка History — History прокручивается, header и footer на месте.
 

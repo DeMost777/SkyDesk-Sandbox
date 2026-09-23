@@ -105,10 +105,11 @@ const SidebarMenuItem = React.forwardRef<HTMLLIElement, React.ComponentProps<'li
 )
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
-// Hover, pressed and active share one look — Figma 4920:69057 (Hover = Active = secondary).
-// Unlike stock shadcn, active is not bold: Figma keeps the weight.
+// Default has no fill. Hover, pressed, keyboard focus and active share one fill — Figma 4920:69057
+// (Hover = Active = secondary); pressed and focus follow it (user rule, 2026-09-23). Focus also
+// keeps the ring for keyboard users. Unlike stock shadcn, active is not bold: Figma keeps the weight.
 const sidebarMenuButtonVariants = cva(
-  'flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-colors hover:bg-sidebar-accent active:bg-sidebar-accent focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-sidebar-accent [&>svg]:size-4 [&>svg]:shrink-0',
+  'flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-colors hover:bg-sidebar-accent active:bg-sidebar-accent focus-visible:bg-sidebar-accent focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-sidebar-accent [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       size: {

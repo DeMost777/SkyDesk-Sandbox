@@ -35,13 +35,22 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+// No clicks in Default: they would leave the last clicked button focused and hovered, with a fill.
 export const Default: Story = {
-  play: async ({ args, canvas, userEvent }) => {
+  play: async ({ canvas }) => {
     // Group labels are titles, not buttons (user decision, 2026-09-23).
     await expect(canvas.queryByRole('button', { name: 'General' })).toBeNull()
     await expect(canvas.queryByRole('button', { name: 'History' })).toBeNull()
     await expect(canvas.getByRole('list', { name: 'History' }).children).toHaveLength(11)
+    // Default state: no fill on any button.
+    for (const button of canvas.getAllByRole('button')) {
+      await expect(getComputedStyle(button).backgroundColor).toBe('rgba(0, 0, 0, 0)')
+    }
+  },
+}
 
+export const Clicks: Story = {
+  play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Trava Sky Desk' }))
     await expect(args.onBrandClick).toHaveBeenCalled()
     await userEvent.click(canvas.getByRole('button', { name: 'New chat' }))

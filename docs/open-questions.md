@@ -56,7 +56,7 @@
    Решает: design / владелец среды. Добавлено 2026-09-23.
 
 17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active.
-   Сейчас: Pressed = Hover (фон `sidebar-accent`); Focus с клавиатуры — кольцо `sidebar-ring` (teal, 2px), как в shadcn.
+   Сейчас: Pressed и Focus — та же заливка `sidebar-accent`, что у Hover (правило пользователя, 2026-09-23). Открыто только кольцо фокуса: `sidebar-ring` (teal, 2px), как в shadcn — нужно ли оно, в Figma его нет.
    Решает: design. Добавлено 2026-09-23.
 
 18. **Формат даты в History.** В Figma `12/03/26` — порядок день/месяц не виден из примеров.

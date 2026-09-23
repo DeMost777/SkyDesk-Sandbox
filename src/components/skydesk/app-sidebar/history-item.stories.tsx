@@ -29,12 +29,13 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+// No click in Default: a click leaves the item focused and hovered, and the story would stop
+// showing the default state (no fill). Interaction checks live in SelectsOnClick.
 export const Default: Story = {
-  play: async ({ args, canvas, userEvent }) => {
+  play: async ({ canvas }) => {
     const item = canvas.getByRole('button', { name: 'BBV14Q, Sabre, CDG to LON to JFK, Today 15:12' })
     await expect(item).toHaveTextContent('BBV14Q1STodayCDGLONJFK15:12')
-    await userEvent.click(item)
-    await expect(args.onSelect).toHaveBeenCalledWith(args.entry)
+    await expect(getComputedStyle(item).backgroundColor).toBe('rgba(0, 0, 0, 0)')
   },
 }
 export const Hover: Story = { parameters: { pseudo: { hover: true } } }
@@ -44,6 +45,13 @@ export const Active: Story = {
   args: { isActive: true },
   play: async ({ canvas }) => {
     await expect(canvas.getByRole('button')).toHaveAttribute('aria-current', 'page')
+  },
+}
+
+export const SelectsOnClick: Story = {
+  play: async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'))
+    await expect(args.onSelect).toHaveBeenCalledWith(args.entry)
   },
 }
 
