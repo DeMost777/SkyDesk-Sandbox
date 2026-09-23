@@ -75,7 +75,6 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const [result, setResult] = React.useState<Result | null>(() =>
     view === 'result' ? search(params.pnr, selectedOffice, params.gds, params.tried, defaults) : null,
   )
-  const [officeOpen, setOfficeOpen] = React.useState(false)
   const timer = React.useRef<number>()
   const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -200,8 +199,6 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
                   value={selectedOffice}
                   onChange={handleOfficeChange}
                   disabled={active === 'loading'}
-                  open={officeOpen}
-                  onOpenChange={setOfficeOpen}
                 />
 
                 {/* Submit button — 40×40, rounded-[12px], teal */}
@@ -223,13 +220,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
               <NotFoundFooter outcome={outcome} onSelect={(gds) => startSearch(gds, outcome.tried)} />
             )}
             {active === 'pnr-required' && <PnrRequiredFooter />}
-            {outcome?.status === 'error' && (
-              <ErrorFooter
-                outcome={outcome}
-                onRetry={() => startSearch(pickedGds, tried)}
-                onChooseOffice={() => setOfficeOpen(true)}
-              />
-            )}
+            {outcome?.status === 'error' && <ErrorFooter outcome={outcome} />}
             {outcome?.status === 'found' && (
               <FoundFooter
                 outcome={outcome}

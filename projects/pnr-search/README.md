@@ -43,12 +43,12 @@
 
 Проверенные GDS накапливаются в пределах одной попытки. Смена PNR или Office начинает попытку заново. Правило — `searchPnr` возвращает `gdsSource` и `tried`, `allGdsTried` решает, остались ли варианты.
 
-**Error** — техническая проблема. Error и Not Found — разные состояния: сбой GDS никогда не показываем как «не найдено». Что предложить, зависит от причины (`reason` в результате `searchPnr`):
+**Error** — техническая проблема. Error и Not Found — разные состояния: сбой GDS никогда не показываем как «не найдено». Текст зависит от причины (`reason` в результате `searchPnr`). Отдельных кнопок действий в сообщении нет: агент действует элементами, которые уже есть в поле поиска — кнопкой поиска и Office Selector (правило пользователя, 2026-09-23).
 
-| Причина | Что показываем |
-|---|---|
-| GDS недоступна, ошибка соединения (`unavailable`) | «Something went wrong. Please try again.» (текст из Figma) + кнопка **Try again** — повторяет тот же поиск: тот же PNR, Office, GDS и проверенные GDS |
-| У Office нет доступа к PNR (`access-denied`) | «Office X4PD has no access to PNR K2M9QP.» + кнопка **Choose another office** — открывает Office Selector |
+| Причина | Текст | Что делает агент |
+|---|---|---|
+| GDS недоступна, ошибка соединения (`unavailable`) | «Something went wrong. Please try again.» (из Figma) | Нажимает кнопку поиска ещё раз |
+| У Office нет доступа к PNR (`access-denied`) | «Office X4PD has no access to PNR K2M9QP. Choose another office.» | Меняет Office в Office Selector и нажимает поиск |
 
 Доступ проверяется для Office, через который идёт поиск: выбранного вручную или Default Office для этой GDS. Creation office доступа не лишается — PNR создан в нём.
 
@@ -89,7 +89,7 @@
 | Not Found — две GDS | `?pnr=XYZ789&tried=Amadeus&gds=Sabre&state=result` | ✅ |
 | Not Found — все GDS | `?pnr=XYZ789&tried=Amadeus,Sabre&gds=Galileo&state=result` | ✅ |
 | Not Found — выбранный Office | `?pnr=7JRWT4&office=5GW5&state=result` | ✅ |
-| Error — GDS недоступна | `?pnr=ERR000&state=result` | ✅ (в mock-данных `ERR000` падает всегда, «Try again» снова покажет Error) |
+| Error — GDS недоступна | `?pnr=ERR000&state=result` | ✅ (в mock-данных `ERR000` падает всегда, повторный поиск снова покажет Error) |
 | Error — у Office нет доступа | `?pnr=K2M9QP&office=X4PD&state=result` | ✅ |
 
 «Found» показывает, какой Office выбран и почему. Это заглушка до экрана Booking — она делает правило приоритета видимым для review.

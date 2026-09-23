@@ -38,7 +38,7 @@ const KNOWN_GDS: Record<string, GDS> = {
   'ERR000': 'Amadeus',
 }
 
-/** PNRs whose GDS lookup always fails with a technical error — "Try again" fails again. */
+/** PNRs whose GDS lookup always fails with a technical error — a repeated search fails again. */
 const FAILING_PNRS = new Set(['ERR000'])
 
 /** Offices the agent can pick, but without rights to open bookings. X4PD is a Sabre Office. */

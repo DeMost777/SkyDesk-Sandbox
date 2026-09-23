@@ -128,27 +128,14 @@ export function NotFoundFooter({
   )
 }
 
-function ErrorNote({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
+function ErrorNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 flex-wrap">
+    <div className="flex items-center gap-2 px-3 py-2">
       <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={1.5} aria-hidden />
       <p className="text-sm text-destructive leading-5" role="alert">
         {children}
       </p>
-      {action}
     </div>
-  )
-}
-
-function ErrorAction({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="text-sm leading-5 text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
-    >
-      {children}
-    </button>
   )
 }
 
@@ -158,31 +145,18 @@ export function PnrRequiredFooter() {
 }
 
 /**
- * Error depends on the reason:
- * - the GDS failed → the same search can succeed later: "Try again";
- * - the Office has no access → only another Office helps: "Choose another office".
+ * Error names the reason; the agent acts with the controls already in the search field
+ * (search button to retry, Office Selector to change the Office) — no extra buttons (user rule).
  */
-export function ErrorFooter({
-  outcome,
-  onRetry,
-  onChooseOffice,
-}: {
-  outcome: Extract<SearchOutcome, { status: 'error' }>
-  onRetry: () => void
-  onChooseOffice: () => void
-}) {
+export function ErrorFooter({ outcome }: { outcome: Extract<SearchOutcome, { status: 'error' }> }) {
   if (outcome.reason === 'access-denied' && outcome.office) {
     return (
-      <ErrorNote action={<ErrorAction onClick={onChooseOffice}>Choose another office</ErrorAction>}>
-        Office {outcome.office.code} has no access to PNR {outcome.pnr}.
+      <ErrorNote>
+        Office {outcome.office.code} has no access to PNR {outcome.pnr}. Choose another office.
       </ErrorNote>
     )
   }
-  return (
-    <ErrorNote action={<ErrorAction onClick={onRetry}>Try again</ErrorAction>}>
-      Something went wrong. Please try again.
-    </ErrorNote>
-  )
+  return <ErrorNote>Something went wrong. Please try again.</ErrorNote>
 }
 
 const SOURCE_COPY: Record<OfficeSource, (gds: GDS) => string> = {

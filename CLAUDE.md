@@ -145,7 +145,7 @@ npm run build      # typecheck + production build
 - **Office Selector: сначала Default Offices, потом остальные Office; обе группы по алфавиту кода** (правило пользователя, 2026-09-23). Агент сразу видит свои Default Offices. Правило — `sortOfficesForPicker` в `src/lib/office.ts`, работает и при поиске. Название GDS в строке — мелким (`text-xs`), главное в строке — код Office.
 - **Not Found — не тупик, а следующий шаг** (правило пользователя, 2026-09-23). Если GDS выбрал агент или её знал Skydesk — снова кнопки GDS, проверенные неактивны на своём месте. Все 3 проверены — «PNR … not found in any GDS. Check the PNR.» GDS задал Office — предложить сменить или убрать Office. Правило — `gdsSource`/`tried` в `searchPnr` и `allGdsTried`; адрес — параметр `tried`.
 - **Кнопка поиска всегда активна; пустой PNR — сообщение «Please provide the PNR.»** (правило пользователя, 2026-09-23). Не делать кнопку неактивной: агент должен видеть, почему поиск не начался. Правило — `pnr-required` в `searchPnr`.
-- **Error различает причину** (2026-09-23): GDS недоступна → «Try again» повторяет тот же поиск; у Office нет доступа → «Choose another office» открывает Office Selector (у него для этого есть необязательные `open`/`onOpenChange`).
+- **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
 
 ## Структура проекта
 

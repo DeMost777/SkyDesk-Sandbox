@@ -12,9 +12,6 @@ export interface OfficeSelectorProps {
   loading?: boolean
   error?: boolean
   onManageDefaults?: () => void
-  /** Optional: control the dropdown from outside (e.g. "Choose another office"). */
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
   className?: string
 }
 
@@ -38,12 +35,9 @@ export function OfficeSelector({
   loading,
   error,
   onManageDefaults,
-  open: openProp,
-  onOpenChange,
   className,
 }: OfficeSelectorProps) {
-  const [openState, setOpenState] = React.useState(false)
-  const open = openProp ?? openState
+  const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState('')
   const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -57,18 +51,13 @@ export function OfficeSelector({
     return sortOfficesForPicker(list)
   }, [offices, query])
 
-  const setOpen = (next: boolean) => {
-    if (openProp === undefined) setOpenState(next)
-    onOpenChange?.(next)
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next)
+    if (next) {
+      setQuery('')
+      setTimeout(() => inputRef.current?.focus(), 0)
+    }
   }
-
-  // Fresh search field on every open, however it was opened.
-  React.useEffect(() => {
-    if (!open) return
-    setQuery('')
-    const id = setTimeout(() => inputRef.current?.focus(), 0)
-    return () => clearTimeout(id)
-  }, [open])
 
   const handleSelect = (office: Office) => {
     onChange?.({ code: office.code, gds: office.gds })
@@ -83,7 +72,7 @@ export function OfficeSelector({
   const triggerLabel = value ? `${value.code} · ${value.gds}` : 'Select office'
 
   return (
-    <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+    <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
       <PopoverPrimitive.Trigger asChild>
         <button
           type="button"
