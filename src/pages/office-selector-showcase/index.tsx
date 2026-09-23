@@ -1,6 +1,10 @@
 import * as React from 'react'
 import { OfficeSelector } from '@/components/ui/office-selector'
-import { MOCK_OFFICES, type OfficeSelection } from '@/mocks/offices.mock'
+import { withDefaultFlags } from '@/lib/office'
+import { MOCK_OFFICES as BASE_OFFICES, type OfficeSelection } from '@/mocks/offices.mock'
+import { PERSONAS } from '@/mocks/personas.mock'
+
+const MOCK_OFFICES = withDefaultFlags(BASE_OFFICES, PERSONAS[0].defaults)
 
 function StateCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (

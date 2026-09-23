@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { Home, ChevronDown, Search, X, Settings, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { type Office, type OfficeSelection, type GDSName } from '@/mocks/offices.mock'
+import { GDS_LIST, type Office, type OfficeSelection } from '@/lib/office'
 
 export interface OfficeSelectorProps {
   offices?: Office[]
@@ -27,8 +27,6 @@ function SkeletonRow() {
   )
 }
 
-const GDS_ORDER: GDSName[] = ['Amadeus', 'Galileo', 'Sabre']
-
 export function OfficeSelector({
   offices = [],
   value,
@@ -51,7 +49,7 @@ export function OfficeSelector({
         )
       : offices
     return [...list].sort((a, b) => {
-      const gi = GDS_ORDER.indexOf(a.gds) - GDS_ORDER.indexOf(b.gds)
+      const gi = GDS_LIST.indexOf(a.gds) - GDS_LIST.indexOf(b.gds)
       if (gi !== 0) return gi
       return a.code.localeCompare(b.code)
     })
