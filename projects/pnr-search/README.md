@@ -39,7 +39,7 @@
 |---|---|
 | Агент выбрал на шаге GDS Required, или Skydesk знал GDS | Снова кнопки `Amadeus \| Sabre \| Galileo`, рамка primary. Проверенные GDS остаются на месте, но неактивны. Текст: «PNR XYZ789 not found in Amadeus. Select another GDS or check the PNR.» (для двух — «in Amadeus or Sabre») |
 | Проверены все 3 GDS | Кнопок нет: «PNR XYZ789 not found in any GDS. Check the PNR.» |
-| Выбранный Office | Кнопок GDS нет — GDS задаёт Office: «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.» |
+| Выбранный Office | Кнопок GDS нет — GDS задаёт Office: «PNR 7JRWT4 not found in 5GW5 · Sabre. Choose another office or clear the office.» |
 
 Проверенные GDS накапливаются в пределах одной попытки. Смена PNR или Office начинает попытку заново. Правило — `searchPnr` возвращает `gdsSource` и `tried`, `allGdsTried` решает, остались ли варианты.
 

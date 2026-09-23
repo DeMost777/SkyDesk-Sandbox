@@ -45,14 +45,14 @@ npm run typecheck && npm test && npm run build
 | 2 | `?pnr=7JRWT4` | PNR в поле, результата нет |
 | 3 | `?pnr=7JRWT4&state=loading` | «Loading...», поле и Office заблокированы, рамка primary |
 | 4 | `?pnr=ABC123&state=result` | Кнопки Amadeus / Sabre / Galileo, подсказка, рамка primary |
-| 5 | `?pnr=7JRWT4&state=result` | «Opening 7JRWT4 in Amadeus · A2K9 — Your default office for Amadeus» |
+| 5 | `?pnr=7JRWT4&state=result` | «Opening 7JRWT4 in A2K9 · Amadeus — Your default office for Amadeus» |
 | 6 | `?persona=agent-no-defaults&pnr=7JRWT4&state=result` | «… · B3R7 — Creation office…» |
-| 7 | `?pnr=ABC123&gds=Galileo&state=result` | «Opening ABC123 in Galileo · Q8L3» |
+| 7 | `?pnr=ABC123&gds=Galileo&state=result` | «Opening ABC123 in Q8L3 · Galileo» |
 | 8 | `?pnr=7JRWT4&office=E6T8&state=result` | «… · E6T8 — Office you selected» + checkbox «Use this as my default office for Amadeus» |
 | 9 | `?pnr=XYZ789&gds=Sabre&state=result` | «PNR XYZ789 not found in Sabre. Select another GDS or check the PNR.», кнопка Sabre неактивна, рамка primary |
 | 9a | `?pnr=XYZ789&tried=Amadeus&gds=Sabre&state=result` | «…not found in Amadeus or Sabre…», активна только Galileo |
 | 9b | `?pnr=XYZ789&tried=Amadeus,Sabre&gds=Galileo&state=result` | «PNR XYZ789 not found in any GDS. Check the PNR.», кнопок нет, рамки нет |
-| 9c | `?pnr=7JRWT4&office=5GW5&state=result` | «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.», кнопок нет |
+| 9c | `?pnr=7JRWT4&office=5GW5&state=result` | «PNR 7JRWT4 not found in 5GW5 · Sabre. Choose another office or clear the office.», кнопок нет |
 | 10 | `?pnr=ERR000&state=result` | «Something went wrong. Please try again.» (красный), без кнопок действий |
 | 11 | `?pnr=K2M9QP&office=X4PD&state=result` | «Office X4PD has no access to PNR K2M9QP. Choose another office.» (красный), без кнопок действий |
 | 12 | `?state=result` | «Please provide the PNR.» (красный), поле пустое |

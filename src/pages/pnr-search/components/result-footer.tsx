@@ -110,7 +110,7 @@ export function NotFoundFooter({
   if (gdsSource === 'office' && office) {
     return (
       <NotFoundNote>
-        PNR {pnr} not found in {gds} · {office.code}. Choose another office or clear the office.
+        PNR {pnr} not found in {office.code} · {gds}. Choose another office or clear the office.
       </NotFoundNote>
     )
   }
@@ -185,7 +185,7 @@ export function FoundFooter({
       <div className="flex items-center gap-2 min-w-0">
         <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
         <p className="text-sm leading-5 text-foreground">
-          Opening <span className="font-medium">{booking.pnr}</span> in {gds} · {code}
+          Opening <span className="font-medium">{booking.pnr}</span> in {code} · {gds}
         </p>
         <span className="text-sm leading-5 text-muted-foreground">{SOURCE_COPY[resolved.source](gds)}</span>
       </div>

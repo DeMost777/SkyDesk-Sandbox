@@ -6,7 +6,7 @@
 ## PNR Search
 
 1. **Выбран Office одной GDS, а PNR лежит в другой.** Например, Sabre `5GW5` + PNR `7JRWT4` (Amadeus, GDS известна Skydesk).
-   Сейчас: поиск идёт только в Sabre → «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.» Вариант: сразу сказать «PNR находится в Amadeus» и предложить Office Amadeus.
+   Сейчас: поиск идёт только в Sabre → «PNR 7JRWT4 not found in 5GW5 · Sabre. Choose another office or clear the office.» Вариант: сразу сказать «PNR находится в Amadeus» и предложить Office Amadeus.
    Решает: product. Добавлено 2026-09-23.
 
 2. **Выбор Office отменяет шаг GDS Required.** Office принадлежит одной GDS, поэтому при выбранном Office шаг не показывается.
@@ -14,7 +14,7 @@
    Решает: product. Добавлено 2026-09-23.
 
 3. **Экран «Found» / переход в Booking.** В Figma нет состояния после успешного поиска.
-   Сейчас: заглушка «Opening 7JRWT4 in Amadeus · A2K9» с причиной выбора Office и checkbox «Use this as my default office». Нужен дизайн.
+   Сейчас: заглушка «Opening 7JRWT4 in A2K9 · Amadeus» с причиной выбора Office и checkbox «Use this as my default office». Нужен дизайн.
    Решает: design. Добавлено 2026-09-23.
 
 4. **Где предлагать сохранить Default Office.** Спецификация: «при ручном выборе Office», место не указано.
