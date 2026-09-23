@@ -15,15 +15,28 @@ export type DisplayState =
   | 'not-found'
   | 'error'
 
+/** A DisplayState, split further where one state has several variants worth reviewing. */
+export type PresetId = DisplayState | 'not-found-all' | 'not-found-office'
+
 /** Each state's address. The result states are produced by the real search on mocks. */
-const PRESETS: { state: DisplayState; label: string; params: Partial<SandboxParams> }[] = [
-  { state: 'default', label: 'Default', params: {} },
-  { state: 'typing', label: 'Ready', params: { pnr: SCENARIO_PNRS.known } },
-  { state: 'loading', label: 'Loading', params: { pnr: SCENARIO_PNRS.known, state: 'loading' } },
-  { state: 'gds-required', label: 'GDS Required', params: { pnr: SCENARIO_PNRS.unknown, state: 'result' } },
-  { state: 'found', label: 'Found', params: { pnr: SCENARIO_PNRS.known, state: 'result' } },
-  { state: 'not-found', label: 'Not Found', params: { pnr: SCENARIO_PNRS.notFound, state: 'result' } },
-  { state: 'error', label: 'Error', params: { pnr: SCENARIO_PNRS.error, state: 'result' } },
+const PRESETS: { id: PresetId; label: string; params: Partial<SandboxParams> }[] = [
+  { id: 'default', label: 'Default', params: {} },
+  { id: 'typing', label: 'Ready', params: { pnr: SCENARIO_PNRS.known } },
+  { id: 'loading', label: 'Loading', params: { pnr: SCENARIO_PNRS.known, state: 'loading' } },
+  { id: 'gds-required', label: 'GDS Required', params: { pnr: SCENARIO_PNRS.unknown, state: 'result' } },
+  { id: 'found', label: 'Found', params: { pnr: SCENARIO_PNRS.known, state: 'result' } },
+  { id: 'not-found', label: 'Not Found', params: { pnr: SCENARIO_PNRS.notFound, gds: 'Amadeus', state: 'result' } },
+  {
+    id: 'not-found-all',
+    label: 'Not Found · all GDS',
+    params: { pnr: SCENARIO_PNRS.notFound, tried: ['Amadeus', 'Sabre'], gds: 'Galileo', state: 'result' },
+  },
+  {
+    id: 'not-found-office',
+    label: 'Not Found · Office',
+    params: { pnr: SCENARIO_PNRS.known, office: '5GW5', state: 'result' },
+  },
+  { id: 'error', label: 'Error', params: { pnr: SCENARIO_PNRS.error, state: 'result' } },
 ]
 
 function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
@@ -50,7 +63,7 @@ export function SandboxBar({
   persona,
   onResetDemoData,
 }: {
-  active: DisplayState
+  active: PresetId
   /** Where the page is now; switching persona keeps it. */
   current: Partial<SandboxParams>
   persona: PersonaId
@@ -61,7 +74,7 @@ export function SandboxBar({
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs text-muted-foreground font-medium">State:</span>
         {PRESETS.map((p) => (
-          <Chip key={p.state} active={active === p.state} onClick={() => navigate({ ...p.params, persona })}>
+          <Chip key={p.id} active={active === p.id} onClick={() => navigate({ ...p.params, persona })}>
             {p.label}
           </Chip>
         ))}

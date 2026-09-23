@@ -6,7 +6,7 @@
 ## PNR Search
 
 1. **Выбран Office одной GDS, а PNR лежит в другой.** Например, Sabre `5GW5` + PNR `7JRWT4` (Amadeus, GDS известна Skydesk).
-   Сейчас: поиск идёт только в Sabre → Not Found. Вариант: сразу сказать «PNR находится в Amadeus» и предложить Office Amadeus.
+   Сейчас: поиск идёт только в Sabre → «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.» Вариант: сразу сказать «PNR находится в Amadeus» и предложить Office Amadeus.
    Решает: product. Добавлено 2026-09-23.
 
 2. **Выбор Office отменяет шаг GDS Required.** Office принадлежит одной GDS, поэтому при выбранном Office шаг не показывается.
@@ -28,6 +28,14 @@
 6. **Текст подсказки GDS Required.** Спецификация: «To continue the search, select the GDS where this PNR was created.» Код (из Figma): «…please select the GDS…».
    Сейчас: текст из Figma.
    Решает: design. Добавлено 2026-09-23.
+
+9. **Искать во всех GDS без агента.** По принципу flow Skydesk мог бы сам проверить PNR во всех трёх GDS, и шаги GDS Required и повторного выбора были бы не нужны.
+   Сейчас: агент выбирает GDS, после Not Found — следующую. Зависит от того, может ли backend искать без Office и сколько это стоит по времени.
+   Решает: product + backend. Добавлено 2026-09-23.
+
+10. **Not Found в GDS, которую Skydesk знал** (PNR открывали раньше, но в GDS его больше нет — например, удалён).
+   Сейчас: как после ручного выбора — эта GDS неактивна, остальные можно выбрать. В mock-данных такого PNR нет, поведение проверено юнит-тестом.
+   Решает: product. Добавлено 2026-09-23.
 
 ## Терминология
 

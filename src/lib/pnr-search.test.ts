@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { searchPnr, type SearchInput } from './pnr-search'
+import { allGdsTried, searchPnr, type PnrDirectory, type SearchInput } from './pnr-search'
 import { mockPnrDirectory, SCENARIO_PNRS } from '@/mocks/pnr-search.mock'
 import { PERSONAS } from '@/mocks/personas.mock'
 
@@ -63,5 +63,47 @@ describe('searchPnr — scenarios from projects/pnr-search/README.md', () => {
 
   it('normalizes the PNR (case, spaces)', () => {
     expect(run({ pnr: '  7jrwt4 ' }).status).toBe('found')
+  })
+})
+
+describe('Not Found — what the agent can do next', () => {
+  it('after a picked GDS: records it as tried, so the other GDS can be offered', () => {
+    expect(run({ pnr: SCENARIO_PNRS.unknown, gds: 'Amadeus' })).toMatchObject({
+      status: 'not-found',
+      gdsSource: 'picked',
+      tried: ['Amadeus'],
+    })
+  })
+
+  it('retries accumulate tried GDS without duplicates', () => {
+    const second = run({ pnr: SCENARIO_PNRS.notFound, gds: 'Sabre', tried: ['Amadeus'] })
+    expect(second).toMatchObject({ status: 'not-found', tried: ['Amadeus', 'Sabre'] })
+
+    const repeat = run({ pnr: SCENARIO_PNRS.notFound, gds: 'Amadeus', tried: ['Amadeus'] })
+    expect(repeat).toMatchObject({ tried: ['Amadeus'] })
+  })
+
+  it('a retry in the right GDS finds the booking', () => {
+    const r = run({ pnr: SCENARIO_PNRS.unknown, gds: 'Galileo', tried: ['Amadeus', 'Sabre'] })
+    expect(r.status).toBe('found')
+  })
+
+  it('all three GDS tried → nothing left to offer', () => {
+    const r = run({ pnr: SCENARIO_PNRS.notFound, gds: 'Galileo', tried: ['Amadeus', 'Sabre'] })
+    expect(r.status).toBe('not-found')
+    if (r.status !== 'not-found') return
+    expect(allGdsTried(r.tried)).toBe(true)
+    expect(allGdsTried(['Amadeus', 'Sabre'])).toBe(false)
+  })
+
+  it('GDS set by an Office: source "office", no GDS counted as tried', () => {
+    const r = run({ pnr: SCENARIO_PNRS.known, selected: { code: '5GW5', gds: 'Sabre' } })
+    expect(r).toMatchObject({ status: 'not-found', gdsSource: 'office', tried: [], office: { code: '5GW5' } })
+  })
+
+  it('GDS Skydesk knew, but the PNR is gone: source "known", that GDS counts as tried', () => {
+    const directory: PnrDirectory = { knownGds: () => 'Amadeus', lookup: () => null }
+    const r = searchPnr({ pnr: 'GONE01', defaults: withDefaults }, directory)
+    expect(r).toMatchObject({ status: 'not-found', gdsSource: 'known', tried: ['Amadeus'] })
   })
 })

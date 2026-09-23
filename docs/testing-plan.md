@@ -49,7 +49,10 @@ npm run typecheck && npm test && npm run build
 | 6 | `?persona=agent-no-defaults&pnr=7JRWT4&state=result` | «… · B3R7 — Creation office…» |
 | 7 | `?pnr=ABC123&gds=Galileo&state=result` | «Opening ABC123 in Galileo · Q8L3» |
 | 8 | `?pnr=7JRWT4&office=E6T8&state=result` | «… · E6T8 — Office you selected» + checkbox «Use this as my default office for Amadeus» |
-| 9 | `?pnr=XYZ789&gds=Sabre&state=result` | «Booking not found…» |
+| 9 | `?pnr=XYZ789&gds=Sabre&state=result` | «PNR XYZ789 not found in Sabre. Select another GDS or check the PNR.», кнопка Sabre неактивна, рамка primary |
+| 9a | `?pnr=XYZ789&tried=Amadeus&gds=Sabre&state=result` | «…not found in Amadeus or Sabre…», активна только Galileo |
+| 9b | `?pnr=XYZ789&tried=Amadeus,Sabre&gds=Galileo&state=result` | «PNR XYZ789 not found in any GDS. Check the PNR.», кнопок нет, рамки нет |
+| 9c | `?pnr=7JRWT4&office=5GW5&state=result` | «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.», кнопок нет |
 | 10 | `?pnr=ERR000&state=result` | «Something went wrong…» (красный) |
 
 **Живые сценарии**
@@ -58,6 +61,9 @@ npm run typecheck && npm test && npm run build
 - **Default Office сохраняется:** адрес 8 → отметить checkbox → открыть адрес 5 → теперь `E6T8` и «Your default office». В Office Selector у `E6T8` метка «Default». «Reset demo data» → снова `A2K9`.
 - **Persona:** на адресе 5 нажать «Agent without defaults» → тот же PNR открывается через `B3R7`. Кнопка «назад» в браузере → снова `A2K9`.
 - **Порядок Office:** на `/` открыть «Select office» → сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше `7MTR`, `B3R7`, `C1Z2`, `D4M5`, `E6T8`, `F9K1`, `X4PD`. После сохранения `E6T8` как default он поднимается наверх, а `A2K9` уходит в общий список. Persona без defaults — весь список по алфавиту.
+- **Не та GDS:** ввести `ABC123` → Enter → Amadeus → «not found in Amadeus», Amadeus неактивна → Galileo → Found через `Q8L3`.
+- **Все GDS:** ввести `XYZ789` → Amadeus → Sabre → Galileo → «not found in any GDS». URL на каждом шаге содержит `tried`.
+- **Панель State:** каждая кнопка открывает своё состояние и подсвечивается, включая три варианта Not Found.
 - **Смена ввода сбрасывает результат:** на любом результате изменить PNR или Office → результат исчезает.
 
 ## Office Selector
@@ -66,4 +72,4 @@ npm run typecheck && npm test && npm run build
 
 ## Последний прогон
 
-- 2026-09-23 (после правки порядка Office): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.
+- 2026-09-23 (после Not Found с повторным выбором GDS): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.

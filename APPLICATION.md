@@ -20,7 +20,8 @@
 | `persona` | `agent-with-defaults` (по умолчанию), `agent-no-defaults` | Кто смотрит (см. ниже) |
 | `pnr` | любой PNR | Значение в поле поиска |
 | `office` | код Office из `src/mocks/offices.mock.ts` | Office, выбранный вручную |
-| `gds` | `Amadeus`, `Sabre`, `Galileo` | GDS, выбранная на шаге GDS Required |
+| `gds` | `Amadeus`, `Sabre`, `Galileo` | GDS, выбранная на шаге GDS Required (или повторно после Not Found) |
+| `tried` | GDS через запятую: `Amadeus,Sabre` | GDS, где PNR уже искали до `gds` в этой попытке — для состояний Not Found |
 | `state` | `idle` (по умолчанию), `loading`, `result` | `result` — сразу выполнить поиск и показать итог; `loading` — зафиксировать индикатор загрузки |
 
 Состояния-результаты не «рисуются» флагом — их выдаёт настоящая функция `searchPnr` на mock-данных. Поэтому адрес сам по себе проверяет логику.
@@ -47,7 +48,7 @@
 | `7JRWT4` | Amadeus | `B3R7` | да | Found |
 | `K2M9QP` | Sabre | `7MTR` | да | Found |
 | `ABC123` | Galileo | `C1Z2` | нет | GDS Required → Galileo → Found |
-| `XYZ789` | нигде | — | нет | GDS Required → любая GDS → Not Found |
+| `XYZ789` | нигде | — | нет | GDS Required → Not Found в каждой GDS → «not found in any GDS» |
 | `ERR000` | — (сбой GDS) | — | да, Amadeus | Error |
 
 ## Слои кода

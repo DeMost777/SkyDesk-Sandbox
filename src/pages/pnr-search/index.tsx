@@ -4,12 +4,12 @@ import { OfficeSelector } from '@/components/ui/office-selector'
 import { useDefaultOffices } from '@/hooks/use-default-offices'
 import { replaceUrl } from '@/hooks/use-sandbox-url'
 import { withDefaultFlags, type DefaultOffices, type GDS, type OfficeSelection } from '@/lib/office'
-import { searchPnr, type SearchOutcome } from '@/lib/pnr-search'
+import { allGdsTried, searchPnr, type SearchOutcome } from '@/lib/pnr-search'
 import type { SandboxParams, SearchView } from '@/lib/sandbox-url'
 import { MOCK_OFFICES } from '@/mocks/offices.mock'
 import { mockPnrDirectory } from '@/mocks/pnr-search.mock'
 import { toPersonaId } from '@/mocks/personas.mock'
-import { SandboxBar, type DisplayState } from './components/sandbox-bar'
+import { SandboxBar, type DisplayState, type PresetId } from './components/sandbox-bar'
 import {
   ErrorFooter,
   FoundFooter,
@@ -31,8 +31,14 @@ interface Result {
   defaultBefore: string | undefined
 }
 
-function search(pnr: string, selected: OfficeSelection | null, gds: GDS | null, defaults: DefaultOffices): Result {
-  const outcome = searchPnr({ pnr, selected, gds, defaults }, mockPnrDirectory)
+function search(
+  pnr: string,
+  selected: OfficeSelection | null,
+  gds: GDS | null,
+  tried: GDS[],
+  defaults: DefaultOffices,
+): Result {
+  const outcome = searchPnr({ pnr, selected, gds, tried, defaults }, mockPnrDirectory)
   const defaultBefore = outcome.status === 'found' ? defaults[outcome.booking.gds] : undefined
   return { outcome, defaultBefore }
 }
@@ -43,6 +49,12 @@ function displayState(view: SearchView, pnr: string, result: Result | null): Dis
   return pnr ? 'typing' : 'default'
 }
 
+function presetId(active: DisplayState, outcome: SearchOutcome | undefined): PresetId {
+  if (outcome?.status !== 'not-found') return active
+  if (outcome.gdsSource === 'office') return 'not-found-office'
+  return allGdsTried(outcome.tried) ? 'not-found-all' : 'not-found'
+}
+
 /** Initial state is read from the URL (see APPLICATION.md), so every state has an address. */
 export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const persona = toPersonaId(params.persona)
@@ -51,10 +63,12 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const [pnr, setPnr] = React.useState(params.pnr)
   const [selectedOffice, setSelectedOffice] = React.useState(() => officeByCode(params.office))
   const [pickedGds, setPickedGds] = React.useState<GDS | null>(params.gds)
+  // GDS searched before pickedGds in this attempt (Not Found → another GDS).
+  const [tried, setTried] = React.useState<GDS[]>(params.tried)
   const [view, setView] = React.useState<SearchView>(params.pnr ? params.state : 'idle')
   // ?state=result opens straight on the search outcome.
   const [result, setResult] = React.useState<Result | null>(() =>
-    view === 'result' ? search(params.pnr, selectedOffice, params.gds, defaults) : null,
+    view === 'result' ? search(params.pnr, selectedOffice, params.gds, params.tried, defaults) : null,
   )
   const timer = React.useRef<number>()
 
@@ -67,18 +81,21 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
       pnr,
       office: selectedOffice?.code ?? null,
       gds: pickedGds,
+      tried,
       state: view,
     })
-  }, [params.persona, pnr, selectedOffice, pickedGds, view])
+  }, [params.persona, pnr, selectedOffice, pickedGds, tried, view])
 
-  const startSearch = (gds: GDS | null) => {
+  /** `triedBefore` carries GDS already searched when the agent retries after Not Found. */
+  const startSearch = (gds: GDS | null, triedBefore: GDS[] = []) => {
     if (!pnr.trim() || view === 'loading') return
     setPickedGds(gds)
+    setTried(triedBefore)
     setView('loading')
     setResult(null)
     window.clearTimeout(timer.current)
     timer.current = window.setTimeout(() => {
-      setResult(search(pnr, selectedOffice, gds, defaults))
+      setResult(search(pnr, selectedOffice, gds, triedBefore, defaults))
       setView('result')
     }, SEARCH_DELAY_MS)
   }
@@ -87,6 +104,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
     setView('idle')
     setResult(null)
     setPickedGds(null)
+    setTried([])
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,14 +123,18 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   }
 
   const active = displayState(view, pnr, result)
-  const hasActiveRing = active === 'loading' || active === 'gds-required'
   const outcome = result?.outcome
+  // The ring marks a step that waits for the agent: loading, or a GDS choice.
+  const offersGdsChoice =
+    outcome?.status === 'gds-required' ||
+    (outcome?.status === 'not-found' && outcome.gdsSource !== 'office' && !allGdsTried(outcome.tried))
+  const hasActiveRing = active === 'loading' || offersGdsChoice
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <SandboxBar
-        active={active}
-        current={{ pnr, office: selectedOffice?.code ?? null, gds: pickedGds, state: view }}
+        active={presetId(active, outcome)}
+        current={{ pnr, office: selectedOffice?.code ?? null, gds: pickedGds, tried, state: view }}
         persona={persona}
         onResetDemoData={handleResetDemoData}
       />
@@ -176,8 +198,10 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
             </div>
 
             {active === 'loading' && <LoadingFooter />}
-            {active === 'gds-required' && <GdsRequiredFooter onSelect={startSearch} />}
-            {active === 'not-found' && <NotFoundFooter />}
+            {active === 'gds-required' && <GdsRequiredFooter onSelect={(gds) => startSearch(gds)} />}
+            {outcome?.status === 'not-found' && (
+              <NotFoundFooter outcome={outcome} onSelect={(gds) => startSearch(gds, outcome.tried)} />
+            )}
             {active === 'error' && <ErrorFooter />}
             {outcome?.status === 'found' && (
               <FoundFooter

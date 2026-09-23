@@ -1,7 +1,7 @@
 // PNR search domain: how Skydesk turns a PNR (+ optional context) into a result.
 // Pure module — no React. Flow doc: projects/pnr-search/README.md
 
-import { resolveOffice, type DefaultOffices, type GDS, type OfficeSelection, type ResolvedOffice } from './office'
+import { GDS_LIST, resolveOffice, type DefaultOffices, type GDS, type OfficeSelection, type ResolvedOffice } from './office'
 
 export interface BookingSummary {
   pnr: string
@@ -26,13 +26,26 @@ export interface SearchInput {
   selected?: OfficeSelection | null
   /** GDS the agent picked in the "GDS Required" step, if any. */
   gds?: GDS | null
+  /** GDS already searched in this attempt without finding the PNR. */
+  tried?: GDS[]
   defaults: DefaultOffices
 }
+
+/** Where the searched GDS came from. Decides what Not Found offers next. */
+export type GdsSource = 'office' | 'picked' | 'known'
 
 export type SearchOutcome =
   | { status: 'found'; booking: BookingSummary; resolved: ResolvedOffice }
   | { status: 'gds-required'; pnr: string }
-  | { status: 'not-found'; pnr: string; gds: GDS; office: OfficeSelection | null }
+  | {
+      status: 'not-found'
+      pnr: string
+      gds: GDS
+      gdsSource: GdsSource
+      office: OfficeSelection | null
+      /** GDS searched so far, this one included. Empty when an Office set the GDS. */
+      tried: GDS[]
+    }
   | { status: 'error'; pnr: string; gds: GDS }
 
 export function normalizePnr(raw: string): string {
@@ -47,6 +60,7 @@ export function normalizePnr(raw: string): string {
 export function searchPnr(input: SearchInput, directory: PnrDirectory): SearchOutcome {
   const pnr = normalizePnr(input.pnr)
   const selected = input.selected ?? null
+  const gdsSource: GdsSource | null = selected ? 'office' : input.gds ? 'picked' : null
   const gds = selected?.gds ?? input.gds ?? directory.knownGds(pnr)
 
   if (!gds) return { status: 'gds-required', pnr }
@@ -58,7 +72,12 @@ export function searchPnr(input: SearchInput, directory: PnrDirectory): SearchOu
     return { status: 'error', pnr, gds }
   }
 
-  if (!booking) return { status: 'not-found', pnr, gds, office: selected }
+  if (!booking) {
+    const source = gdsSource ?? 'known'
+    // An Office fixes the GDS, so there is nothing else to try without changing the Office.
+    const tried = source === 'office' ? [] : addTried(input.tried ?? [], gds)
+    return { status: 'not-found', pnr, gds, gdsSource: source, office: selected, tried }
+  }
 
   const resolved = resolveOffice({
     gds,
@@ -67,4 +86,13 @@ export function searchPnr(input: SearchInput, directory: PnrDirectory): SearchOu
     creationOffice: booking.creationOffice,
   })
   return { status: 'found', booking, resolved }
+}
+
+function addTried(tried: GDS[], gds: GDS): GDS[] {
+  return tried.includes(gds) ? tried : [...tried, gds]
+}
+
+/** True when the PNR was searched in every GDS — nothing is left to offer. */
+export function allGdsTried(tried: GDS[]): boolean {
+  return GDS_LIST.every((g) => tried.includes(g))
 }

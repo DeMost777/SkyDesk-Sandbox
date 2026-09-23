@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Info, AlertCircle } from 'lucide-react'
 import type { GDS, OfficeSource } from '@/lib/office'
-import type { SearchOutcome } from '@/lib/pnr-search'
+import { allGdsTried, type SearchOutcome } from '@/lib/pnr-search'
 
 const BRAILLE_FRAMES = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
 
@@ -34,39 +34,97 @@ export function LoadingFooter() {
 /** Button order as in Figma. */
 const SELECT_GDS_ORDER: GDS[] = ['Amadeus', 'Sabre', 'Galileo']
 
-export function GdsRequiredFooter({ onSelect }: { onSelect: (gds: GDS) => void }) {
+/** GDS buttons + hint. GDS already searched stay in place but are disabled. */
+function GdsChoice({
+  message,
+  tried = [],
+  onSelect,
+}: {
+  message: string
+  tried?: GDS[]
+  onSelect: (gds: GDS) => void
+}) {
   return (
     <div className="flex items-center gap-4 px-3 py-2">
       <div className="flex items-center gap-2 shrink-0">
-        {SELECT_GDS_ORDER.map((gds) => (
-          <button
-            key={gds}
-            type="button"
-            onClick={() => onSelect(gds)}
-            className="bg-[#fafaf9] border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap"
-          >
-            {gds}
-          </button>
-        ))}
+        {SELECT_GDS_ORDER.map((gds) => {
+          const wasTried = tried.includes(gds)
+          return (
+            <button
+              key={gds}
+              type="button"
+              onClick={() => onSelect(gds)}
+              disabled={wasTried}
+              title={wasTried ? `Not found in ${gds}` : undefined}
+              className="bg-[#fafaf9] border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+            >
+              {gds}
+            </button>
+          )
+        })}
       </div>
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
-        <p className="text-sm text-muted-foreground leading-5">
-          To continue the search, please select the GDS where this PNR was created.
-        </p>
+        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+        <p className="text-sm text-muted-foreground leading-5">{message}</p>
       </div>
     </div>
   )
 }
 
-export function NotFoundFooter() {
+export function GdsRequiredFooter({ onSelect }: { onSelect: (gds: GDS) => void }) {
+  return (
+    <GdsChoice
+      message="To continue the search, please select the GDS where this PNR was created."
+      onSelect={onSelect}
+    />
+  )
+}
+
+function NotFoundNote({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2">
-      <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
-      <p className="text-sm text-muted-foreground leading-5">
-        Booking not found. Check the PNR and try again.
-      </p>
+      <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+      <p className="text-sm text-muted-foreground leading-5">{children}</p>
     </div>
+  )
+}
+
+/** "Amadeus", "Amadeus or Sabre" */
+const orList = (items: string[]) =>
+  items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} or ${items[items.length - 1]}`
+
+/**
+ * Not Found depends on where the GDS came from:
+ * - an Office → only another Office (or no Office) can change the GDS;
+ * - picked / known → offer the GDS not searched yet; when none is left, only the PNR can be wrong.
+ */
+export function NotFoundFooter({
+  outcome,
+  onSelect,
+}: {
+  outcome: Extract<SearchOutcome, { status: 'not-found' }>
+  onSelect: (gds: GDS) => void
+}) {
+  const { pnr, gds, gdsSource, office, tried } = outcome
+
+  if (gdsSource === 'office' && office) {
+    return (
+      <NotFoundNote>
+        PNR {pnr} not found in {gds} · {office.code}. Choose another office or clear the office.
+      </NotFoundNote>
+    )
+  }
+
+  if (allGdsTried(tried)) {
+    return <NotFoundNote>PNR {pnr} not found in any GDS. Check the PNR.</NotFoundNote>
+  }
+
+  return (
+    <GdsChoice
+      message={`PNR ${pnr} not found in ${orList(tried)}. Select another GDS or check the PNR.`}
+      tried={tried}
+      onSelect={onSelect}
+    />
   )
 }
 

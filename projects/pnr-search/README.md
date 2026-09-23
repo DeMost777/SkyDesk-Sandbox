@@ -33,7 +33,15 @@
 
 **Default Office** — настройка агента для каждой GDS отдельно, необязательная. Когда агент открыл бронирование через Office, выбранный вручную, и этот Office ещё не его Default Office для этой GDS, предлагаем сохранить: `☐ Use this as my default office for Amadeus`. Снятие галочки возвращает прежний Default Office. В sandbox значение хранится в localStorage, отдельно для каждой persona.
 
-**Not Found** — PNR нет в той GDS, где искали. Это не общая ошибка: по спецификации нужно объяснить контекст (в какой GDS / каком Office искали) и предложить «Try another GDS» / «Choose another office». Сейчас не реализовано — см. «States».
+**Not Found** — PNR нет в той GDS, где искали. Это не тупик: агент видит, где искали, и следующий шаг. Что предложить, зависит от того, откуда взялась GDS (правило пользователя, 2026-09-23):
+
+| Откуда GDS | Что показываем |
+|---|---|
+| Агент выбрал на шаге GDS Required, или Skydesk знал GDS | Снова кнопки `Amadeus \| Sabre \| Galileo`, рамка primary. Проверенные GDS остаются на месте, но неактивны. Текст: «PNR XYZ789 not found in Amadeus. Select another GDS or check the PNR.» (для двух — «in Amadeus or Sabre») |
+| Проверены все 3 GDS | Кнопок нет: «PNR XYZ789 not found in any GDS. Check the PNR.» |
+| Выбранный Office | Кнопок GDS нет — GDS задаёт Office: «PNR 7JRWT4 not found in Sabre · 5GW5. Choose another office or clear the office.» |
+
+Проверенные GDS накапливаются в пределах одной попытки. Смена PNR или Office начинает попытку заново. Правило — `searchPnr` возвращает `gdsSource` и `tried`, `allGdsTried` решает, остались ли варианты.
 
 **Error** — техническая проблема: GDS недоступна, ошибка соединения, нет доступа. Понятный текст и «Try again»; если проблема в Office — предложить выбрать другой. Error и Not Found — разные состояния: сбой GDS никогда не показываем как «не найдено».
 
@@ -67,7 +75,10 @@
 | Found — после выбора GDS (B) | `?pnr=ABC123&gds=Galileo&state=result` | ✅ заглушка без Figma |
 | Found — выбранный Office + «Use as default» (C) | `?pnr=7JRWT4&office=E6T8&state=result` | ✅ заглушка без Figma |
 | Found — Creation office (D) | `?persona=agent-no-defaults&pnr=7JRWT4&state=result` | ✅ заглушка без Figma |
-| Not Found | `?pnr=XYZ789&gds=Sabre&state=result` | ⚠️ текст общий, нет действий «Try another GDS» / «Choose another office» |
+| Not Found — выбранная GDS | `?pnr=XYZ789&gds=Amadeus&state=result` | ✅ |
+| Not Found — две GDS | `?pnr=XYZ789&tried=Amadeus&gds=Sabre&state=result` | ✅ |
+| Not Found — все GDS | `?pnr=XYZ789&tried=Amadeus,Sabre&gds=Galileo&state=result` | ✅ |
+| Not Found — выбранный Office | `?pnr=7JRWT4&office=5GW5&state=result` | ✅ |
 | Error | `?pnr=ERR000&state=result` | ⚠️ нет «Try again», нет предложения сменить Office |
 
 «Found» показывает, какой Office выбран и почему. Это заглушка до экрана Booking — она делает правило приоритета видимым для review.
@@ -76,7 +87,7 @@
 
 - Кнопка поиска должна быть неактивной при пустом поле; сейчас она активна, но ничего не делает.
 - Подсказка на GDS Required: в спецификации «To continue the search, select the GDS…», в коде «…please select the GDS…» (текст из Figma). Какой вариант верный — open question.
-- Not Found и Error — см. таблицу выше.
+- Error — нет «Try again» и нет предложения сменить Office (см. таблицу выше).
 
 ## Open questions
 
@@ -84,4 +95,4 @@
 
 ## Test cases
 
-Юнит-тесты: `src/lib/office.test.ts`, `src/lib/pnr-search.test.ts` (сценарии A–D, Not Found, Error). Ручная проверка в браузере — `docs/testing-plan.md`.
+Юнит-тесты: `src/lib/office.test.ts`, `src/lib/pnr-search.test.ts` (сценарии A–D, Not Found с повторным выбором GDS, Error). Ручная проверка в браузере — `docs/testing-plan.md`.
