@@ -6,7 +6,7 @@
 ## PNR Search
 
 1. **Выбран Office одной GDS, а PNR лежит в другой.** Например, Sabre `5GW5` + PNR `7JRWT4` (Amadeus, GDS известна Skydesk).
-   Сейчас: поиск идёт только в Sabre → Not Found. Вариант: сразу сказать «PNR находится в Amadeus» и предложить Office Amadeus.
+   Сейчас: поиск идёт только в Sabre → «PNR 7JRWT4 not found in 5GW5 · Sabre. Choose another office or clear the office.» Вариант: сразу сказать «PNR находится в Amadeus» и предложить Office Amadeus.
    Решает: product. Добавлено 2026-09-23.
 
 2. **Выбор Office отменяет шаг GDS Required.** Office принадлежит одной GDS, поэтому при выбранном Office шаг не показывается.
@@ -14,7 +14,7 @@
    Решает: product. Добавлено 2026-09-23.
 
 3. **Экран «Found» / переход в Booking.** В Figma нет состояния после успешного поиска.
-   Сейчас: заглушка «Opening 7JRWT4 in Amadeus · A2K9» с причиной выбора Office и checkbox «Use this as my default office». Нужен дизайн.
+   Сейчас: заглушка «Opening 7JRWT4 in A2K9 · Amadeus» с причиной выбора Office и checkbox «Use this as my default office». Нужен дизайн.
    Решает: design. Добавлено 2026-09-23.
 
 4. **Где предлагать сохранить Default Office.** Спецификация: «при ручном выборе Office», место не указано.
@@ -29,6 +29,26 @@
    Сейчас: текст из Figma.
    Решает: design. Добавлено 2026-09-23.
 
+9. **Искать во всех GDS без агента.** По принципу flow Skydesk мог бы сам проверить PNR во всех трёх GDS, и шаги GDS Required и повторного выбора были бы не нужны.
+   Сейчас: агент выбирает GDS, после Not Found — следующую. Зависит от того, может ли backend искать без Office и сколько это стоит по времени.
+   Решает: product + backend. Добавлено 2026-09-23.
+
+10. **Not Found в GDS, которую Skydesk знал** (PNR открывали раньше, но в GDS его больше нет — например, удалён).
+   Сейчас: как после ручного выбора — эта GDS неактивна, остальные можно выбрать. В mock-данных такого PNR нет, поведение проверено юнит-тестом.
+   Решает: product. Добавлено 2026-09-23.
+
+13. **Проверять формат PNR** (6 символов, буквы и цифры) до поиска?
+   Сейчас: проверяется только, что поле не пустое.
+   Решает: product. Добавлено 2026-09-23.
+
+14. **Контраст teal `primary` с текстом ниже WCAG AA.** Белый текст на `#0d9488` и teal-текст на белом — 3.5:1, нужно 4.5:1 для обычного текста. Затрагивает Button (default, link, small), Badge default, «Try again» в Office Selector. Цвет из Figma.
+   Сейчас: в Storybook эти stories помечены `a11y: { test: 'todo' }` — нарушение видно в панели Accessibility, но тесты не падают. Варианты: темнее primary для текста (например, teal-700 `#0f766e` — 5.5:1 с белым), или крупный/жирный текст на primary.
+   Решает: design. Добавлено 2026-09-23.
+
+15. **Названия новых токенов.** Figma-файл с переменными не был доступен, названия выбраны в sandbox: `surface`, `loading-start/end`, `radius-card` (16px), `radius-control` (12px), `font-size-heading`, `font-size-2xs`, `shadow-popover`, `drop-shadow-card`.
+   Сейчас: значения точно как в Figma-макете, названия — наши. Если в Figma переменные называются иначе — переименовать под Figma.
+   Решает: design. Добавлено 2026-09-23.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».
@@ -37,5 +57,6 @@
 
 ## Процесс
 
-8. **Какая ветка деплоится в production на Vercel.** Сейчас известно только, что каждый push создаёт preview.
+8. **Какая ветка деплоится в production на Vercel.** Ветки `main` нет; основная ветка на GitHub — `claude/hopeful-wright-0ar03b`. По умолчанию Vercel публикует её как production.
+   Сейчас: считаем её production-веткой, остальные ветки — preview. Нужно подтвердить в Vercel → Settings → Git → Production Branch. Возможно, стоит завести `main`.
    Решает: владелец проекта. Добавлено 2026-09-23.

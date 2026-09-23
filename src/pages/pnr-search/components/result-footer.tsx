@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Info, AlertCircle } from 'lucide-react'
 import type { GDS, OfficeSource } from '@/lib/office'
-import type { SearchOutcome } from '@/lib/pnr-search'
+import { allGdsTried, type SearchOutcome } from '@/lib/pnr-search'
 
 const BRAILLE_FRAMES = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
 
@@ -23,7 +23,7 @@ export function LoadingFooter() {
     <div className="flex items-center px-3 py-2">
       <div className="flex items-center gap-2">
         <BrailleLoader />
-        <span className="text-sm leading-5 bg-gradient-to-r from-[#78716c] to-[#e5e5e5] bg-clip-text text-transparent whitespace-nowrap">
+        <span className="text-sm leading-5 bg-gradient-to-r from-loading-start to-loading-end bg-clip-text text-transparent whitespace-nowrap">
           Loading...
         </span>
       </div>
@@ -34,51 +34,129 @@ export function LoadingFooter() {
 /** Button order as in Figma. */
 const SELECT_GDS_ORDER: GDS[] = ['Amadeus', 'Sabre', 'Galileo']
 
-export function GdsRequiredFooter({ onSelect }: { onSelect: (gds: GDS) => void }) {
+/** GDS buttons + hint. GDS already searched stay in place but are disabled. */
+function GdsChoice({
+  message,
+  tried = [],
+  onSelect,
+}: {
+  message: string
+  tried?: GDS[]
+  onSelect: (gds: GDS) => void
+}) {
   return (
     <div className="flex items-center gap-4 px-3 py-2">
       <div className="flex items-center gap-2 shrink-0">
-        {SELECT_GDS_ORDER.map((gds) => (
-          <button
-            key={gds}
-            type="button"
-            onClick={() => onSelect(gds)}
-            className="bg-[#fafaf9] border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap"
-          >
-            {gds}
-          </button>
-        ))}
+        {SELECT_GDS_ORDER.map((gds) => {
+          const wasTried = tried.includes(gds)
+          return (
+            <button
+              key={gds}
+              type="button"
+              onClick={() => onSelect(gds)}
+              disabled={wasTried}
+              title={wasTried ? `Not found in ${gds}` : undefined}
+              className="bg-surface border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+            >
+              {gds}
+            </button>
+          )
+        })}
       </div>
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
-        <p className="text-sm text-muted-foreground leading-5">
-          To continue the search, please select the GDS where this PNR was created.
-        </p>
+        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+        <p className="text-sm text-muted-foreground leading-5">{message}</p>
       </div>
     </div>
   )
 }
 
-export function NotFoundFooter() {
+export function GdsRequiredFooter({ onSelect }: { onSelect: (gds: GDS) => void }) {
+  return (
+    <GdsChoice
+      message="To continue the search, please select the GDS where this PNR was created."
+      onSelect={onSelect}
+    />
+  )
+}
+
+function NotFoundNote({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2">
-      <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
-      <p className="text-sm text-muted-foreground leading-5">
-        Booking not found. Check the PNR and try again.
+      <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+      <p className="text-sm text-muted-foreground leading-5">{children}</p>
+    </div>
+  )
+}
+
+/** "Amadeus", "Amadeus or Sabre" */
+const orList = (items: string[]) =>
+  items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} or ${items[items.length - 1]}`
+
+/**
+ * Not Found depends on where the GDS came from:
+ * - an Office → only another Office (or no Office) can change the GDS;
+ * - picked / known → offer the GDS not searched yet; when none is left, only the PNR can be wrong.
+ */
+export function NotFoundFooter({
+  outcome,
+  onSelect,
+}: {
+  outcome: Extract<SearchOutcome, { status: 'not-found' }>
+  onSelect: (gds: GDS) => void
+}) {
+  const { pnr, gds, gdsSource, office, tried } = outcome
+
+  if (gdsSource === 'office' && office) {
+    return (
+      <NotFoundNote>
+        PNR {pnr} not found in {office.code} · {gds}. Choose another office or clear the office.
+      </NotFoundNote>
+    )
+  }
+
+  if (allGdsTried(tried)) {
+    return <NotFoundNote>PNR {pnr} not found in any GDS. Check the PNR.</NotFoundNote>
+  }
+
+  return (
+    <GdsChoice
+      message={`PNR ${pnr} not found in ${orList(tried)}. Select another GDS or check the PNR.`}
+      tried={tried}
+      onSelect={onSelect}
+    />
+  )
+}
+
+function ErrorNote({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2 px-3 py-2">
+      <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={1.5} aria-hidden />
+      <p className="text-sm text-destructive leading-5" role="alert">
+        {children}
       </p>
     </div>
   )
 }
 
-export function ErrorFooter() {
-  return (
-    <div className="flex items-center gap-2 px-3 py-2">
-      <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={1.5} />
-      <p className="text-sm text-destructive leading-5">
-        Something went wrong. Please try again.
-      </p>
-    </div>
-  )
+/** Search clicked with an empty field. The search button stays enabled on purpose (user rule). */
+export function PnrRequiredFooter() {
+  return <ErrorNote>Please provide the PNR.</ErrorNote>
+}
+
+/**
+ * Error names the reason; the agent acts with the controls already in the search field
+ * (search button to retry, Office Selector to change the Office) — no extra buttons (user rule).
+ */
+export function ErrorFooter({ outcome }: { outcome: Extract<SearchOutcome, { status: 'error' }> }) {
+  if (outcome.reason === 'access-denied' && outcome.office) {
+    return (
+      <ErrorNote>
+        Office {outcome.office.code} has no access to PNR {outcome.pnr}. Choose another office.
+      </ErrorNote>
+    )
+  }
+  return <ErrorNote>Something went wrong. Please try again.</ErrorNote>
 }
 
 const SOURCE_COPY: Record<OfficeSource, (gds: GDS) => string> = {
@@ -107,7 +185,7 @@ export function FoundFooter({
       <div className="flex items-center gap-2 min-w-0">
         <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
         <p className="text-sm leading-5 text-foreground">
-          Opening <span className="font-medium">{booking.pnr}</span> in {gds} · {code}
+          Opening <span className="font-medium">{booking.pnr}</span> in {code} · {gds}
         </p>
         <span className="text-sm leading-5 text-muted-foreground">{SOURCE_COPY[resolved.source](gds)}</span>
       </div>
