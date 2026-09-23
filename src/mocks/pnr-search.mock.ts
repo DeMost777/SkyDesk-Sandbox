@@ -1,55 +1,58 @@
-export type GDS = 'amadeus' | 'sabre' | 'galileo'
+import type { GDS } from '@/lib/office'
+import type { BookingSummary, PnrDirectory } from '@/lib/pnr-search'
 
-export interface GDSOption {
-  id: GDS
-  label: string
-  description: string
-}
+// Deterministic fixtures: fixed PNRs, dates and offices. Office codes match offices.mock.ts.
 
-export interface BookingPreview {
-  pnr: string
-  gds: GDS
-  passengers: string[]
-  route: string
-  date: string
-}
-
-export type SearchScenario =
-  | 'default'      // No input — empty state
-  | 'ready'        // Input filled, ready to search
-  | 'loading'      // Search in progress
-  | 'select-gds'   // PNR found in multiple GDS, user must choose
-  | 'not-found'    // PNR not found in any GDS
-  | 'error'        // Network or system error
-
-export const GDS_OPTIONS: GDSOption[] = [
+/** Bookings as they exist in each GDS. */
+export const MOCK_BOOKINGS: BookingSummary[] = [
   {
-    id: 'amadeus',
-    label: 'Amadeus',
-    description: 'STO123 · Stockholm',
+    pnr: '7JRWT4',
+    gds: 'Amadeus',
+    creationOffice: 'B3R7',
+    passengers: ['LINDQVIST/ANNA MRS', 'LINDQVIST/ERIK MR'],
+    route: 'ARN → LHR → JFK',
+    departureDate: '2026-10-15',
   },
   {
-    id: 'sabre',
-    label: 'Sabre',
-    description: 'YYZ01 · Toronto',
+    pnr: 'K2M9QP',
+    gds: 'Sabre',
+    creationOffice: '7MTR',
+    passengers: ['CHEN/WEI MR'],
+    route: 'YYZ → YVR',
+    departureDate: '2026-11-02',
   },
   {
-    id: 'galileo',
-    label: 'Galileo',
-    description: 'LHR99 · London',
+    pnr: 'ABC123',
+    gds: 'Galileo',
+    creationOffice: 'C1Z2',
+    passengers: ['OKAFOR/NGOZI MS'],
+    route: 'LHR → LOS',
+    departureDate: '2026-10-28',
   },
 ]
 
-export const MOCK_BOOKING: BookingPreview = {
-  pnr: 'ABC123',
-  gds: 'amadeus',
-  passengers: ['SMITH/JOHN MR', 'SMITH/JANE MRS'],
-  route: 'STO → LHR → JFK',
-  date: '2026-10-15',
+/** PNRs Skydesk has processed before, so it already knows their GDS. ABC123 is new to Skydesk. */
+const KNOWN_GDS: Record<string, GDS> = {
+  '7JRWT4': 'Amadeus',
+  'K2M9QP': 'Sabre',
+  'ERR000': 'Amadeus',
 }
 
-export const SCENARIO_PNR_MAP: Record<string, SearchScenario> = {
-  'ABC123': 'select-gds',   // multi-GDS PNR
-  'XYZ789': 'not-found',    // not found
-  'ERR000': 'error',        // triggers error
+/** PNRs whose GDS lookup fails with a technical error. */
+const FAILING_PNRS = new Set(['ERR000'])
+
+export const mockPnrDirectory: PnrDirectory = {
+  knownGds: (pnr) => KNOWN_GDS[pnr],
+  lookup: (pnr, gds) => {
+    if (FAILING_PNRS.has(pnr)) throw new Error(`${gds} is unavailable`)
+    return MOCK_BOOKINGS.find((b) => b.pnr === pnr && b.gds === gds) ?? null
+  },
 }
+
+/** One PNR per scenario in projects/pnr-search/README.md. */
+export const SCENARIO_PNRS = {
+  known: '7JRWT4',       // A / D: Skydesk knows the GDS (Amadeus)
+  unknown: 'ABC123',     // B: new to Skydesk → GDS Required → exists in Galileo
+  notFound: 'XYZ789',    // not in any GDS
+  error: 'ERR000',       // GDS lookup fails
+} as const

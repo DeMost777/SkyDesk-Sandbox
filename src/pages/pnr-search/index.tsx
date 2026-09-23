@@ -1,102 +1,121 @@
 import * as React from 'react'
-import { ArrowUp, Info, AlertCircle } from 'lucide-react'
-import {
-  GDS_OPTIONS,
-  SCENARIO_PNR_MAP,
-  type GDS,
-} from '@/mocks/pnr-search.mock'
+import { ArrowUp } from 'lucide-react'
 import { OfficeSelector } from '@/components/ui/office-selector'
-import { MOCK_OFFICES, type OfficeSelection } from '@/mocks/offices.mock'
+import { useDefaultOffices } from '@/hooks/use-default-offices'
+import { replaceUrl } from '@/hooks/use-sandbox-url'
+import { withDefaultFlags, type DefaultOffices, type GDS, type OfficeSelection } from '@/lib/office'
+import { searchPnr, type SearchOutcome } from '@/lib/pnr-search'
+import type { SandboxParams, SearchView } from '@/lib/sandbox-url'
+import { MOCK_OFFICES } from '@/mocks/offices.mock'
+import { mockPnrDirectory } from '@/mocks/pnr-search.mock'
+import { toPersonaId } from '@/mocks/personas.mock'
+import { SandboxBar, type DisplayState } from './components/sandbox-bar'
+import {
+  ErrorFooter,
+  FoundFooter,
+  LoadingFooter,
+  NotFoundFooter,
+  GdsRequiredFooter,
+} from './components/result-footer'
 
-type UIState = 'default' | 'typing' | 'loading' | 'select-gds' | 'not-found' | 'error'
+const SEARCH_DELAY_MS = 1500
 
-const SANDBOX_STATES: { value: UIState; label: string }[] = [
-  { value: 'default', label: 'Default' },
-  { value: 'typing', label: 'Ready (Type4)' },
-  { value: 'loading', label: 'Loading' },
-  { value: 'select-gds', label: 'Select GDS' },
-  { value: 'not-found', label: 'Not Found' },
-  { value: 'error', label: 'Error' },
-]
-
-const BRAILLE_FRAMES = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
-
-function BrailleLoader() {
-  const [frame, setFrame] = React.useState(0)
-  React.useEffect(() => {
-    const id = setInterval(() => setFrame((f) => (f + 1) % BRAILLE_FRAMES.length), 80)
-    return () => clearInterval(id)
-  }, [])
-  return (
-    <span className="text-base leading-none select-none text-muted-foreground" aria-hidden>
-      {BRAILLE_FRAMES[frame]}
-    </span>
-  )
+function officeByCode(code: string | null): OfficeSelection | null {
+  const office = MOCK_OFFICES.find((o) => o.code === code)
+  return office ? { code: office.code, gds: office.gds } : null
 }
 
-export default function PnrSearchPage() {
-  const [pnr, setPnr] = React.useState('')
-  const [state, setState] = React.useState<UIState>('default')
-  const [forcedState, setForcedState] = React.useState<UIState | null>(null)
-  const [selectedOffice, setSelectedOffice] = React.useState<OfficeSelection | null>(null)
-  const inputRef = React.useRef<HTMLInputElement>(null)
+interface Result {
+  outcome: SearchOutcome
+  /** The Default Office for the found GDS before this search — decides whether to offer saving. */
+  defaultBefore: string | undefined
+}
 
-  const active = forcedState ?? state
-  const hasActiveRing = active === 'loading' || active === 'select-gds'
-  const displayValue = forcedState && forcedState !== 'default' ? (pnr || '7JRWT4') : pnr
+function search(pnr: string, selected: OfficeSelection | null, gds: GDS | null, defaults: DefaultOffices): Result {
+  const outcome = searchPnr({ pnr, selected, gds, defaults }, mockPnrDirectory)
+  const defaultBefore = outcome.status === 'found' ? defaults[outcome.booking.gds] : undefined
+  return { outcome, defaultBefore }
+}
+
+function displayState(view: SearchView, pnr: string, result: Result | null): DisplayState {
+  if (view === 'loading') return 'loading'
+  if (view === 'result' && result) return result.outcome.status
+  return pnr ? 'typing' : 'default'
+}
+
+/** Initial state is read from the URL (see APPLICATION.md), so every state has an address. */
+export default function PnrSearchPage({ params }: { params: SandboxParams }) {
+  const persona = toPersonaId(params.persona)
+  const { defaults, setDefault, reset } = useDefaultOffices(persona)
+
+  const [pnr, setPnr] = React.useState(params.pnr)
+  const [selectedOffice, setSelectedOffice] = React.useState(() => officeByCode(params.office))
+  const [pickedGds, setPickedGds] = React.useState<GDS | null>(params.gds)
+  const [view, setView] = React.useState<SearchView>(params.pnr ? params.state : 'idle')
+  // ?state=result opens straight on the search outcome.
+  const [result, setResult] = React.useState<Result | null>(() =>
+    view === 'result' ? search(params.pnr, selectedOffice, params.gds, defaults) : null,
+  )
+  const timer = React.useRef<number>()
+
+  React.useEffect(() => () => window.clearTimeout(timer.current), [])
+
+  // Keep the URL equal to what is on screen, so any moment can be shared as a link.
+  React.useEffect(() => {
+    replaceUrl({
+      persona: params.persona,
+      pnr,
+      office: selectedOffice?.code ?? null,
+      gds: pickedGds,
+      state: view,
+    })
+  }, [params.persona, pnr, selectedOffice, pickedGds, view])
+
+  const startSearch = (gds: GDS | null) => {
+    if (!pnr.trim() || view === 'loading') return
+    setPickedGds(gds)
+    setView('loading')
+    setResult(null)
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => {
+      setResult(search(pnr, selectedOffice, gds, defaults))
+      setView('result')
+    }, SEARCH_DELAY_MS)
+  }
+
+  const resetToIdle = () => {
+    setView('idle')
+    setResult(null)
+    setPickedGds(null)
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    setPnr(val)
-    setForcedState(null)
-    setState(val.trim() ? 'typing' : 'default')
+    setPnr(e.target.value.toUpperCase())
+    resetToIdle()
   }
 
-  const handleSubmit = () => {
-    if ((!pnr.trim() && !forcedState) || active === 'loading') return
-    setState('loading')
-    setForcedState(null)
-    const pnrKey = (pnr || '7JRWT4').toUpperCase()
-    setTimeout(() => {
-      setState((SCENARIO_PNR_MAP[pnrKey] as UIState) ?? 'not-found')
-    }, 1500)
+  const handleOfficeChange = (office: OfficeSelection | null) => {
+    setSelectedOffice(office)
+    resetToIdle()
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleSubmit()
+  const handleResetDemoData = () => {
+    reset()
+    resetToIdle()
   }
 
-  const handleGdsSelect = (gds: GDS) => {
-    // In real app: open booking in selected GDS context
-    alert(`Opening booking in ${gds.charAt(0).toUpperCase() + gds.slice(1)}`)
-  }
-
-  const forceState = (s: UIState) => {
-    setForcedState(s)
-    if (s === 'default') setPnr('')
-    else setPnr('7JRWT4')
-  }
+  const active = displayState(view, pnr, result)
+  const hasActiveRing = active === 'loading' || active === 'gds-required'
+  const outcome = result?.outcome
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Sandbox state switcher */}
-      <div className="border-b border-border bg-[#fafaf9] px-4 py-2 flex items-center gap-2 flex-wrap shrink-0">
-        <span className="text-xs text-muted-foreground font-medium shrink-0">Sandbox:</span>
-        {SANDBOX_STATES.map((s) => (
-          <button
-            key={s.value}
-            onClick={() => forceState(s.value)}
-            className={[
-              'rounded px-2 py-0.5 text-xs font-medium transition-colors',
-              active === s.value
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-white border border-border text-foreground hover:bg-accent',
-            ].join(' ')}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
+      <SandboxBar
+        active={active}
+        current={{ pnr, office: selectedOffice?.code ?? null, gds: pickedGds, state: view }}
+        persona={persona}
+        onResetDemoData={handleResetDemoData}
+      />
 
       {/* Main page */}
       <div className="flex-1 flex justify-center pt-[140px] px-6">
@@ -120,12 +139,12 @@ export default function PnrSearchPage() {
               {/* Row 1: Text input */}
               <div className="flex items-center h-10 pr-3 py-1">
                 <input
-                  ref={inputRef}
                   type="text"
-                  value={displayValue}
+                  value={pnr}
                   onChange={handleChange}
-                  onKeyDown={handleKeyDown}
+                  onKeyDown={(e) => e.key === 'Enter' && startSearch(null)}
                   placeholder="Enter a PNR number to find a reservation"
+                  aria-label="PNR"
                   disabled={active === 'loading'}
                   autoComplete="off"
                   autoCorrect="off"
@@ -136,19 +155,17 @@ export default function PnrSearchPage() {
 
               {/* Row 2: Office combobox + Submit button */}
               <div className="flex items-center justify-between">
-
-                {/* Office selector */}
                 <OfficeSelector
-                  offices={MOCK_OFFICES}
+                  offices={withDefaultFlags(MOCK_OFFICES, defaults)}
                   value={selectedOffice}
-                  onChange={setSelectedOffice}
+                  onChange={handleOfficeChange}
                   disabled={active === 'loading'}
                 />
 
                 {/* Submit button — 40×40, rounded-[12px], teal */}
                 <button
                   type="button"
-                  onClick={handleSubmit}
+                  onClick={() => startSearch(null)}
                   disabled={active === 'loading'}
                   aria-label="Search booking"
                   className="bg-primary flex items-center justify-center h-10 w-10 rounded-[12px] shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
@@ -158,60 +175,25 @@ export default function PnrSearchPage() {
               </div>
             </div>
 
-            {/* Footer: Loading */}
-            {active === 'loading' && (
-              <div className="flex items-center px-3 py-2">
-                <div className="flex items-center gap-2">
-                  <BrailleLoader />
-                  <span className="text-sm leading-5 bg-gradient-to-r from-[#78716c] to-[#e5e5e5] bg-clip-text text-transparent whitespace-nowrap">
-                    Loading...
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Footer: Select GDS */}
-            {active === 'select-gds' && (
-              <div className="flex items-center gap-4 px-3 py-2">
-                <div className="flex items-center gap-2 shrink-0">
-                  {GDS_OPTIONS.map((gds) => (
-                    <button
-                      key={gds.id}
-                      type="button"
-                      onClick={() => handleGdsSelect(gds.id)}
-                      className="bg-[#fafaf9] border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap"
-                    >
-                      {gds.label}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
-                  <p className="text-sm text-muted-foreground leading-5">
-                    To continue the search, please select the GDS where this PNR was created.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Footer: Not Found */}
-            {active === 'not-found' && (
-              <div className="flex items-center gap-2 px-3 py-2">
-                <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
-                <p className="text-sm text-muted-foreground leading-5">
-                  Booking not found. Check the PNR and try again.
-                </p>
-              </div>
-            )}
-
-            {/* Footer: Error */}
-            {active === 'error' && (
-              <div className="flex items-center gap-2 px-3 py-2">
-                <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={1.5} />
-                <p className="text-sm text-destructive leading-5">
-                  Something went wrong. Please try again.
-                </p>
-              </div>
+            {active === 'loading' && <LoadingFooter />}
+            {active === 'gds-required' && <GdsRequiredFooter onSelect={startSearch} />}
+            {active === 'not-found' && <NotFoundFooter />}
+            {active === 'error' && <ErrorFooter />}
+            {outcome?.status === 'found' && (
+              <FoundFooter
+                outcome={outcome}
+                offerDefault={
+                  outcome.resolved.source === 'selected' &&
+                  result?.defaultBefore !== outcome.resolved.office.code
+                }
+                isDefault={defaults[outcome.resolved.office.gds] === outcome.resolved.office.code}
+                onToggleDefault={(checked) =>
+                  setDefault(
+                    outcome.resolved.office.gds,
+                    checked ? outcome.resolved.office.code : result?.defaultBefore ?? null,
+                  )
+                }
+              />
             )}
           </div>
         </div>

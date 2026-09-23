@@ -1,16 +1,17 @@
-import * as React from 'react'
 import PnrSearchPage from '@/pages/pnr-search'
 import OfficeSelectorShowcase from '@/pages/office-selector-showcase'
+import { navigate, useSandboxUrl } from '@/hooks/use-sandbox-url'
+import type { SandboxPage } from '@/lib/sandbox-url'
+import { cn } from '@/lib/utils'
 
-type Page = 'pnr-search' | 'office-selector'
-
-const NAV_ITEMS: { value: Page; label: string }[] = [
+const NAV_ITEMS: { value: SandboxPage; label: string }[] = [
   { value: 'pnr-search', label: 'PNR Search' },
   { value: 'office-selector', label: 'Office Selector' },
 ]
 
 export default function App() {
-  const [page, setPage] = React.useState<Page>('pnr-search')
+  const { params, navKey } = useSandboxUrl()
+  const page = params.page
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -20,13 +21,13 @@ export default function App() {
         {NAV_ITEMS.map((item) => (
           <button
             key={item.value}
-            onClick={() => setPage(item.value)}
-            className={[
+            onClick={() => navigate({ page: item.value, persona: params.persona })}
+            className={cn(
               'rounded px-2.5 py-1 text-xs font-medium transition-colors',
               page === item.value
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:bg-accent hover:text-foreground',
-            ].join(' ')}
+            )}
           >
             {item.label}
           </button>
@@ -34,7 +35,8 @@ export default function App() {
       </nav>
 
       <div className="flex-1">
-        {page === 'pnr-search' && <PnrSearchPage />}
+        {/* navKey remounts the page so it re-reads its initial state from the URL */}
+        {page === 'pnr-search' && <PnrSearchPage key={navKey} params={params} />}
         {page === 'office-selector' && <OfficeSelectorShowcase />}
       </div>
     </div>
