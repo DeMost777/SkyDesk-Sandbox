@@ -65,6 +65,28 @@
     --sidebar-border: 30 6% 90%;
     --sidebar-ring: 174 84% 32%;
 
+    /* Surfaces — search card, GDS buttons (Figma: stone-50) */
+    --surface: 60 9% 98%;              /* #fafaf9 */
+
+    /* Loading text gradient (Figma) — exact values, rounding shifts the hex */
+    --loading-start: 25 5.3% 44.7%;    /* #78716c stone-500 */
+    --loading-end: 0 0% 89.8%;         /* #e5e5e5 */
+
+    /* Radius — named Figma radii (base --radius above stays 8px) */
+    --radius-card: 16px;               /* search card */
+    --radius-control: 12px;            /* 40×40 search button */
+
+    /* Typography */
+    --font-size-heading: 30px;         /* Figma: 30 / 32, -0.4px, weight 500 */
+    --line-height-heading: 32px;
+    --letter-spacing-heading: -0.4px;
+    --font-size-2xs: 10px;             /* Office Selector "Default" tag */
+    --line-height-2xs: 12px;
+
+    /* Shadows */
+    --drop-shadow-card: 0px 1px 1.5px rgba(0, 0, 0, 0.05);
+    --shadow-popover: 0 2px 2px rgba(0, 0, 0, 0.10), 0 4px 3px rgba(0, 0, 0, 0.10);
+
     /* Chart colors */
     --chart-1: 14 71% 61%;             /* #e76e50 */
     --chart-2: 174 84% 32%;            /* #0d9488 teal */
@@ -112,5 +134,9 @@
     --sidebar-accent-foreground: 60 9% 98%;
     --sidebar-border: 25 6% 15%;
     --sidebar-ring: 174 84% 32%;
+
+    --surface: 25 6% 10%;
+    --loading-start: 30 6% 64%;        /* stone-400 */
+    --loading-end: 25 6% 15%;          /* stone-900 */
   }
 }

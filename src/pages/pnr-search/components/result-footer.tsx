@@ -23,7 +23,7 @@ export function LoadingFooter() {
     <div className="flex items-center px-3 py-2">
       <div className="flex items-center gap-2">
         <BrailleLoader />
-        <span className="text-sm leading-5 bg-gradient-to-r from-[#78716c] to-[#e5e5e5] bg-clip-text text-transparent whitespace-nowrap">
+        <span className="text-sm leading-5 bg-gradient-to-r from-loading-start to-loading-end bg-clip-text text-transparent whitespace-nowrap">
           Loading...
         </span>
       </div>
@@ -56,7 +56,7 @@ function GdsChoice({
               onClick={() => onSelect(gds)}
               disabled={wasTried}
               title={wasTried ? `Not found in ${gds}` : undefined}
-              className="bg-[#fafaf9] border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+              className="bg-surface border border-border rounded-md px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
             >
               {gds}
             </button>

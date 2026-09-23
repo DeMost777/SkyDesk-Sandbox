@@ -32,7 +32,7 @@ npm ci   # только если изменился package-lock.json
 ## Автоматическая проверка (перед каждым push)
 
 ```bash
-npm run typecheck && npm test && npm run build
+npm run typecheck && npm run lint:tokens && npm test && npm run build
 ```
 
 `npm test` запускает два проекта: `unit` (доменные правила в `src/lib`) и `storybook` (каждая story рендерится в Chromium, play-функции проверяют взаимодействия). Для `storybook` нужен браузер Playwright: локально один раз `npx playwright install chromium`.

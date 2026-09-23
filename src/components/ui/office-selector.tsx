@@ -17,7 +17,7 @@ export interface OfficeSelectorProps {
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center justify-between px-2 py-1.5 rounded-[4px]">
+    <div className="flex items-center justify-between px-2 py-1.5 rounded-sm">
       <div className="flex flex-col gap-1">
         <div className="h-3.5 w-10 rounded bg-border animate-pulse" />
         <div className="h-2.5 w-12 rounded bg-border animate-pulse opacity-60" />
@@ -116,8 +116,8 @@ export function OfficeSelector({
           align="start"
           sideOffset={4}
           className={cn(
-            'z-50 w-[220px] rounded-md border border-border bg-popover p-px',
-            'shadow-[0_2px_2px_rgba(0,0,0,0.10),0_4px_3px_rgba(0,0,0,0.10)]',
+            // 220px width and 168px list height (below) are Figma layout sizes
+            'z-50 w-[220px] rounded-md border border-border bg-popover p-px shadow-popover',
             'outline-none',
           )}
         >
@@ -182,14 +182,14 @@ export function OfficeSelector({
                       type="button"
                       onClick={() => handleSelect(office)}
                       className={cn(
-                        'w-full flex items-center justify-between px-2 py-1.5 rounded-[4px] transition-colors text-left',
+                        'w-full flex items-center justify-between px-2 py-1.5 rounded-sm transition-colors text-left',
                         isSelected ? 'bg-accent' : 'hover:bg-accent',
                       )}
                     >
                       <div className="flex flex-col">
                         <span className="text-sm leading-5 text-foreground font-medium">{office.code}</span>
                         {office.isDefault && (
-                          <span className="text-[10px] leading-3 text-muted-foreground">Default</span>
+                          <span className="text-2xs text-muted-foreground">Default</span>
                         )}
                       </div>
                       <span className="text-xs leading-4 text-muted-foreground">{office.gds}</span>

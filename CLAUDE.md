@@ -122,11 +122,12 @@ npm run dev        # http://localhost:5173
 npm run typecheck  # tsc -b
 npm test           # vitest: unit (src/lib) + storybook (каждая story — тест в Chromium)
 npm run build      # typecheck + production build
+npm run lint:tokens  # нет ли хардкода цветов, радиусов, размеров шрифта, теней
 npm run storybook  # Storybook: http://localhost:6006
 npm run build-storybook  # статическая сборка в storybook-static/
 ```
 
-Перед каждым push — `npm run typecheck && npm test && npm run build`, результат каждого шага — в отчёт.
+Перед каждым push — `npm run typecheck && npm run lint:tokens && npm test && npm run build`, результат каждого шага — в отчёт.
 
 Всё видимое проверять в браузере самостоятельно (Playwright + Chromium доступны), а не просить пользователя. Каждое состояние открывается по адресу — таблица в `APPLICATION.md`.
 
@@ -155,6 +156,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **Playwright 1.56.1** (2026-09-23) — под Chromium, уже установленный в облачном окружении (`/opt/pw-browsers`). Локально браузер для него: `npx playwright install chromium`.
 - **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
 - **Accessibility-проверка в Storybook падает тестом** (`a11y.test: 'error'` в `.storybook/preview.tsx`, 2026-09-23). Исключение — stories с teal `primary` и текстом (`test: 'todo'`, open question #14): вернуть в `error`, когда design решит. Страница — в `<main>`, панель sandbox — `<aside aria-label="Sandbox controls">`; у popover-диалогов есть `aria-label`. Активное состояние в sandbox-панели и навигации — тёмное (`bg-foreground`), потому что teal + белый 12px не проходит контраст.
+- **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`. Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
 - **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
 
 ## Структура проекта
@@ -184,7 +186,7 @@ skydesk-sandbox/
 ## Правила работы
 
 1. **Компоненты** — всегда из `src/components/`. Если нужного нет — создать по паттерну в `skills/build-component.md`.
-2. **Токены** — не хардкодить цвета и размеры. Использовать CSS-переменные из `src/tokens/`.
+2. **Токены** — не хардкодить цвета, радиусы, размеры шрифта и тени. Использовать токены из `src/tokens/index.css` через классы Tailwind (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`…). `npm run lint:tokens` ловит нарушения. Размеры раскладки из Figma (`w-[220px]`, `pt-[140px]`) допустимы — с комментарием, откуда они.
 3. **Mock data** — хранить в `src/mocks/`. Структура должна отражать реальные данные.
 4. **Новая фича** — создавать папку в `projects/` с flow doc (принцип → решения → отброшенное → состояния с адресами → open questions). Документ пишется до кода.
 5. **Один flow за раз.** Читать `APPLICATION.md` и flow doc задачи, не сканировать остальные flows.

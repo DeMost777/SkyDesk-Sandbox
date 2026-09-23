@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ArrowUp } from 'lucide-react'
 import { OfficeSelector } from '@/components/ui/office-selector'
+import { cn } from '@/lib/utils'
 import { useDefaultOffices } from '@/hooks/use-default-offices'
 import { replaceUrl } from '@/hooks/use-sandbox-url'
 import { withDefaultFlags, type DefaultOffices, type GDS, type OfficeSelection } from '@/lib/office'
@@ -146,7 +147,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const hasActiveRing = active === 'loading' || offersGdsChoice
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <SandboxBar
         active={presetId(active, outcome)}
         current={{ pnr, office: selectedOffice?.code ?? null, gds: pickedGds, tried, state: view }}
@@ -154,24 +155,23 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
         onResetDemoData={handleResetDemoData}
       />
 
-      {/* Main page */}
+      {/* Main page — layout sizes from Figma: 140px top offset, 838px content width */}
       <main className="flex-1 flex justify-center pt-[140px] px-6">
         <div className="flex flex-col items-center gap-8 w-full max-w-[838px]">
 
-          {/* Heading — Figma: 30px, weight 500, tracking -0.4px */}
-          <h1 className="text-[30px] font-medium leading-8 tracking-[-0.4px] text-foreground text-center w-full">
+          <h1 className="text-heading font-medium text-foreground text-center w-full">
             How can I help with your reservation today?
           </h1>
 
           {/* Search widget */}
           <div
-            className={[
-              'w-full bg-[#fafaf9] rounded-[16px] drop-shadow-[0px_1px_1.5px_rgba(0,0,0,0.05)] flex flex-col',
-              hasActiveRing ? 'border-2 border-primary' : '',
-            ].join(' ')}
+            className={cn(
+              'w-full bg-surface rounded-card drop-shadow-card flex flex-col',
+              hasActiveRing && 'border-2 border-primary',
+            )}
           >
-            {/* Inner card — always has 1px stone-200 border */}
-            <div className="border border-border rounded-[16px] flex flex-col gap-1 pl-4 pr-2 py-2 w-full">
+            {/* Inner card — always has the 1px border token */}
+            <div className="border border-border rounded-card flex flex-col gap-1 pl-4 pr-2 py-2 w-full">
 
               {/* Row 1: Text input */}
               <div className="flex items-center h-10 pr-3 py-1">
@@ -201,13 +201,13 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
                   disabled={active === 'loading'}
                 />
 
-                {/* Submit button — 40×40, rounded-[12px], teal */}
+                {/* Submit button — 40×40, control radius, teal */}
                 <button
                   type="button"
                   onClick={() => startSearch(null)}
                   disabled={active === 'loading'}
                   aria-label="Search booking"
-                  className="bg-primary flex items-center justify-center h-10 w-10 rounded-[12px] shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
+                  className="bg-primary flex items-center justify-center h-10 w-10 rounded-control shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
                 >
                   <ArrowUp className="size-4 text-primary-foreground" strokeWidth={2} />
                 </button>

@@ -45,6 +45,10 @@
    Сейчас: в Storybook эти stories помечены `a11y: { test: 'todo' }` — нарушение видно в панели Accessibility, но тесты не падают. Варианты: темнее primary для текста (например, teal-700 `#0f766e` — 5.5:1 с белым), или крупный/жирный текст на primary.
    Решает: design. Добавлено 2026-09-23.
 
+15. **Названия новых токенов.** Figma-файл с переменными не был доступен, названия выбраны в sandbox: `surface`, `loading-start/end`, `radius-card` (16px), `radius-control` (12px), `font-size-heading`, `font-size-2xs`, `shadow-popover`, `drop-shadow-card`.
+   Сейчас: значения точно как в Figma-макете, названия — наши. Если в Figma переменные называются иначе — переименовать под Figma.
+   Решает: design. Добавлено 2026-09-23.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».
