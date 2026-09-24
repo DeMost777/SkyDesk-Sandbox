@@ -75,3 +75,4 @@
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
+| 1.14 | Схема проекта в FigJam: цель, как проект думает, роадмап, workflow задачи, структура, агенты и skills, логика продукта, глоссарий — [Workflow board](https://www.figma.com/board/lDIhcIk4fyJSJyCkRkWh6E/Workflow?node-id=2-2) | `[1.14]` |
