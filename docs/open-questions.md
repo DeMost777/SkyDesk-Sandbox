@@ -76,6 +76,6 @@
 
 ## Процесс
 
-8. **Какая ветка деплоится в production на Vercel.** Ветки `main` нет; основная ветка на GitHub — `claude/hopeful-wright-0ar03b`. По умолчанию Vercel публикует её как production.
-   Сейчас: считаем её production-веткой, остальные ветки — preview. Нужно подтвердить в Vercel → Settings → Git → Production Branch. Возможно, стоит завести `main`.
+8. **Какая ветка деплоится в production на Vercel.** Решено 2026-09-24: `main` (см. CLAUDE.md → «Ветки и деплой»).
+   Осталось: переключить Default branch на GitHub и Production Branch в Vercel на `main`.
    Решает: владелец проекта. Добавлено 2026-09-23.
