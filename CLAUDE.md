@@ -138,6 +138,8 @@ npm run build      # typecheck + production build
 - **URL всегда повторяет экран** (2026-09-23). Любой момент можно отправить ссылкой на review. Код помечен `SANDBOX-ONLY`.
 - **Mock-данные — через интерфейс `PnrDirectory`** (2026-09-23). Подключение реального API заменит одну реализацию, экран не изменится.
 - **Default Offices хранятся в localStorage отдельно для каждой persona** (2026-09-23). Сохранённый default переживает перезагрузку, как на реальном backend. Все обращения к storage — в try/catch, без storage sandbox работает в памяти.
+- **Creation office всегда доступен агенту** (2026-09-24, product). Бронирование создавалось на стороне агента. Не моделировать «нет доступа к Creation office» — такого сценария нет.
+- **Office одной GDS + PNR в другой → Not Found с «Choose another office»** (2026-09-24, product). Не искать по другим GDS и не открывать бронирование автоматически: Office задаёт права. Точный текст — по Figma.
 - **Порядок кнопок GDS Required — как в Figma (Amadeus, Sabre, Galileo)**, отличается от сортировки в Office Selector (Amadeus, Galileo, Sabre). Не «унифицировать» без Figma.
 
 ## Структура проекта

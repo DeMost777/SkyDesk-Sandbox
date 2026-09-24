@@ -1,7 +1,7 @@
 # Flow: PNR Search
 
 > Flow doc. Read it before the code; update it in the same change as the behavior.
-> Updated: 2026-09-23. Phase: **coverage** (see CLAUDE.md → «Фаза»).
+> Updated: 2026-09-24. Phase: **coverage** (see CLAUDE.md → «Фаза»).
 
 **Principle:** не заставлять агента выбирать то, что Skydesk может определить самостоятельно.
 
@@ -29,9 +29,11 @@
 
 Выбранный Office из другой GDS не участвует: поиск идёт только в GDS этого Office.
 
+**Creation office всегда доступен агенту** (решение product, 2026-09-24). Бронирование создавалось на стороне агента, поэтому третий шаг приоритета всегда даёт Office с доступом. Сценария «нет доступа к Creation office» нет.
+
 **Default Office** — настройка агента для каждой GDS отдельно, необязательная. Когда агент открыл бронирование через Office, выбранный вручную, и этот Office ещё не его Default Office для этой GDS, предлагаем сохранить: `☐ Use this as my default office for Amadeus`. Снятие галочки возвращает прежний Default Office. В sandbox значение хранится в localStorage, отдельно для каждой persona.
 
-**Not Found** — PNR нет в той GDS, где искали. Это не общая ошибка: по спецификации нужно объяснить контекст (в какой GDS / каком Office искали) и предложить «Try another GDS» / «Choose another office». Сейчас не реализовано — см. «States».
+**Not Found** — PNR нет в той GDS, где искали. Сюда же попадает случай, когда выбран Office одной GDS, а PNR лежит в другой (Sabre `5GW5` + `7JRWT4`): поиск идёт только в GDS выбранного Office, агент видит Not Found и предложение «Choose another office» (решение product, 2026-09-24; точный текст — по Figma). Это не общая ошибка: по спецификации нужно объяснить контекст (в какой GDS / каком Office искали) и предложить «Try another GDS» / «Choose another office». Сейчас не реализовано — см. «States».
 
 **Error** — техническая проблема: GDS недоступна, ошибка соединения, нет доступа. Понятный текст и «Try again»; если проблема в Office — предложить выбрать другой. Error и Not Found — разные состояния: сбой GDS никогда не показываем как «не найдено».
 
