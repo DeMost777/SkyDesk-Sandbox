@@ -52,6 +52,18 @@ export function resolveOffice(input: {
   return { office: { code: creationOffice, gds }, source: 'creation' }
 }
 
+/**
+ * Order in the Office Selector: the agent's Default Offices first, then every
+ * other Office. Both groups are alphabetical by Office code. (User rule, 2026-09-23.)
+ */
+export function sortOfficesForPicker(offices: Office[]): Office[] {
+  const byCode = (a: Office, b: Office) => a.code.localeCompare(b.code)
+  return [
+    ...offices.filter((o) => o.isDefault).sort(byCode),
+    ...offices.filter((o) => !o.isDefault).sort(byCode),
+  ]
+}
+
 /** Marks each Office that is the agent's Default Office for its GDS. */
 export function withDefaultFlags(offices: Office[], defaults: DefaultOffices): Office[] {
   return offices.map((o) => ({ ...o, isDefault: defaults[o.gds] === o.code }))

@@ -8,7 +8,10 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "test": "vitest run"
+    "test": "vitest run",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "lint:tokens": "node scripts/check-tokens.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",
@@ -24,15 +27,26 @@
     "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.3.1",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-mcp": "^10.6.0",
+    "@storybook/addon-vitest": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.14",
     "@types/react-dom": "^18.3.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
     "autoprefixer": "^10.4.20",
+    "playwright": "1.56.1",
     "postcss": "^8.4.49",
+    "storybook": "^10.6.0",
+    "storybook-addon-pseudo-states": "^10.6.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.6.3",
     "vite": "^6.0.5",
-    "vitest": "^5.0.1"
+    "vitest": "^4.1.11"
   }
 }

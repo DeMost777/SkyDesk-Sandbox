@@ -3,27 +3,47 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { navigate } from '@/hooks/use-sandbox-url'
 import type { SandboxParams } from '@/lib/sandbox-url'
-import { SCENARIO_PNRS } from '@/mocks/pnr-search.mock'
+import { NO_ACCESS_OFFICE, SCENARIO_PNRS } from '@/mocks/pnr-search.mock'
 import { PERSONAS, type PersonaId } from '@/mocks/personas.mock'
 
 export type DisplayState =
   | 'default'
   | 'typing'
+  | 'pnr-required'
   | 'loading'
   | 'gds-required'
   | 'found'
   | 'not-found'
   | 'error'
 
+/** A DisplayState, split further where one state has several variants worth reviewing. */
+export type PresetId = DisplayState | 'not-found-all' | 'not-found-office' | 'error-access'
+
 /** Each state's address. The result states are produced by the real search on mocks. */
-const PRESETS: { state: DisplayState; label: string; params: Partial<SandboxParams> }[] = [
-  { state: 'default', label: 'Default', params: {} },
-  { state: 'typing', label: 'Ready', params: { pnr: SCENARIO_PNRS.known } },
-  { state: 'loading', label: 'Loading', params: { pnr: SCENARIO_PNRS.known, state: 'loading' } },
-  { state: 'gds-required', label: 'GDS Required', params: { pnr: SCENARIO_PNRS.unknown, state: 'result' } },
-  { state: 'found', label: 'Found', params: { pnr: SCENARIO_PNRS.known, state: 'result' } },
-  { state: 'not-found', label: 'Not Found', params: { pnr: SCENARIO_PNRS.notFound, state: 'result' } },
-  { state: 'error', label: 'Error', params: { pnr: SCENARIO_PNRS.error, state: 'result' } },
+const PRESETS: { id: PresetId; label: string; params: Partial<SandboxParams> }[] = [
+  { id: 'default', label: 'Default', params: {} },
+  { id: 'typing', label: 'Ready', params: { pnr: SCENARIO_PNRS.known } },
+  { id: 'pnr-required', label: 'PNR Required', params: { state: 'result' } },
+  { id: 'loading', label: 'Loading', params: { pnr: SCENARIO_PNRS.known, state: 'loading' } },
+  { id: 'gds-required', label: 'GDS Required', params: { pnr: SCENARIO_PNRS.unknown, state: 'result' } },
+  { id: 'found', label: 'Found', params: { pnr: SCENARIO_PNRS.known, state: 'result' } },
+  { id: 'not-found', label: 'Not Found', params: { pnr: SCENARIO_PNRS.notFound, gds: 'Amadeus', state: 'result' } },
+  {
+    id: 'not-found-all',
+    label: 'Not Found · all GDS',
+    params: { pnr: SCENARIO_PNRS.notFound, tried: ['Amadeus', 'Sabre'], gds: 'Galileo', state: 'result' },
+  },
+  {
+    id: 'not-found-office',
+    label: 'Not Found · Office',
+    params: { pnr: SCENARIO_PNRS.known, office: '5GW5', state: 'result' },
+  },
+  { id: 'error', label: 'Error', params: { pnr: SCENARIO_PNRS.error, state: 'result' } },
+  {
+    id: 'error-access',
+    label: 'Error · Office access',
+    params: { pnr: SCENARIO_PNRS.noAccess, office: NO_ACCESS_OFFICE, state: 'result' },
+  },
 ]
 
 function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
@@ -35,7 +55,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       className={cn(
         'rounded px-2 py-0.5 text-xs font-medium transition-colors',
         active
-          ? 'bg-primary text-primary-foreground'
+          ? 'bg-foreground text-background' // sandbox chrome: dark active state (teal + white fails AA at 12px)
           : 'bg-background border border-border text-foreground hover:bg-accent',
       )}
     >
@@ -50,18 +70,21 @@ export function SandboxBar({
   persona,
   onResetDemoData,
 }: {
-  active: DisplayState
+  active: PresetId
   /** Where the page is now; switching persona keeps it. */
   current: Partial<SandboxParams>
   persona: PersonaId
   onResetDemoData: () => void
 }) {
   return (
-    <div className="border-b border-border bg-muted px-4 py-2 flex items-center gap-x-4 gap-y-2 flex-wrap shrink-0">
+    <aside
+      aria-label="Sandbox controls"
+      className="border-b border-border bg-muted px-4 py-2 flex items-center gap-x-4 gap-y-2 flex-wrap shrink-0"
+    >
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs text-muted-foreground font-medium">State:</span>
         {PRESETS.map((p) => (
-          <Chip key={p.state} active={active === p.state} onClick={() => navigate({ ...p.params, persona })}>
+          <Chip key={p.id} active={active === p.id} onClick={() => navigate({ ...p.params, persona })}>
             {p.label}
           </Chip>
         ))}
@@ -81,6 +104,6 @@ export function SandboxBar({
           Reset demo data
         </button>
       </div>
-    </div>
+    </aside>
   )
 }
