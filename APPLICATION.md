@@ -1,6 +1,6 @@
 # APPLICATION.md — что есть в sandbox
 
-> Карта приложения: экраны, адреса состояний, personas, mock-данные. Updated: 2026-09-23.
+> Карта приложения: экраны, Storybook, personas, mock-данные. Updated: 2026-09-24.
 > Продуктовый контекст и правила — `CLAUDE.md`. Поведение каждого flow — его flow doc.
 
 ## Экраны
@@ -22,25 +22,13 @@
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
-## Адреса состояний
+## Адреса
 
-Каждое состояние открывается по ссылке — её можно отправить в Slack или на review. URL всегда совпадает с тем, что на экране: после любого поиска его можно просто скопировать.
+Экран выбирается параметром `page` (таблица «Экраны» выше). Остальные параметры адреса и как открыть каждое состояние — в flow doc экрана:
 
-| Параметр | Значения | Что задаёт |
-|---|---|---|
-| `page` | `pnr-search` (по умолчанию; пока единственный экран) | Экран |
-| `persona` | `agent-with-defaults` (по умолчанию), `agent-no-defaults` | Кто смотрит (см. ниже) |
-| `pnr` | любой PNR | Значение в поле поиска |
-| `office` | код Office из `src/mocks/offices.mock.ts` | Office, выбранный вручную |
-| `gds` | `Amadeus`, `Sabre`, `Galileo` | GDS, выбранная на шаге GDS Required (или повторно после Not Found) |
-| `tried` | GDS через запятую: `Amadeus,Sabre` | GDS, где PNR уже искали до `gds` в этой попытке — для состояний Not Found |
-| `state` | `idle` (по умолчанию), `loading`, `result` | `result` — сразу выполнить поиск и показать итог (без `pnr` — PNR Required); `loading` — зафиксировать индикатор загрузки |
-
-Состояния-результаты не «рисуются» флагом — их выдаёт настоящая функция `searchPnr` на mock-данных. Поэтому адрес сам по себе проверяет логику.
-
-Готовые адреса для PNR Search — в flow doc, раздел «States and how to reach them». Они же — кнопки панели «State» в sandbox.
-
-Код адресов помечен `SANDBOX-ONLY` (`src/lib/sandbox-url.ts`, `src/hooks/use-sandbox-url.ts`, `src/pages/pnr-search/components/sandbox-bar.tsx`), чтобы удалить его одним проходом при переносе в production.
+| Экран | Где |
+|---|---|
+| PNR Search | `projects/pnr-search/README.md` → «States and how to reach them» |
 
 ## Personas
 

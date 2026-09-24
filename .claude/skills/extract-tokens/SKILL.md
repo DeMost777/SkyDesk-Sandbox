@@ -1,3 +1,8 @@
+---
+name: extract-tokens
+description: Steps for extracting design tokens (colors, typography, spacing, radius, shadows) from Figma via the Figma MCP into src/tokens/ and the Tailwind config. Use when setting up or updating the design system from Figma.
+---
+
 # Skill: Extract Tokens from Figma
 
 Инструкция для извлечения дизайн-токенов из Figma и переноса их в проект.

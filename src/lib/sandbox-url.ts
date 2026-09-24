@@ -2,7 +2,7 @@
 //
 //   ?page=pnr-search&persona=agent-no-defaults&pnr=7JRWT4&office=A2K9&tried=Amadeus,Sabre&gds=Galileo&state=result
 //
-// Table of addresses: APPLICATION.md → "Адреса состояний".
+// Table of addresses: projects/pnr-search/README.md → "Параметры адреса".
 
 import { GDS_LIST, type GDS } from './office'
 

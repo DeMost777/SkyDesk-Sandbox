@@ -1,3 +1,8 @@
+---
+name: create-screen
+description: Pattern for creating a prototype screen in src/pages/ from its flow doc in projects/. Use when starting a new screen or flow, or adding a new state to an existing screen.
+---
+
 # Skill: Create Screen
 
 Паттерн создания экрана-прототипа в Skydesk Sandbox.
@@ -17,8 +22,7 @@
 src/pages/
 └── ScreenName/
     ├── index.tsx          ← основной компонент экрана
-    ├── components/        ← локальные компоненты экрана
-    └── ScreenName.mock.ts ← mock data для этого экрана
+    └── components/        ← локальные компоненты экрана
 ```
 
 ## Обязательные состояния
@@ -32,10 +36,8 @@ src/pages/
 
 ## Mock data
 
-Хранить в `src/mocks/` или локально в `ScreenName.mock.ts`. Структура должна отражать реальный API-ответ даже если backend не подключён.
+Хранить в `src/mocks/` (правило `CLAUDE.md`: одни и те же данные нужны нескольким экранам). Структура должна отражать реальный API-ответ даже если backend не подключён.
 
-## Навигация между состояниями
+## Как показывать состояния для review
 
-В sandbox использовать локальный state для переключения между состояниями экрана. Это позволяет тестировщику и дизайнеру просматривать все состояния без реального backend.
-
-Опционально: добавить dev-панель для ручного переключения состояний.
+Решает flow doc фичи. Общего механизма нет: например, адреса состояний и панель sandbox — решение только PNR Search (`projects/pnr-search/README.md`).

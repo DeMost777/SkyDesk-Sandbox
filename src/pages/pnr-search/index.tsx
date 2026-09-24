@@ -61,7 +61,7 @@ function presetId(active: DisplayState, outcome: SearchOutcome | undefined): Pre
   return allGdsTried(outcome.tried) ? 'not-found-all' : 'not-found'
 }
 
-/** Initial state is read from the URL (see APPLICATION.md), so every state has an address. */
+/** Initial state is read from the URL (see projects/pnr-search/README.md → «Параметры адреса»), so every state has an address. */
 export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   const persona = toPersonaId(params.persona)
   const { defaults, setDefault, reset } = useDefaultOffices(persona)
