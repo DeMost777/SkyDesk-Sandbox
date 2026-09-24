@@ -1,7 +1,7 @@
 # Component: App Sidebar
 
 > Flow doc компонента. Читать до кода, обновлять в том же изменении, что и поведение.
-> Updated: 2026-09-23. Phase: **coverage** (см. CLAUDE.md → «Фаза»).
+> Updated: 2026-09-24. Phase: **coverage** (см. CLAUDE.md → «Фаза»).
 
 **Principle:** sidebar — постоянная навигация агента: откуда начать новый поиск и к каким бронированиям он недавно возвращался. Сейчас он ничего не решает за агента и ничего не запускает — только показывает.
 
@@ -66,11 +66,18 @@ CDG → LON → JFK       15:12     ← Itinerary             Interaction time
 
 - **General — только New chat.** «Search in history» и «Settings» из Figma-компонента не показываем: функциональности под ними нет (решение пользователя, 2026-09-23).
 - **Collapsed-вариант — не сейчас.** Есть в Figma, не приоритет (решение пользователя, 2026-09-23).
-- **Клики пока ничего не делают.** Header, New chat, History item и Footer — кнопки со всеми состояниями, но поведения под ними нет (решение пользователя, 2026-09-23). Компонент принимает обработчики (`onBrandClick`, `onNewChat`, `onSelect`, `onUserClick`), экран их пока не передаёт.
+- **Клики пока ничего не делают.** Header, New chat, History item и Footer — кнопки со всеми состояниями, но поведения под ними нет (решение пользователя, 2026-09-23). Компонент принимает обработчики (`onBrandClick`, `onNewChat`, `onSelect`, `onUserClick`), экран их пока не передаёт. Не придумывать поведение без решения product.
 - **Порядок History** — как отдаёт источник (последнее действие сверху). Компонент не сортирует.
 - **Данные History — через интерфейс `BookingHistory`** (`src/lib/booking-history.ts`), mock — `src/mocks/booking-history.mock.ts`. Реальный API заменит одну реализацию.
 - **Шрифт History item — Roboto Mono.** В Figma дата набрана IBM Plex Mono, остальное — Roboto Mono (переменная `Fonts/Font Mono`). Используем переменную: один mono-шрифт.
-- **Заливка — только у Hover, Pressed, Focus и Active; у Default её нет** (правило пользователя, 2026-09-23). Story `Default` не кликает по элементу: клик оставляет элемент в focus/hover, и story показывала бы заливку. Клики проверяют отдельные stories (`SelectsOnClick`, `Clicks`); `Default` проверяет, что фон прозрачный.
+- **Заливка `sidebar-accent` — только у Hover, Pressed, Focus и Active; у Default её нет** (Figma `4920:69057` + правило пользователя, 2026-09-23). Story `Default` не кликает по элементу: клик оставляет элемент в focus/hover, и story показывала бы заливку. Клики проверяют отдельные stories (`SelectsOnClick`, `Clicks`); `Default` проверяет, что фон прозрачный.
+
+## Решения и gotchas
+
+Перенесены из `CLAUDE.md` 2026-09-24: относятся только к App Sidebar. Формат: решение → почему → что сломается, если отменить. Остальные решения по sidebar — в «Decided» выше.
+
+- **App Sidebar — по стандарту shadcn Sidebar, примитив написан вручную** (2026-09-23). `src/components/ui/sidebar.tsx` повторяет имена частей и разметку shadcn (`data-sidebar`), но только нужное подмножество: registry shadcn недоступен из среды. Полный shadcn можно подставить без изменения `AppSidebar`. Если переименовать части или разметку, подстановка полного shadcn перестанет быть заменой одного файла.
+- **Состояния Hover / Pressed / Focus в Storybook форсируются `storybook-addon-pseudo-states`** (`parameters.pseudo`, 2026-09-23). Так каждое состояние из Figma видно отдельной story без наведения мышью. Правило заливки для этих состояний — в «Decided». Если убрать addon, stories Hover / Pressed / Focus молча покажут Default: тесты не упадут (заливку в них не проверяют, проверяется только прозрачный фон у Default), и review состояний станет невозможен.
 
 ## Deliberately dropped
 
