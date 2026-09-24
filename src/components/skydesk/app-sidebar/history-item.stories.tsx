@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn } from 'storybook/test'
 import { createHistoryEntries } from '@/mocks/booking-history.mock'
 import { HistoryItem } from './history-item'
+import { expectAccentFill, expectAccentFillOn, type InteractionState } from './story-checks'
 
 // Figma 4920:69057 — states Default / Hover / Active, itinerary variants One way / Round / Multi trip.
 // Pressed and Focus are not in Figma: pressed = hover, focus = sidebar-ring (projects/app-sidebar).
@@ -38,13 +39,20 @@ export const Default: Story = {
     await expect(getComputedStyle(item).backgroundColor).toBe('rgba(0, 0, 0, 0)')
   },
 }
-export const Hover: Story = { parameters: { pseudo: { hover: true } } }
-export const Pressed: Story = { parameters: { pseudo: { active: true } } }
-export const Focus: Story = { parameters: { pseudo: { focusVisible: true } } }
+// Hover / Pressed / Focus are forced with storybook-addon-pseudo-states; each checks the fill rule.
+const hasAccentFill =
+  (state: InteractionState): Story['play'] =>
+  async ({ canvas }) => {
+    await expectAccentFillOn(canvas.getByRole('button'), state)
+  }
+export const Hover: Story = { parameters: { pseudo: { hover: true } }, play: hasAccentFill(':hover') }
+export const Pressed: Story = { parameters: { pseudo: { active: true } }, play: hasAccentFill(':active') }
+export const Focus: Story = { parameters: { pseudo: { focusVisible: true } }, play: hasAccentFill(':focus-visible') }
 export const Active: Story = {
   args: { isActive: true },
   play: async ({ canvas }) => {
     await expect(canvas.getByRole('button')).toHaveAttribute('aria-current', 'page')
+    await expectAccentFill(canvas.getByRole('button'))
   },
 }
 

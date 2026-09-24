@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MOCK_USER } from '@/mocks/user.mock'
 import { NewChatButton, SidebarBrand, SidebarUser } from './index'
+import { expectAccentFillOn, type InteractionState } from './story-checks'
 
 // Header, New chat and Footer: one SidebarMenuButton each, same states as History Item.
 // Hover / Pressed / Focus are forced with storybook-addon-pseudo-states.
@@ -23,21 +24,26 @@ type Story = StoryObj<typeof meta>
 const hover = { pseudo: { hover: true } }
 const pressed = { pseudo: { active: true } }
 const focus = { pseudo: { focusVisible: true } }
+const hasAccentFill =
+  (state: InteractionState): Story['play'] =>
+  async ({ canvas }) => {
+    await expectAccentFillOn(canvas.getByRole('button'), state)
+  }
 
 export const Header: Story = { render: () => <SidebarBrand /> }
-export const HeaderHover: Story = { ...Header, parameters: hover }
-export const HeaderPressed: Story = { ...Header, parameters: pressed }
-export const HeaderFocus: Story = { ...Header, parameters: focus }
+export const HeaderHover: Story = { ...Header, parameters: hover, play: hasAccentFill(':hover') }
+export const HeaderPressed: Story = { ...Header, parameters: pressed, play: hasAccentFill(':active') }
+export const HeaderFocus: Story = { ...Header, parameters: focus, play: hasAccentFill(':focus-visible') }
 
 export const NewChat: Story = { render: () => <NewChatButton /> }
-export const NewChatHover: Story = { ...NewChat, parameters: hover }
-export const NewChatPressed: Story = { ...NewChat, parameters: pressed }
-export const NewChatFocus: Story = { ...NewChat, parameters: focus }
+export const NewChatHover: Story = { ...NewChat, parameters: hover, play: hasAccentFill(':hover') }
+export const NewChatPressed: Story = { ...NewChat, parameters: pressed, play: hasAccentFill(':active') }
+export const NewChatFocus: Story = { ...NewChat, parameters: focus, play: hasAccentFill(':focus-visible') }
 
 export const Footer: Story = { render: () => <SidebarUser user={MOCK_USER} /> }
-export const FooterHover: Story = { ...Footer, parameters: hover }
-export const FooterPressed: Story = { ...Footer, parameters: pressed }
-export const FooterFocus: Story = { ...Footer, parameters: focus }
+export const FooterHover: Story = { ...Footer, parameters: hover, play: hasAccentFill(':hover') }
+export const FooterPressed: Story = { ...Footer, parameters: pressed, play: hasAccentFill(':active') }
+export const FooterFocus: Story = { ...Footer, parameters: focus, play: hasAccentFill(':focus-visible') }
 export const FooterLongName: Story = {
   render: () => (
     <SidebarUser user={{ name: 'Alexandra Konstantinopolskaya', email: 'alexandra.konstantinopolskaya@example.com' }} />
