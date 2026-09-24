@@ -36,13 +36,21 @@ const config: Config = {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        border: 'hsl(var(--border))',
+        border: {
+          DEFAULT: 'hsl(var(--border))',
+          muted: 'hsl(var(--border-muted))',
+        },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         // Trava brand color (teal accent used in interactive elements)
         brand: {
           DEFAULT: 'hsl(var(--brand))',
           foreground: 'hsl(var(--brand-foreground))',
+        },
+        surface: 'hsl(var(--surface))',
+        loading: {
+          start: 'hsl(var(--loading-start))',
+          end: 'hsl(var(--loading-end))',
         },
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
@@ -59,9 +67,26 @@ const config: Config = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        card: 'var(--radius-card)',
+        control: 'var(--radius-control)',
+      },
+      fontSize: {
+        heading: [
+          'var(--font-size-heading)',
+          { lineHeight: 'var(--line-height-heading)', letterSpacing: 'var(--letter-spacing-heading)' },
+        ],
+        '2xs': ['var(--font-size-2xs)', { lineHeight: 'var(--line-height-2xs)' }],
+      },
+      boxShadow: {
+        popover: 'var(--shadow-popover)',
+      },
+      dropShadow: {
+        card: 'var(--drop-shadow-card)',
       },
       fontFamily: {
         sans: ['Geist', 'system-ui', 'sans-serif'],
+        // Figma "Fonts/Font Mono" — History item
+        mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
       },
     },
   },

@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "buildCommand": "npm run build && npm run build-storybook -- --output-dir dist/storybook",
+  "outputDirectory": "dist",
+  "redirects": [{ "source": "/storybook", "destination": "/storybook/", "permanent": false }],
+  "rewrites": [{ "source": "/((?!storybook/).*)", "destination": "/index.html" }]
 }

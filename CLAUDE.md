@@ -113,21 +113,33 @@ PNR + Select Office/GDS → Booking
 | Default Office | Office, который агент назначил по умолчанию для одной GDS | «home office» |
 | Creation office | Office, где PNR был создан (в GDS — Creation PCC) | — |
 | GDS Required | Шаг поиска, когда Skydesk не знает GDS и спрашивает агента | «Select GDS» как название состояния |
+| GDS code | Двухсимвольный код GDS: Amadeus `1A`, Sabre `1S`, Galileo `1G` | — |
+| History | Список бронирований в sidebar, с которыми агент недавно что-то делал в Skydesk | «Recent», «Sessions» |
+| History item | Одна карточка History: PNR · GDS code, Itinerary, дата и время последнего действия | «session card» |
+| Itinerary | Маршрут бронирования по кодам аэропортов: One way `A → B`, Round `A ⇆ B`, Multi trip `A → B → C` | «route» в UI |
+| PNR Required | Поиск запущен с пустым полем PNR | «empty state» — это начальный экран, до поиска |
 
 ## Запуск и проверка
 
 ```bash
 npm run dev        # http://localhost:5173
 npm run typecheck  # tsc -b
-npm test           # vitest: доменные правила в src/lib
+npm test           # vitest: unit (src/lib) + storybook (каждая story — тест в Chromium)
 npm run build      # typecheck + production build
+npm run lint:tokens  # нет ли хардкода цветов, радиусов, размеров шрифта, теней
+npm run storybook  # Storybook: http://localhost:6006
+npm run build-storybook  # статическая сборка в storybook-static/
 ```
 
-Перед каждым push — `npm run typecheck && npm test && npm run build`, результат каждого шага — в отчёт.
+Перед каждым push — `npm run typecheck && npm run lint:tokens && npm test && npm run build`, результат каждого шага — в отчёт.
 
 Всё видимое проверять в браузере самостоятельно (Playwright + Chromium доступны), а не просить пользователя. Каждое состояние открывается по адресу — таблица в `APPLICATION.md`.
 
-**Деплой:** репозиторий подключён к Vercel, каждый push обновляет preview-ссылку. Какая ветка публикуется как production — open question; до ответа считать push в `main` релизом и не делать его без явной просьбы.
+**Деплой** (проверено 2026-09-23): репозиторий подключён к Vercel. Ветки `main` нет; основная ветка на GitHub — `claude/hopeful-wright-0ar03b`. По умолчанию Vercel публикует основную ветку как production, а каждая другая ветка получает свою preview-ссылку. Это нужно подтвердить в настройках Vercel (open question). До подтверждения push или merge в `claude/hopeful-wright-0ar03b` — релиз, только по явной просьбе.
+
+**Storybook на Vercel** публикуется вместе с приложением по адресу `/storybook/`. Сборка — `buildCommand` в `vercel.json` (`npm run build` + `build-storybook` в `dist/storybook`). Там же: редирект `/storybook` → `/storybook/` и catch-all rewrite приложения, который не трогает `/storybook/…`.
+
+**Локально, до публикации:** `npm run dev` → `http://localhost:5173`. Изменения видны сразу, без push. Инструкция для тестирования — `docs/testing-plan.md` → «Как запустить локально».
 
 ## Решения и gotchas
 
@@ -138,7 +150,23 @@ npm run build      # typecheck + production build
 - **URL всегда повторяет экран** (2026-09-23). Любой момент можно отправить ссылкой на review. Код помечен `SANDBOX-ONLY`.
 - **Mock-данные — через интерфейс `PnrDirectory`** (2026-09-23). Подключение реального API заменит одну реализацию, экран не изменится.
 - **Default Offices хранятся в localStorage отдельно для каждой persona** (2026-09-23). Сохранённый default переживает перезагрузку, как на реальном backend. Все обращения к storage — в try/catch, без storage sandbox работает в памяти.
-- **Порядок кнопок GDS Required — как в Figma (Amadeus, Sabre, Galileo)**, отличается от сортировки в Office Selector (Amadeus, Galileo, Sabre). Не «унифицировать» без Figma.
+- **Порядок кнопок GDS Required — как в Figma (Amadeus, Sabre, Galileo).** Не «унифицировать» с другими списками без Figma.
+- **Office Selector: сначала Default Offices, потом остальные Office; обе группы по алфавиту кода** (правило пользователя, 2026-09-23). Агент сразу видит свои Default Offices. Правило — `sortOfficesForPicker` в `src/lib/office.ts`, работает и при поиске. Название GDS в строке — мелким (`text-xs`), главное в строке — код Office.
+- **Not Found — не тупик, а следующий шаг** (правило пользователя, 2026-09-23). Если GDS выбрал агент или её знал Skydesk — снова кнопки GDS, проверенные неактивны на своём месте. Все 3 проверены — «PNR … not found in any GDS. Check the PNR.» GDS задал Office — предложить сменить или убрать Office. Правило — `gdsSource`/`tried` в `searchPnr` и `allGdsTried`; адрес — параметр `tried`.
+- **Office и GDS в тексте — в том же порядке, что в Office Selector: сначала Office, потом GDS** (`5GW5 · Sabre`) (правило пользователя, 2026-09-23). Касается всех сообщений: Not Found, Found и новых. Один порядок везде — агент читает связку одинаково.
+- **Кнопка поиска всегда активна; пустой PNR — сообщение «Please provide the PNR.»** (правило пользователя, 2026-09-23). Не делать кнопку неактивной: агент должен видеть, почему поиск не начался. Правило — `pnr-required` в `searchPnr`.
+- **Storybook 10.6 установлен через `npm create storybook@latest`** (2026-09-23). Stories лежат рядом с компонентом (`*.stories.tsx`), каждая story запускается как тест в `npm test` (проект `storybook`). Preview: `src/index.css` + seed localStorage-ключа Default Offices для каждой persona — stories детерминированы.
+- **Vitest 4, не 5** (2026-09-23). `@storybook/addon-vitest` 10.6 поддерживает только Vitest 3–4; с Vitest 5 `npm install` падает (ERESOLVE). Вернуть Vitest 5 можно, когда addon начнёт его поддерживать.
+- **Playwright 1.56.1** (2026-09-23) — под Chromium, уже установленный в облачном окружении (`/opt/pw-browsers`). Локально браузер для него: `npx playwright install chromium`.
+- **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
+- **Accessibility-проверка в Storybook падает тестом** (`a11y.test: 'error'` в `.storybook/preview.tsx`, 2026-09-23). Исключение — stories с teal `primary` и текстом (`test: 'todo'`, open question #14): вернуть в `error`, когда design решит. Страница — в `<main>`, панель sandbox — `<aside aria-label="Sandbox controls">`; у popover-диалогов есть `aria-label`. Активное состояние в sandbox-панели и навигации — тёмное (`bg-foreground`), потому что teal + белый 12px не проходит контраст.
+- **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`. Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
+- **App Sidebar — по стандарту shadcn Sidebar, примитив написан вручную** (2026-09-23). `src/components/ui/sidebar.tsx` повторяет имена частей и разметку shadcn (`data-sidebar`), но только нужное подмножество: registry shadcn недоступен из среды. Полный shadcn можно подставить без изменения `AppSidebar`. Collapsed, Search in history, Settings — не сейчас (решение пользователя).
+- **В sidebar заливка `sidebar-accent` — у Hover, Pressed, Focus и Active; у Default её нет** (Figma `4920:69057` + правило пользователя, 2026-09-23). Story `Default` не должна кликать: после клика элемент остаётся в focus/hover и story показывает заливку — клики проверять в отдельной story. Active не жирный, в отличие от stock shadcn. Состояния в Storybook форсируются `storybook-addon-pseudo-states` (`parameters.pseudo`).
+- **Клики в sidebar пока без поведения** (решение пользователя, 2026-09-23). Компонент принимает `onBrandClick` / `onNewChat` / `onSelect` / `onUserClick`, экран их не передаёт. Не придумывать поведение без решения product.
+- **Creation office всегда доступен агенту** (решение product, 2026-09-24; закрыт open question #5). Бронирование создавалось на стороне агента. Не моделировать «нет доступа к Creation office» — такого сценария нет.
+- **Office одной GDS + PNR в другой → Not Found «Choose another office or clear the office»** (решение product, 2026-09-24; закрыт open question #1). Не искать в других GDS и не подсказывать, где лежит PNR: Office задаёт контекст и права. Реализовано — строка «Выбранный Office» в таблице Not Found flow doc.
+- **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
 
 ## Структура проекта
 
@@ -150,12 +178,13 @@ skydesk-sandbox/
 ├── docs/
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
+├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx
 ├── skills/                 ← инструкции под конкретные задачи
 ├── agents/                 ← субагенты для параллельных задач
 ├── projects/               ← flow doc каждой фичи
 │   └── pnr-search/         ← первый проект: поиск PNR
 └── src/                    ← React-приложение
-    ├── components/         ← компонентная библиотека
+    ├── components/         ← компонентная библиотека (+ *.stories.tsx рядом)
     ├── hooks/              ← состояние: Default Offices, адрес sandbox
     ├── lib/                ← доменные правила (чистые функции + тесты)
     ├── mocks/              ← mock-данные и personas
@@ -166,7 +195,7 @@ skydesk-sandbox/
 ## Правила работы
 
 1. **Компоненты** — всегда из `src/components/`. Если нужного нет — создать по паттерну в `skills/build-component.md`.
-2. **Токены** — не хардкодить цвета и размеры. Использовать CSS-переменные из `src/tokens/`.
+2. **Токены** — не хардкодить цвета, радиусы, размеры шрифта и тени. Использовать токены из `src/tokens/index.css` через классы Tailwind (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`…). `npm run lint:tokens` ловит нарушения. Размеры раскладки из Figma (`w-[220px]`, `pt-[140px]`) допустимы — с комментарием, откуда они.
 3. **Mock data** — хранить в `src/mocks/`. Структура должна отражать реальные данные.
 4. **Новая фича** — создавать папку в `projects/` с flow doc (принцип → решения → отброшенное → состояния с адресами → open questions). Документ пишется до кода.
 5. **Один flow за раз.** Читать `APPLICATION.md` и flow doc задачи, не сканировать остальные flows.
@@ -175,4 +204,4 @@ skydesk-sandbox/
 8. **Доменные правила — в `src/lib/`** как чистые функции с тестами. Экран их вызывает, но не повторяет.
 9. **В конце каждой задачи** — перечислить сценарии и edge cases, которые не покрыты.
 10. **Правки пользователя — это правила продукта.** Записать в «Решения и gotchas» или в flow doc и применять дальше.
-11. **Storybook** — планируется во второй фазе.
+11. **Storybook** — новый или изменённый компонент получает stories в том же изменении, рядом с компонентом (`*.stories.tsx`). Stories — это и тесты: `npm test` должен проходить.

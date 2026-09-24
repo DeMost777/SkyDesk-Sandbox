@@ -1,5 +1,5 @@
 import type { GDS } from '@/lib/office'
-import type { BookingSummary, PnrDirectory } from '@/lib/pnr-search'
+import { GdsError, type BookingSummary, type PnrDirectory } from '@/lib/pnr-search'
 
 // Deterministic fixtures: fixed PNRs, dates and offices. Office codes match offices.mock.ts.
 
@@ -38,14 +38,19 @@ const KNOWN_GDS: Record<string, GDS> = {
   'ERR000': 'Amadeus',
 }
 
-/** PNRs whose GDS lookup fails with a technical error. */
+/** PNRs whose GDS lookup always fails with a technical error — a repeated search fails again. */
 const FAILING_PNRS = new Set(['ERR000'])
+
+/** Offices the agent can pick, but without rights to open bookings. X4PD is a Sabre Office. */
+const NO_ACCESS_OFFICES = new Set(['X4PD'])
 
 export const mockPnrDirectory: PnrDirectory = {
   knownGds: (pnr) => KNOWN_GDS[pnr],
-  lookup: (pnr, gds) => {
-    if (FAILING_PNRS.has(pnr)) throw new Error(`${gds} is unavailable`)
-    return MOCK_BOOKINGS.find((b) => b.pnr === pnr && b.gds === gds) ?? null
+  lookup: (pnr, gds, via) => {
+    if (FAILING_PNRS.has(pnr)) throw new GdsError('unavailable')
+    const booking = MOCK_BOOKINGS.find((b) => b.pnr === pnr && b.gds === gds) ?? null
+    if (booking && via && NO_ACCESS_OFFICES.has(via)) throw new GdsError('access-denied')
+    return booking
   },
 }
 
@@ -55,4 +60,8 @@ export const SCENARIO_PNRS = {
   unknown: 'ABC123',     // B: new to Skydesk → GDS Required → exists in Galileo
   notFound: 'XYZ789',    // not in any GDS
   error: 'ERR000',       // GDS lookup fails
+  noAccess: 'K2M9QP',    // exists in Sabre; with Office X4PD → access denied
 } as const
+
+/** Sabre Office without access to bookings (see NO_ACCESS_OFFICES). */
+export const NO_ACCESS_OFFICE = 'X4PD'
