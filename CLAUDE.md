@@ -29,7 +29,7 @@ B2B Travel Tech-продукт для travel-агентов и агентств.
 Токены и компоненты хранятся в Figma. При работе с UI всегда использовать:
 - токены из `src/tokens/` — цвета, типографика, радиусы, spacing
 - компоненты из `src/components/` — shadcn/ui с кастомной темой
-- паттерны из `skills/build-component.md`
+- паттерны из `.claude/skills/build-component/SKILL.md`
 
 ## Предметная область: GDS и Office
 
@@ -167,6 +167,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **Creation office всегда доступен агенту** (решение product, 2026-09-24; закрыт open question #5). Бронирование создавалось на стороне агента. Не моделировать «нет доступа к Creation office» — такого сценария нет.
 - **Office одной GDS + PNR в другой → Not Found «Choose another office or clear the office»** (решение product, 2026-09-24; закрыт open question #1). Не искать в других GDS и не подсказывать, где лежит PNR: Office задаёт контекст и права. Реализовано — строка «Выбранный Office» в таблице Not Found flow doc.
 - **Error различает причину, но без кнопок действий** (правило пользователя, 2026-09-23). GDS недоступна → «Something went wrong. Please try again.»; у Office нет доступа → «Office X4PD has no access to PNR K2M9QP. Choose another office.» Агент действует элементами, которые уже есть в поле поиска: кнопкой поиска и Office Selector. Не добавлять в сообщения «Try again», «Choose another office» и подобные кнопки.
+- **Skills — в `.claude/skills/<name>/SKILL.md` с frontmatter `name` и `description`** (2026-09-24). Это официальный формат Claude Code: агент видит список skills по `description` и загружает полный текст, только когда skill нужен. Если вернуть их в `skills/` или убрать frontmatter, агент перестанет их находить сам — придётся каждый раз называть файл.
 
 ## Структура проекта
 
@@ -179,7 +180,8 @@ skydesk-sandbox/
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
 ├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx
-├── skills/                 ← инструкции под конкретные задачи
+├── .claude/
+│   └── skills/<name>/SKILL.md ← инструкции под конкретные задачи (формат Claude Code)
 ├── agents/                 ← субагенты для параллельных задач
 ├── projects/               ← flow doc каждой фичи
 │   └── pnr-search/         ← первый проект: поиск PNR
@@ -194,7 +196,7 @@ skydesk-sandbox/
 
 ## Правила работы
 
-1. **Компоненты** — всегда из `src/components/`. Если нужного нет — создать по паттерну в `skills/build-component.md`.
+1. **Компоненты** — всегда из `src/components/`. Если нужного нет — создать по паттерну skill `build-component`.
 2. **Токены** — не хардкодить цвета, радиусы, размеры шрифта и тени. Использовать токены из `src/tokens/index.css` через классы Tailwind (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`…). `npm run lint:tokens` ловит нарушения. Размеры раскладки из Figma (`w-[220px]`, `pt-[140px]`) допустимы — с комментарием, откуда они.
 3. **Mock data** — хранить в `src/mocks/`. Структура должна отражать реальные данные.
 4. **Новая фича** — создавать папку в `projects/` с flow doc (принцип → решения → отброшенное → состояния с адресами → open questions). Документ пишется до кода.

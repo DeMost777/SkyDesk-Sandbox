@@ -1,3 +1,8 @@
+---
+name: create-screen
+description: Pattern for creating a prototype screen in src/pages/ from its flow doc in projects/. Use when starting a new screen or flow, or adding a new state to an existing screen.
+---
+
 # Skill: Create Screen
 
 Паттерн создания экрана-прототипа в Skydesk Sandbox.

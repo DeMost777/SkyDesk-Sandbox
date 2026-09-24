@@ -1,3 +1,8 @@
+---
+name: build-component
+description: Pattern for building a UI component in Skydesk Sandbox on top of shadcn/ui and the design tokens. Use when a screen needs a component that src/components/ does not have yet, or when extending an existing one.
+---
+
 # Skill: Build Component
 
 Паттерн создания UI-компонентов для Skydesk Sandbox.
