@@ -164,7 +164,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
 ```
 skydesk-sandbox/
 ├── CLAUDE.md               ← этот файл: продуктовый контекст и правила
-├── APPLICATION.md          ← карта приложения: экраны, адреса состояний, personas, mock PNR
+├── APPLICATION.md          ← карта приложения: экраны, Storybook, personas, mock PNR
 ├── .env                    ← API-ключи (не коммитить)
 ├── docs/
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
