@@ -9,6 +9,7 @@ import type { SandboxParams, SearchView } from '@/lib/sandbox-url'
 import { MOCK_OFFICES } from '@/mocks/offices.mock'
 import { mockPnrDirectory } from '@/mocks/pnr-search.mock'
 import { toPersonaId } from '@/mocks/personas.mock'
+import { cn } from '@/lib/utils'
 import { SandboxBar, type DisplayState } from './components/sandbox-bar'
 import {
   ErrorFooter,
@@ -105,6 +106,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
   }
 
   const active = displayState(view, pnr, result)
+  const hasPnr = pnr.trim() !== ''
   const hasActiveRing = active === 'loading' || active === 'gds-required'
   const outcome = result?.outcome
 
@@ -162,13 +164,17 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
                   disabled={active === 'loading'}
                 />
 
-                {/* Submit button — 40×40, rounded-[12px], teal */}
+                {/* Submit button — 40×40, rounded-[12px], teal.
+                    Empty field: dimmed like shadcn's disabled Button. Loading keeps the Figma look. */}
                 <button
                   type="button"
                   onClick={() => startSearch(null)}
-                  disabled={active === 'loading'}
+                  disabled={!hasPnr || active === 'loading'}
                   aria-label="Search booking"
-                  className="bg-primary flex items-center justify-center h-10 w-10 rounded-[12px] shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
+                  className={cn(
+                    'bg-primary flex items-center justify-center h-10 w-10 rounded-[12px] shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default',
+                    !hasPnr && 'opacity-50 hover:bg-primary',
+                  )}
                 >
                   <ArrowUp className="size-4 text-primary-foreground" strokeWidth={2} />
                 </button>

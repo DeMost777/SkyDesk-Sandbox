@@ -1,7 +1,7 @@
 # Flow: PNR Search
 
 > Flow doc. Read it before the code; update it in the same change as the behavior.
-> Updated: 2026-09-23. Phase: **coverage** (see CLAUDE.md → «Фаза»).
+> Updated: 2026-09-24. Phase: **coverage** (see CLAUDE.md → «Фаза»).
 
 **Principle:** не заставлять агента выбирать то, что Skydesk может определить самостоятельно.
 
@@ -57,7 +57,7 @@
 
 | State | Address | Status |
 |---|---|---|
-| Empty | `/` | ✅ |
+| Empty | `/` | ✅ кнопка поиска неактивна |
 | Ready | `?pnr=7JRWT4` | ✅ |
 | Loading | `?pnr=7JRWT4&state=loading` | ✅ (адрес держит состояние, таймер не запускается) |
 | GDS Required | `?pnr=ABC123&state=result` | ✅ |
@@ -72,7 +72,6 @@
 
 ## Known gaps (coverage)
 
-- Кнопка поиска должна быть неактивной при пустом поле; сейчас она активна, но ничего не делает.
 - Подсказка на GDS Required: в спецификации «To continue the search, select the GDS…», в коде «…please select the GDS…» (текст из Figma). Какой вариант верный — open question.
 - Not Found и Error — см. таблицу выше.
 

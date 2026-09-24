@@ -2,7 +2,7 @@
 
 > Как проверить, что всё работает. Обновлять после каждой новой фичи — это же самый быстрый способ восстановить контекст в следующей сессии.
 > Перед demo или в конце рабочего дня — пройти весь план на текущем build и записать регрессии.
-> Updated: 2026-09-23.
+> Updated: 2026-09-24.
 
 ## Автоматическая проверка (перед каждым push)
 
@@ -16,9 +16,9 @@ npm run typecheck && npm test && npm run build
 
 | # | Адрес | Ожидаемо |
 |---|---|---|
-| 1 | `/` | Заголовок, пустое поле, «Select office» |
-| 2 | `?pnr=7JRWT4` | PNR в поле, результата нет |
-| 3 | `?pnr=7JRWT4&state=loading` | «Loading...», поле и Office заблокированы, рамка primary |
+| 1 | `/` | Заголовок, пустое поле, «Select office»; кнопка поиска бледная и не нажимается. Ввести пробелы — кнопка остаётся неактивной |
+| 2 | `?pnr=7JRWT4` | PNR в поле, результата нет; кнопка поиска яркая и активна |
+| 3 | `?pnr=7JRWT4&state=loading` | «Loading...», поле, Office и кнопка заблокированы (кнопка яркая, как в Figma), рамка primary |
 | 4 | `?pnr=ABC123&state=result` | Кнопки Amadeus / Sabre / Galileo, подсказка, рамка primary |
 | 5 | `?pnr=7JRWT4&state=result` | «Opening 7JRWT4 in Amadeus · A2K9 — Your default office for Amadeus» |
 | 6 | `?persona=agent-no-defaults&pnr=7JRWT4&state=result` | «… · B3R7 — Creation office…» |
@@ -40,4 +40,5 @@ npm run typecheck && npm test && npm run build
 
 ## Последний прогон
 
+- 2026-09-24: пункты 1–3 и сценарий B пройдены в headless Chromium на production build (задача 0.1 — неактивная кнопка поиска); ошибок в консоли нет.
 - 2026-09-23: все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.

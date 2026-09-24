@@ -29,6 +29,10 @@
    Сейчас: текст из Figma.
    Решает: design. Добавлено 2026-09-23.
 
+9. **Вид неактивной кнопки поиска.** В Figma нет состояния «пустое поле».
+   Сейчас: кнопка с opacity 50% — стандартный disabled у shadcn Button. В Loading кнопка тоже неактивна, но остаётся яркой, как в Figma.
+   Решает: design. Добавлено 2026-09-24.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».
