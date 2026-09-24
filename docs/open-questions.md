@@ -77,5 +77,5 @@
 ## Процесс
 
 8. **Какая ветка деплоится в production на Vercel.** Решено 2026-09-24: `main` (см. CLAUDE.md → «Ветки и деплой»).
-   Осталось: переключить Default branch на GitHub и Production Branch в Vercel на `main`.
+   Default branch на GitHub — `main` (переименована из `claude/hopeful-wright-0ar03b`, 2026-09-24). Осталось: проверить, что Production Branch в Vercel → Settings → Git тоже `main`.
    Решает: владелец проекта. Добавлено 2026-09-23.

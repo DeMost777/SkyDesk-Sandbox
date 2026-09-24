@@ -74,3 +74,4 @@
 | — | Параметры адреса PNR Search → его flow doc | `0d13326` |
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
+| 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
