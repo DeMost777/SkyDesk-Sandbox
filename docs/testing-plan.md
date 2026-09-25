@@ -37,6 +37,18 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 `npm test` запускает два проекта: `unit` (доменные правила в `src/lib`) и `storybook` (каждая story рендерится в Chromium, play-функции проверяют взаимодействия). Для `storybook` нужен браузер Playwright: локально один раз `npx playwright install chromium`.
 
+## Прогон в браузере (`npm run qa`)
+
+Адреса и сценарии из таблиц ниже, автоматически: `npm run qa` (все flows) или `npm run qa -- booking`. Скрипт сам поднимает dev-сервер и Chromium, результат — `qa-report/report.md` и скриншоты. Id проверки = номер строки таблицы (`B4`, `9c`…). Запускает субагент `qa-tester`.
+
+| Flow | Проверки | Что остаётся вручную |
+|---|---|---|
+| PNR Search | `scripts/qa/flows/pnr-search.mjs`: адреса 1–12, 5a; живые сценарии B и «пустой PNR» | Default Office сохраняется, persona, порядок Office, «не та GDS», «все GDS», панель State, повтор после Error, смена ввода |
+| Booking | `scripts/qa/flows/booking.mjs`: B1–B13 | — |
+| App Sidebar | — (stories в `npm test`) | Шаги 1–6 раздела App Sidebar |
+
+Новое состояние flow → строка в таблице flow ниже и проверка с тем же id в `scripts/qa/flows/<flow>.mjs`, в том же изменении.
+
 ## PNR Search
 
 Открывать адреса от корня (`npm run dev` → `http://localhost:5173/…`). Для каждого — что должно быть на экране.
@@ -111,6 +123,8 @@ Flow doc — `projects/booking-overview/README.md`. Сравнивать с Figm
 6. Окно ниже списка History — History прокручивается, header и footer на месте.
 
 ## Последний прогон
+
+- 2026-09-25 (`npm run qa`, задача 1.12): booking + pnr-search — 41/41, ошибок в консоли нет. Контрольная поломка («1 passengers») роняет B2 и B3, код выхода 1.
 
 - 2026-09-25 (Booking, задача 2.6): typecheck, lint:tokens, test (136), build — зелёные. В headless Chromium на dev-сервере пройдены Booking B1–B13, PNR Search 1–12 и 5a, живые сценарии «BBV14Q → Found» и B (ABC123 → Galileo): 40 проверок, все прошли, ошибок в консоли нет. Экран 1920×1115 совпадает со скриншотом пользователя и Figma `7994:305661`.
 

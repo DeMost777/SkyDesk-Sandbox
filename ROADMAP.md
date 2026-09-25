@@ -37,7 +37,6 @@
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
 - [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
 - [1.11] Доменная модель Booking (`src/lib/booking.ts`) и сценарные mock-бронирования (`src/mocks/`) — Фаза 1 · часть для Header — в 2.2, остальное растёт с виджетами
-- [1.12] Субагент `qa-tester`: проход состояний из flow doc в Playwright, скриншоты, ошибки консоли, отчёт — Фаза 1
 
 ## Потом
 
@@ -53,6 +52,7 @@
 - Чат справа (362px): mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить — Фаза 4.
 
 **Агенты**
+- `qa-tester`: добавить в `npm run qa` ручные сценарии PNR Search (Default Office, persona, порядок Office…) и App Sidebar; запуск против preview-ссылки Vercel (`QA_BASE_URL`) — проверить.
 - `domain-researcher` — домен GDS и reference из production Skydesk → `projects/<flow>/research.md`. Когда начнётся Фаза 2.
 - `builder` — виджет по flow doc в отдельном worktree. Когда появится параллельная работа.
 - `doc-reviewer` — документы обновлены вместе с кодом, глоссарий соблюдён. Может оказаться skill.
@@ -80,6 +80,7 @@
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
+| 1.12 | Субагент `qa-tester` и прогон `npm run qa` (`scripts/qa/`): Booking B1–B13, PNR Search 1–12 + живые сценарии, отчёт и скриншоты в `qa-report/` | `[1.12]` |
 | 2.1 | План Фазы 2 и flow doc `projects/booking-overview/README.md`; open questions #22–#26, #3 закрыт | `[2.1]` |
 | 2.2 | Модель Booking для Header (`src/lib/booking.ts`) и mock-бронирования по PNR, `BBV14Q` находится поиском | `[2.2]` |
 | 2.3 | Компонент Booking Header по Figma `308:12504`, stories, токены `divider` и `drop-shadow-header` | `[2.3]` |
