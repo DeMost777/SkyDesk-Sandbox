@@ -23,7 +23,7 @@
 
 ## Сейчас
 
-- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Дальше: Foundations (токены), autodocs + JSDoc + Figma у компонентов, субагент `storybook-reader`, проверка полноты, удалить `docs/components.md` — Фаза 1
+- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Шаг 2 ✅ `.mcp.json`, SessionStart hook (Storybook в фоне), субагент `storybook-reader`, запасной `npm run storybook:docs`. Дальше: Foundations (токены) в MDX, JSDoc + Figma у всех компонентов, проверка полноты в `npm test`, удалить `docs/components.md`, перевести skills — Фаза 1
 
 ## Дальше
 
@@ -51,6 +51,8 @@
 - Чат справа (362px): mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить — Фаза 4.
 
 **Агенты**
+- `storybook-reader`: проверить в новой сессии, что MCP-сервер `storybook` подключается сам (в этой сессии `.mcp.json` не загружен — проверено только через HTTP и `npm run storybook:docs`). Если MCP-клиент подключается раньше, чем hook поднимет Storybook, — перевести hook в async или добавить повторное подключение.
+- Storybook MCP: у `Skydesk / App Sidebar / Parts` нет `meta.component` — MCP показывает ошибку вместо документации. Импорт в сниппетах — `from 'skydesk-sandbox'` (имя пакета), настоящего пути нет.
 - `qa-tester`: добавить в `npm run qa` ручные сценарии PNR Search (Default Office, persona, порядок Office…) и App Sidebar; запуск против preview-ссылки Vercel (`QA_BASE_URL`) — проверить.
 - `domain-researcher` — домен GDS и reference из production Skydesk → `projects/<flow>/research.md`. Когда начнётся Фаза 2.
 - `builder` — виджет по flow doc в отдельном worktree. Когда появится параллельная работа.

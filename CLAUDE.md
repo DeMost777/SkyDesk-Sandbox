@@ -133,7 +133,8 @@ npm test           # vitest: unit (src/lib) + storybook (каждая story — 
 npm run build      # typecheck + production build
 npm run lint:tokens  # нет ли хардкода цветов, радиусов, размеров шрифта, теней
 npm run qa         # прогон состояний flows в Chromium → qa-report/report.md (субагент qa-tester)
-npm run storybook  # Storybook: http://localhost:6006
+npm run storybook  # Storybook: http://localhost:6006 (+ MCP: /mcp)
+npm run storybook:docs [-- show <id> | story <storyId>]  # документация Storybook из терминала, если MCP не подключён
 npm run build-storybook  # статическая сборка в storybook-static/
 ```
 
@@ -160,6 +161,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`. Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
 - **Навигация sandbox подписывается в `useLayoutEffect`** (`src/hooks/use-sandbox-url.ts`, 2026-09-25). Страница может сразу при открытии уйти на другой адрес (`redirect`, например Booking → PNR Search). Эффекты страницы срабатывают раньше обычных эффектов App, а layout-эффекты — раньше всех. Если вернуть `useEffect`, такой переход меняет адрес, но экран остаётся пустым.
 - **Прогон в браузере — `npm run qa`, проверки по flows в `scripts/qa/flows/<flow>.mjs`** (2026-09-25). Id проверки = номер строки flow в `docs/testing-plan.md`. Запускает субагент `qa-tester` (`.claude/agents/qa-tester.md`: только Bash, Read, Glob, Grep — отчитывается, ничего не меняет; `model: sonnet` — прогон без решений). Скрипт сам поднимает Vite и Chromium, падает кодом 1 при упавшей проверке или ошибке в консоли; проверено, что сломанная подпись «1 passenger» роняет B2 и B3. Если проверки держать только во временных скриптах, каждый прогон пишется заново, и его нельзя повторить после следующей правки.
+- **Storybook — единственный источник правды об UI для агента** (решение пользователя, 2026-09-25). Компоненты, props, состояния, токены, отступы — читать только из Storybook, через субагента `storybook-reader` (`.claude/agents/storybook-reader.md`), а не из исходников. Механизм: `@storybook/addon-mcp` отдаёт документацию по `http://localhost:6006/mcp` (`.mcp.json`, сервер `storybook`), инструменты `docs-list` (≈150 токенов на всю библиотеку) → `docs-show <id>` (≈500 на компонент) → `docs-show-story`. Storybook поднимает SessionStart hook (`.claude/hooks/session-start.sh`, `.claude/settings.json`): `npm install` + Storybook в фоне, ждёт ответа `/mcp`; холодный старт ≈3 с, если уже запущен — сразу. Если MCP в сессии не подключён — `npm run storybook:docs`. Субагенту разрешён Bash только ради этой команды (в `tools` нельзя ограничить аргументы Bash). Проверка «Storybook жив» — POST `ping` с таймаутом: GET на `/mcp` открывает поток событий и не возвращается. Если читать UI из исходников в обход Storybook, пробелы в документации никто не увидит, и Storybook перестанет быть полным.
 - **Storybook генерирует документацию через `react-docgen-typescript`** (`.storybook/main.ts`, 2026-09-25). Стандартный `react-docgen` не понимает алиас `@/…` и молча выбрасывает компонент: на странице Docs и в MCP-манифесте (`/manifests/components.json`) нет ни описания, ни props. Если вернуть стандартный, агент через Storybook MCP перестанет видеть props у Booking Header, App Sidebar и всех компонентов с импортами через `@/`.
 - **Creation office всегда доступен агенту** (решение product, 2026-09-24; закрыт open question #5). Бронирование создавалось на стороне агента. Не моделировать «нет доступа к Creation office» — такого сценария нет.
 - **`CLAUDE.md` — правила всей инфраструктуры; правила одного flow — в его flow doc** (правило пользователя, 2026-09-24). Sandbox — среда для многих flows, а не один проект. Правило, записанное здесь, агент применяет к каждому новому экрану. Если снова складывать сюда решения одного flow, они начнут навязываться другим — так skill `create-screen` разошёлся с механикой адресов PNR Search. Решения PNR Search — `projects/pnr-search/README.md`, App Sidebar — `projects/app-sidebar/README.md`, раздел «Решения и gotchas».
@@ -179,11 +181,15 @@ skydesk-sandbox/
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
 ├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx
+├── .mcp.json               ← MCP-сервер storybook (http://localhost:6006/mcp)
 ├── .claude/
+│   ├── settings.json       ← SessionStart hook
+│   ├── hooks/session-start.sh ← npm install + Storybook в фоне для MCP
 │   ├── skills/<name>/SKILL.md ← инструкции под конкретные задачи (формат Claude Code)
 │   └── agents/<name>.md    ← субагенты для изолированных задач (формат Claude Code)
 ├── scripts/
 │   ├── check-tokens.mjs    ← npm run lint:tokens
+│   ├── storybook-docs.mjs  ← npm run storybook:docs (запасной доступ к Storybook MCP)
 │   └── qa/                 ← npm run qa: run.mjs + flows/<flow>.mjs (проверки состояний в браузере)
 ├── projects/               ← flow doc каждой фичи
 │   └── pnr-search/         ← первый проект: поиск PNR
@@ -198,7 +204,7 @@ skydesk-sandbox/
 
 ## Правила работы
 
-1. **Компоненты** — всегда из `src/components/`. Что есть — `docs/components.md`. Если нужного нет — создать по паттерну skill `build-component`.
+1. **Компоненты** — всегда из `src/components/`. Что есть, props, состояния, токены — спросить субагента `storybook-reader` (Storybook — единственный источник UI, см. «Решения и gotchas»). `docs/components.md` — временный, пока описания не перенесены в Storybook (задача 1.14). Если нужного нет — создать по паттерну skill `build-component`.
 2. **Токены** — не хардкодить цвета, радиусы, размеры шрифта и тени. Использовать токены из `src/tokens/index.css` через классы Tailwind (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`…). `npm run lint:tokens` ловит нарушения. Размеры раскладки из Figma (`w-[220px]`, `pt-[140px]`) допустимы — с комментарием, откуда они.
 3. **Mock data** — хранить в `src/mocks/`. Структура должна отражать реальные данные.
 4. **Новая фича** — создавать папку в `projects/` с flow doc (принцип → решения → отброшенное → состояния и как их открыть → open questions). Документ пишется до кода.
