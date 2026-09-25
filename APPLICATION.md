@@ -14,7 +14,7 @@
 ## Storybook
 
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
-- Локально: `npm run storybook` → `http://localhost:6006`. Для агента — MCP `http://localhost:6006/mcp` (`docs-list`, `docs-show`).
+- Локально: `npm run storybook` → `http://localhost:6006`. Для агента — MCP-сервер `storybook` из `.mcp.json` (`docs-list`, `docs-show`); в облаке Storybook поднимает хук SessionStart.
 - Это каталог компонентов: у каждого раздела страница **Docs** — назначение, таблица props, все stories.
 
 | Раздел | Stories |

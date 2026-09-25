@@ -77,6 +77,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 1. `npm run storybook` → у каждого раздела в дереве есть страница **Docs**: описание, таблица props, stories. У Button `variant` и `size` — выбор из списка, не «Set object».
 2. Для агента: `curl -s localhost:6006/manifests/components.json` — у каждого компонента нет поля `error`, есть `description`; MCP `docs-show` для History Item показывает описание и props с описаниями.
+3. MCP в Claude Code: в новой сессии `/mcp` показывает `storybook` connected (локально — после `npm run storybook`). В облаке хук SessionStart пишет «Storybook is up»; если нет — `/tmp/storybook.log`. Проверить хук без сессии: `CLAUDE_CODE_REMOTE=true ./.claude/hooks/session-start.sh`.
 
 ## Office Selector
 

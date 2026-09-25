@@ -55,7 +55,6 @@
 - `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `build-widget`, `record-decision`.
 
 **Storybook**
-- Подключить MCP Storybook в `.mcp.json` (`http://localhost:6006/mcp`), чтобы агент видел каталог без чтения файлов. Решить: сервер доступен, только пока идёт `npm run storybook`.
 - Сниппеты addon-mcp пишут `import … from 'skydesk-sandbox'`. Тег `@import` в JSDoc компонента не сработал — найти способ задать путь `@/components/…`.
 
 **Документы**
@@ -78,4 +77,5 @@
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
 | 1.6 | Storybook — каталог компонентов: autodocs, описания в JSDoc над `meta` (без Figma), props через react-docgen-typescript, манифест для addon-mcp без ошибок | `[1.6]` |
+| 1.14 | Storybook MCP в Claude Code: `.mcp.json`, `enabledMcpjsonServers`, SessionStart-хук для облака (npm install + Storybook) | `[1.14]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |

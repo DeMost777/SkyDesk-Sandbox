@@ -163,6 +163,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
   - props — JSDoc у полей интерфейса props в компоненте;
   - заголовок — `title` в meta: `UI/…`, `Skydesk/…`, `Pages/…`.
   Почему: stories проверяются `npm test`, а markdown-каталог отстаёт от кода незаметно. Что сломается, если отменить: два источника, которые расходятся. Gotchas: `paths` для `@/` продублированы в корневом `tsconfig.json` — без них манифест не разрешает импорты и у компонентов нет props; docgen — `react-docgen-typescript` с `tsconfig.app.json` (`.storybook/main.ts`), иначе в таблице props нет `variant`/`size` из cva и JSDoc-описаний. Сниппеты addon-mcp пишут `import … from 'skydesk-sandbox'` — это имя пакета; настоящий путь — папка story (`@/components/…`).
+- **Storybook MCP подключён к Claude Code** (решение пользователя, 2026-09-25). `.mcp.json` — сервер `storybook` (`http://localhost:6006/mcp`), `.claude/settings.json` — `enabledMcpjsonServers: ["storybook"]`, чтобы локально не спрашивать одобрения. В облачной сессии хук SessionStart (`.claude/hooks/session-start.sh`) ставит зависимости и поднимает Storybook до подключения MCP; лог — `/tmp/storybook.log`. Хук синхронный: Claude Code даёт HTTP-серверу на старте всего три попытки, и Storybook, запущенный в фоне без ожидания, к ним не успевает. Локально хук ничего не делает — перед сессией запустить `npm run storybook`, иначе сервер `storybook` будет failed (переподключить в `/mcp`). Если MCP недоступен — читать `*.stories.tsx` напрямую. Что сломается, если убрать хук: в облаке сервер `storybook` всегда failed, а `npm test` падает без `node_modules`.
 - **Skills — в `.claude/skills/<name>/SKILL.md` с frontmatter `name` и `description`** (2026-09-24). Это официальный формат Claude Code: агент видит список skills по `description` и загружает полный текст, только когда skill нужен. Если вернуть их в `skills/` или убрать frontmatter, агент перестанет их находить сам — придётся каждый раз называть файл.
 - **Субагенты — в `.claude/agents/<name>.md` с frontmatter `name`, `description`, `tools`, `model`** (2026-09-24). Официальный формат Claude Code: субагента можно вызвать по имени, и он работает только с перечисленными инструментами. `tools` — явный список (решение пользователя): `figma-reader` получает четыре инструмента Figma только для чтения и не может менять ни Figma, ни код. Имена инструментов зависят от имени MCP-сервера (здесь — `Figma` → `mcp__Figma__*`); если сервер подключён под другим именем, агент останется без доступа к Figma — поправить список. `model: sonnet` (решение пользователя) — извлечение данных без решений, быстрее и дешевле. Если вернуть файл в `agents/` или убрать frontmatter, вызвать субагента по имени будет нельзя.
 
@@ -178,7 +179,10 @@ skydesk-sandbox/
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
 ├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx
+├── .mcp.json               ← MCP-серверы проекта: storybook
 ├── .claude/
+│   ├── settings.json       ← одобрение MCP storybook, хук SessionStart
+│   ├── hooks/session-start.sh ← облако: npm install + Storybook для MCP
 │   ├── skills/<name>/SKILL.md ← инструкции под конкретные задачи (формат Claude Code)
 │   └── agents/<name>.md    ← субагенты для изолированных задач (формат Claude Code)
 ├── projects/               ← flow doc каждой фичи
