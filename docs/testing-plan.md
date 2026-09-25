@@ -87,7 +87,12 @@ Flow doc — `projects/booking-overview/README.md`. Сравнивать с Figm
 | B5 | `?page=booking&pnr=ABC123` | PNR Search, шаг GDS Required |
 | B6 | `?page=booking` | PNR Search: «Please provide the PNR.» |
 | B7 | Открыть B4, нажать «Назад» в браузере | Возврат на страницу до B4, не на Booking |
-| B8 | Кнопки ◧ и ◨ в Header | Ничего не делают (open question #21) |
+| B8 | Кнопки ◧ и ◨ в Header, клики в sidebar | Ничего не делают (open question #21), адрес не меняется |
+| B9 | `?page=booking&pnr=7JRWT4&office=E6T8`, `?page=booking&persona=agent-no-defaults&pnr=BBV14Q` | Бронирование открывается; Office в Header не показан (open question #22) |
+| B10 | `?page=booking&pnr=ERR000`, `?page=booking&pnr=7JRWT4&office=5GW5`, `?page=booking&pnr=K2M9QP&office=X4PD` | PNR Search: Error, Not Found · Office, нет доступа у Office |
+| B11 | «Booking» → «PNR Search» в навигации, затем «Назад» и «Вперёд» в браузере | Экраны меняются вместе с адресом |
+| B12 | Окно 1024×700 | Header 44px, кнопка ◨ видна, у страницы нет прокрутки |
+| B13 | На `/` ввести `BBV14Q` → Enter | Заглушка Found «Opening BBV14Q in 5GW5 · Sabre», переход в Booking **не** происходит (решение пользователя, 2026-09-25) |
 
 ## Office Selector
 
@@ -106,6 +111,8 @@ Flow doc — `projects/booking-overview/README.md`. Сравнивать с Figm
 6. Окно ниже списка History — History прокручивается, header и footer на месте.
 
 ## Последний прогон
+
+- 2026-09-25 (Booking, задача 2.6): typecheck, lint:tokens, test (136), build — зелёные. В headless Chromium на dev-сервере пройдены Booking B1–B13, PNR Search 1–12 и 5a, живые сценарии «BBV14Q → Found» и B (ABC123 → Galileo): 40 проверок, все прошли, ошибок в консоли нет. Экран 1920×1115 совпадает со скриншотом пользователя и Figma `7994:305661`.
 
 - 2026-09-23 (App Sidebar): typecheck, lint:tokens, test (unit + storybook), build, build-storybook — зелёные. Sidebar проверен в headless Chromium на dev-сервере: вёрстка против Figma `7936:79314`, hover / pressed / focus, stories Hover / Pressed / Focus / Round Trip / Long Name.
 

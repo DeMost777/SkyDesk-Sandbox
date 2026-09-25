@@ -29,9 +29,8 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-План Фазы 2 утверждён пользователем 2026-09-25; задачи Фазы 1 идут параллельно. Как делать каждую — `projects/booking-overview/README.md`.
+Каркас Booking Overview (Фаза 2, итерация 1) готов: 2.1–2.4, 2.6. Переход Found → Booking (2.5) ждёт утверждения PNR Search — в «Потом». Flow doc — `projects/booking-overview/README.md`.
 
-- [2.6] Проверка в браузере, `APPLICATION.md`, `docs/testing-plan.md` — Фаза 2 · зависит от: 2.4
 - [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
 - [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
@@ -85,3 +84,4 @@
 | 2.2 | Модель Booking для Header (`src/lib/booking.ts`) и mock-бронирования по PNR, `BBV14Q` находится поиском | `[2.2]` |
 | 2.3 | Компонент Booking Header по Figma `308:12504`, stories, токены `divider` и `drop-shadow-header` | `[2.3]` |
 | 2.4 | Экран Booking `?page=booking&pnr=…`: App Sidebar + Header + вкладка + пустая зона виджетов; `openBooking`; PNR, который не открывается, → PNR Search | `[2.4]` |
+| 2.6 | Проход в браузере: Booking B1–B13 и регрессия PNR Search, 40 проверок без ошибок | `[2.6]` |
