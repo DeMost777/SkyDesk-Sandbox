@@ -73,9 +73,15 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 - **Нет доступа у Office:** адрес 11 → в Office Selector выбрать `5GW5` → кнопка поиска → Found через `5GW5`.
 - **Смена ввода сбрасывает результат:** на любом результате изменить PNR или Office → результат исчезает.
 
+## Storybook как каталог компонентов
+
+1. `npm run storybook` → у каждого раздела в дереве есть страница **Docs**: описание, таблица props, stories. У Button `variant` и `size` — выбор из списка, не «Set object».
+2. У App Sidebar, History Item, Parts и PNR Search в описании есть `@figma <node id>`.
+3. Для агента: `curl -s localhost:6006/manifests/components.json` — у каждого компонента нет поля `error`, есть `description`; MCP `docs-show` для History Item показывает «Figma: 4920:69057» и props с описаниями.
+
 ## Office Selector
 
-Все состояния — в Storybook: Components / ui / Office Selector (`npm run storybook`). Story `Default` сама проверяет порядок: сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше по алфавиту.
+Все состояния — в Storybook: UI / Office Selector (`npm run storybook`). Story `Default` сама проверяет порядок: сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше по алфавиту.
 
 ## App Sidebar
 

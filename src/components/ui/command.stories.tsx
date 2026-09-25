@@ -2,7 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect } from 'storybook/test'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './command'
 
+/**
+ * Searchable list with keyboard navigation (cmdk): input, groups, items, empty state.
+ * shadcn/ui Command. Also exports CommandDialog — the same list in a Dialog.
+ */
 const meta = {
+  title: 'UI/Command',
   component: Command,
   tags: ['ai-generated'],
 } satisfies Meta<typeof Command>

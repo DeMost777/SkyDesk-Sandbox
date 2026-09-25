@@ -7,7 +7,13 @@ import { OfficeSelector } from './office-selector'
 
 const offices = withDefaultFlags(MOCK_OFFICES, PERSONAS[0].defaults) // defaults: 5GW5, A2K9, Q8L3
 
+/**
+ * Office picker on PNR Search: trigger shows the selected `Office · GDS`, the popover has search,
+ * then Default Offices, then the rest — each group A→Z by code (`sortOfficesForPicker`).
+ * States: loading, error, nothing found. Rules — projects/pnr-search/README.md.
+ */
 const meta = {
+  title: 'UI/Office Selector',
   component: OfficeSelector,
   tags: ['ai-generated'],
   args: { offices, value: null, onChange: fn() },

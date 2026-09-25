@@ -2,7 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect } from 'storybook/test'
 import { Input } from './input'
 
+/**
+ * Text field. shadcn/ui Input; `aria-invalid` shows the error state.
+ */
 const meta = {
+  title: 'UI/Input',
   component: Input,
   tags: ['ai-generated'],
   args: { placeholder: 'Enter a PNR number', 'aria-label': 'PNR' },

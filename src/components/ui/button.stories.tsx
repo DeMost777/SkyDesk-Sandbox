@@ -3,7 +3,12 @@ import { expect } from 'storybook/test'
 import { ArrowUp } from 'lucide-react'
 import { Button } from './button'
 
+/**
+ * Action button. shadcn/ui Button with the Skydesk `brand` variant; `asChild` renders the child
+ * element (a link) with button styles.
+ */
 const meta = {
+  title: 'UI/Button',
   component: Button,
   tags: ['ai-generated'],
   args: { children: 'Search booking' },

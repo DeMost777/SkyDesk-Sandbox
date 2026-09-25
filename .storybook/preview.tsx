@@ -3,6 +3,8 @@ import '../src/index.css'
 import { PERSONAS } from '../src/mocks/personas.mock'
 
 const preview: Preview = {
+  // Every component gets a Docs page: description, props table, stories.
+  tags: ['autodocs'],
   // The app reads saved Default Offices per persona (src/hooks/use-default-offices.ts).
   // Seed exactly those keys, so a default saved in one story never leaks into the next.
   beforeEach() {

@@ -14,6 +14,21 @@ const config: StorybookConfig = {
     "storybook-addon-pseudo-states"
   ],
   "framework": "@storybook/react-vite",
+  // react-docgen-typescript, not the default react-docgen: it expands cva variants (Button
+  // variant/size) and inherited props. Autodocs and the components manifest behind addon-mcp
+  // both read props from here.
+  "typescript": {
+    "reactDocgen": "react-docgen-typescript",
+    // Setting options replaces Storybook's defaults, so they are repeated here:
+    // string unions become select controls, HTML attributes stay out of the props table.
+    // tsconfig.json only references the app and node configs; the app one lists the source files.
+    "reactDocgenTypescriptOptions": {
+      "tsconfigPath": "./tsconfig.app.json",
+      "shouldExtractLiteralValuesFromEnum": true,
+      "shouldRemoveUndefinedFromOptional": true,
+      "propFilter": (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true)
+    }
+  },
   // Serves /fonts/Geist-Variable.woff2, which src/index.css loads.
   "staticDirs": ["../public"]
 };

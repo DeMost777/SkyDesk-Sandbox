@@ -14,7 +14,6 @@ interface HistoryItemProps {
   className?: string
 }
 
-// Figma 4920:69057: PNR · GDS code, interaction date / itinerary, interaction time.
 export function HistoryItem({ entry, now, isActive = false, onSelect, className }: HistoryItemProps) {
   const itinerary = toItinerary(entry.route)
   const { date, time } = formatInteraction(entry.lastInteractionAt, now)

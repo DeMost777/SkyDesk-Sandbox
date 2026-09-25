@@ -3,7 +3,12 @@ import { expect, within } from 'storybook/test'
 import { Button } from './button'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
+/**
+ * Floating panel attached to a trigger. shadcn/ui Popover on Radix; give PopoverContent an
+ * `aria-label` — it is a dialog for screen readers.
+ */
 const meta = {
+  title: 'UI/Popover',
   component: Popover,
   tags: ['ai-generated'],
 } satisfies Meta<typeof Popover>

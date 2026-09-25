@@ -1,6 +1,6 @@
 # Roadmap
 
-> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-24.
+> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-25.
 > Это не автопилот: сессия не обязана брать задачу отсюда. Обычно задачу ставит пользователь в разговоре — она записывается в «Сейчас» и выполняется. Как вести файл — `CLAUDE.md` → «Правила работы», правило 11.
 > Как делать задачу — в flow doc фичи. Неизвестное — в `docs/open-questions.md`. Здесь — только что и в каком порядке.
 
@@ -15,7 +15,7 @@
 | Фаза | Что | Статус |
 |---|---|---|
 | 0 | PNR Search: закрыть покрытие | ✅ |
-| 1 | Фундамент среды: skills, агенты, каталог компонентов, карта Figma, модель Booking | в работе |
+| 1 | Фундамент среды: skills, агенты, Storybook как каталог компонентов, модель Booking | в работе |
 | 2 | Каркас Booking Overview: layout, шапка PNR · GDS · Office, контракт виджета | |
 | 3 | Виджеты Booking, по одному | |
 | 4 | Чат и AI-действия | |
@@ -29,9 +29,8 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
-- [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
-- [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
+- [1.7] Figma node экранов — в flow doc своего flow (компоненты — в Storybook, 1.6). Проверить, нужна ли задача отдельно после 1.6 — Фаза 1
+- [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`; новый компонент — с autodocs, JSDoc и Figma node) и `extract-tokens` (HSL и семантические токены) — Фаза 1
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
 - [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
 - [1.11] Доменная модель Booking (`src/lib/booking.ts`) и сценарные mock-бронирования (`src/mocks/`) — Фаза 1
@@ -55,6 +54,11 @@
 **Skills** (создавать, когда задача повторилась второй раз)
 - `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `build-widget`, `record-decision`.
 
+**Storybook**
+- Подключить MCP Storybook в `.mcp.json` (`http://localhost:6006/mcp`), чтобы агент видел каталог без чтения файлов. Решить: сервер доступен, только пока идёт `npm run storybook`.
+- Сниппеты addon-mcp пишут `import … from 'skydesk-sandbox'`. Тег `@import` в JSDoc компонента не сработал — найти способ задать путь `@/components/…`.
+- Figma node у компонентов UI — open question #22.
+
 **Документы**
 - `APPLICATION.md`: разделы «Personas» и «Mock PNR» относятся в основном к PNR Search — решить, когда появятся данные Booking.
 
@@ -74,4 +78,5 @@
 | — | Параметры адреса PNR Search → его flow doc | `0d13326` |
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
+| 1.6 | Storybook — каталог компонентов: autodocs, описания и `@figma` в JSDoc над `meta`, props через react-docgen-typescript, манифест для addon-mcp без ошибок | `[1.6]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |

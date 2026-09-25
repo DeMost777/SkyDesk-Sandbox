@@ -4,13 +4,18 @@ import { createHistoryEntries } from '@/mocks/booking-history.mock'
 import { HistoryItem } from './history-item'
 import { expectAccentFill, expectAccentFillOn, type InteractionState } from './story-checks'
 
-// Figma 4920:69057 — states Default / Hover / Active, itinerary variants One way / Round / Multi trip.
-// Pressed and Focus are not in Figma: pressed = hover, focus = sidebar-ring (projects/app-sidebar).
 
 const NOW = new Date(2026, 2, 13, 18, 0)
 const entries = createHistoryEntries(NOW)
 const byPnr = (pnr: string) => entries.find((e) => e.pnr === pnr)!
 
+/**
+ * One booking in History: PNR · GDS code, date and time of the last action, Itinerary.
+ * Figma states Default / Hover / Active and Itinerary variants One way / Round / Multi trip.
+ * Pressed and Focus are not in Figma: rules in projects/app-sidebar/README.md.
+ *
+ * @figma 4920:69057
+ */
 const meta = {
   title: 'Skydesk/App Sidebar/History Item',
   component: HistoryItem,

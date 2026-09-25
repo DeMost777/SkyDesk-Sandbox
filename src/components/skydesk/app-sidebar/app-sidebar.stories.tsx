@@ -4,11 +4,15 @@ import { createHistoryEntries } from '@/mocks/booking-history.mock'
 import { MOCK_USER } from '@/mocks/user.mock'
 import { AppSidebar } from './index'
 
-// Figma 548:16649 (Type=Default). Flow doc: projects/app-sidebar/README.md.
-
 const NOW = new Date(2026, 2, 13, 18, 0)
 const history = createHistoryEntries(NOW)
 
+/**
+ * App navigation on the left: Trava Sky Desk, General (New chat), History, the agent in the footer.
+ * Figma variant Type=Default; Collapsed is not built. Rules — projects/app-sidebar/README.md.
+ *
+ * @figma 548:16649
+ */
 const meta = {
   title: 'Skydesk/App Sidebar',
   component: AppSidebar,

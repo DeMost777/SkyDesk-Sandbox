@@ -11,7 +11,11 @@ import {
   DialogTrigger,
 } from './dialog'
 
+/**
+ * Modal window: trigger, content with header, description and footer. shadcn/ui Dialog on Radix.
+ */
 const meta = {
+  title: 'UI/Dialog',
   component: Dialog,
   tags: ['ai-generated'],
 } satisfies Meta<typeof Dialog>

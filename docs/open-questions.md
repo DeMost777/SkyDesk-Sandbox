@@ -68,6 +68,12 @@
    Сейчас: ничего — решение пользователя, 2026-09-23. Active item в приложении поэтому не появляется, только в Storybook.
    Решает: product. Добавлено 2026-09-23.
 
+## Компоненты
+
+22. **Figma node у компонентов UI** (Button, Input, Badge, Dialog, Popover, Command, Office Selector). В репозитории их нет — `@figma` стоит только у App Sidebar, History Item, Parts и PNR Search. Нет и ссылки на сам Figma-файл, только node id.
+   Сейчас: без `@figma`. Нужны ссылка на файл и node компонентов библиотеки — тогда добавить в JSDoc над `meta`.
+   Решает: design. Добавлено 2026-09-25.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».

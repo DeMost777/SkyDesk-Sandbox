@@ -3,11 +3,18 @@ import { MOCK_USER } from '@/mocks/user.mock'
 import { NewChatButton, SidebarBrand, SidebarUser } from './index'
 import { expectAccentFillOn, type InteractionState } from './story-checks'
 
-// Header, New chat and Footer: one SidebarMenuButton each, same states as History Item.
 // Hover / Pressed / Focus are forced with storybook-addon-pseudo-states.
 
+/**
+ * App Sidebar parts: header (SidebarBrand), New chat (NewChatButton), footer (SidebarUser).
+ * One SidebarMenuButton each, same states as History Item.
+ *
+ * @figma 548:16649
+ */
 const meta = {
   title: 'Skydesk/App Sidebar/Parts',
+  component: SidebarBrand,
+  subcomponents: { NewChatButton, SidebarUser },
   tags: ['ai-generated'],
   decorators: [
     (Story) => (
@@ -16,7 +23,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta
+} satisfies Meta<typeof SidebarBrand>
 
 export default meta
 type Story = StoryObj<typeof meta>

@@ -5,11 +5,16 @@ import { cn } from '@/lib/utils'
 import { sortOfficesForPicker, type Office, type OfficeSelection } from '@/lib/office'
 
 export interface OfficeSelectorProps {
+  /** Offices available to the agent, with `isDefault` set for their Default Offices. */
   offices?: Office[]
+  /** Selected Office; null — nothing selected, Skydesk decides the Office itself. */
   value?: OfficeSelection | null
+  /** Called with the picked Office, or null when the agent clears the selection. */
   onChange?: (value: OfficeSelection | null) => void
   disabled?: boolean
+  /** Offices are loading: skeleton rows instead of the list. */
   loading?: boolean
+  /** Offices failed to load: message and «Try again». */
   error?: boolean
   onManageDefaults?: () => void
   className?: string

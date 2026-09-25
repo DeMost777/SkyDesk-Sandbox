@@ -6,7 +6,14 @@ import PnrSearchPage from './index'
 // Each story is one address from projects/pnr-search/README.md → "States and how to reach them".
 // Result states come from the real searchPnr on mocks, exactly as in the app.
 
+/**
+ * PNR Search screen: App Sidebar on the left, search on the right. Initial state is read from the
+ * URL, so every state has an address — projects/pnr-search/README.md.
+ *
+ * @figma 7936:79314
+ */
 const meta = {
+  title: 'Pages/PNR Search',
   component: PnrSearchPage,
   tags: ['ai-generated'],
   parameters: { layout: 'fullscreen' },

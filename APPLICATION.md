@@ -1,6 +1,6 @@
 # APPLICATION.md — что есть в sandbox
 
-> Карта приложения: экраны, Storybook, personas, mock-данные. Updated: 2026-09-24.
+> Карта приложения: экраны, Storybook, personas, mock-данные. Updated: 2026-09-25.
 > Продуктовый контекст и правила — `CLAUDE.md`. Поведение каждого flow — его flow doc.
 
 ## Экраны
@@ -14,13 +14,14 @@
 ## Storybook
 
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
-- Локально: `npm run storybook` → `http://localhost:6006`.
+- Локально: `npm run storybook` → `http://localhost:6006`. Для агента — MCP `http://localhost:6006/mcp` (`docs-list`, `docs-show`).
+- Это каталог компонентов: у каждого раздела страница **Docs** — назначение, Figma node, таблица props, все stories.
 
 | Раздел | Stories |
 |---|---|
-| Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
+| UI | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
-| Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
+| Pages / PNR Search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
 ## Адреса
 
