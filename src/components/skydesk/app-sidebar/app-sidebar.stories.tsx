@@ -9,9 +9,7 @@ const history = createHistoryEntries(NOW)
 
 /**
  * App navigation on the left: Trava Sky Desk, General (New chat), History, the agent in the footer.
- * Figma variant Type=Default; Collapsed is not built. Rules — projects/app-sidebar/README.md.
- *
- * @figma 548:16649
+ * Collapsed variant is not built. Rules — projects/app-sidebar/README.md.
  */
 const meta = {
   title: 'Skydesk/App Sidebar',

@@ -9,8 +9,6 @@ import PnrSearchPage from './index'
 /**
  * PNR Search screen: App Sidebar on the left, search on the right. Initial state is read from the
  * URL, so every state has an address — projects/pnr-search/README.md.
- *
- * @figma 7936:79314
  */
 const meta = {
   title: 'Pages/PNR Search',

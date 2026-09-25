@@ -76,8 +76,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 ## Storybook как каталог компонентов
 
 1. `npm run storybook` → у каждого раздела в дереве есть страница **Docs**: описание, таблица props, stories. У Button `variant` и `size` — выбор из списка, не «Set object».
-2. У App Sidebar, History Item, Parts и PNR Search в описании есть `@figma <node id>`.
-3. Для агента: `curl -s localhost:6006/manifests/components.json` — у каждого компонента нет поля `error`, есть `description`; MCP `docs-show` для History Item показывает «Figma: 4920:69057» и props с описаниями.
+2. Для агента: `curl -s localhost:6006/manifests/components.json` — у каждого компонента нет поля `error`, есть `description`; MCP `docs-show` для History Item показывает описание и props с описаниями.
 
 ## Office Selector
 

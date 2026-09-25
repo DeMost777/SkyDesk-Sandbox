@@ -15,7 +15,7 @@
 
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
 - Локально: `npm run storybook` → `http://localhost:6006`. Для агента — MCP `http://localhost:6006/mcp` (`docs-list`, `docs-show`).
-- Это каталог компонентов: у каждого раздела страница **Docs** — назначение, Figma node, таблица props, все stories.
+- Это каталог компонентов: у каждого раздела страница **Docs** — назначение, таблица props, все stories.
 
 | Раздел | Stories |
 |---|---|

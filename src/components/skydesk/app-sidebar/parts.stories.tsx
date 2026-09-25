@@ -8,8 +8,6 @@ import { expectAccentFillOn, type InteractionState } from './story-checks'
 /**
  * App Sidebar parts: header (SidebarBrand), New chat (NewChatButton), footer (SidebarUser).
  * One SidebarMenuButton each, same states as History Item.
- *
- * @figma 548:16649
  */
 const meta = {
   title: 'Skydesk/App Sidebar/Parts',
