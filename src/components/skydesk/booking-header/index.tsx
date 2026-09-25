@@ -18,12 +18,19 @@ function Divider() {
 }
 
 export interface BookingHeaderProps {
+  /** The open booking: PNR, GDS, passengers, creation date. */
   booking: Booking
+  /** Left button ◧. The screen passes nothing yet — no behaviour (open question #21). */
   onToggleSidebar?: () => void
+  /** Right button ◨. The screen passes nothing yet — no behaviour (open question #21). */
   onTogglePanel?: () => void
   className?: string
 }
 
+/**
+ * Header of the Booking screen: PNR · GDS · passengers · creation date, sidebar and panel buttons.
+ * Office is not shown (open question #22). Figma 308:12504. Flow doc: projects/booking-overview/README.md.
+ */
 export function BookingHeader({ booking, onToggleSidebar, onTogglePanel, className }: BookingHeaderProps) {
   const created = formatCreated(booking.createdAt)
   const items = [

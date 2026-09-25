@@ -14,6 +14,12 @@ const config: StorybookConfig = {
     "storybook-addon-pseudo-states"
   ],
   "framework": "@storybook/react-vite",
+  // react-docgen (the default) cannot resolve the "@/…" alias and drops every component that
+  // imports through it — no props or description reach Docs or the MCP manifest.
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
+    reactDocgenTypescriptOptions: { tsconfigPath: './tsconfig.app.json' },
+  },
   // Serves /fonts/Geist-Variable.woff2, which src/index.css loads.
   "staticDirs": ["../public"]
 };

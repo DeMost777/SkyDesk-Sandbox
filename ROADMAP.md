@@ -23,7 +23,7 @@
 
 ## Сейчас
 
-—
+- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Дальше: Foundations (токены), autodocs + JSDoc + Figma у компонентов, субагент `storybook-reader`, проверка полноты, удалить `docs/components.md` — Фаза 1
 
 ## Дальше
 
