@@ -121,6 +121,8 @@ PNR + Select Office/GDS → Booking
 | History item | Одна карточка History: PNR · GDS code, Itinerary, дата и время последнего действия | «session card» |
 | Itinerary | Маршрут бронирования по кодам аэропортов: One way `A → B`, Round `A ⇆ B`, Multi trip `A → B → C` | «route» в UI |
 | PNR Required | Поиск запущен с пустым полем PNR | «empty state» — это начальный экран, до поиска |
+| Booking Overview | Вкладка экрана Booking: виджеты бронирования друг под другом | «Widgets overview» — имя слоя в Figma |
+| Widget | Блок Booking Overview про одну часть бронирования (Passengers, Segments…), сворачивается как аккордеон | «section», «card» |
 
 ## Запуск и проверка
 
