@@ -48,6 +48,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 | 3 | `?pnr=7JRWT4&state=loading` | «Loading...», поле и Office заблокированы, рамка primary |
 | 4 | `?pnr=ABC123&state=result` | Кнопки Amadeus / Sabre / Galileo, подсказка, рамка primary |
 | 5 | `?pnr=7JRWT4&state=result` | «Opening 7JRWT4 in A2K9 · Amadeus — Your default office for Amadeus» |
+| 5a | `?pnr=BBV14Q&state=result` | «Opening BBV14Q in 5GW5 · Sabre — Your default office for Sabre» (PNR бронирования Booking Overview из Figma) |
 | 6 | `?persona=agent-no-defaults&pnr=7JRWT4&state=result` | «… · B3R7 — Creation office…» |
 | 7 | `?pnr=ABC123&gds=Galileo&state=result` | «Opening ABC123 in Q8L3 · Galileo» |
 | 8 | `?pnr=7JRWT4&office=E6T8&state=result` | «… · E6T8 — Office you selected» + checkbox «Use this as my default office for Amadeus» |

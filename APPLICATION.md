@@ -1,6 +1,6 @@
 # APPLICATION.md — что есть в sandbox
 
-> Карта приложения: экраны, Storybook, personas, mock-данные. Updated: 2026-09-24.
+> Карта приложения: экраны, Storybook, personas, mock-данные. Updated: 2026-09-25.
 > Продуктовый контекст и правила — `CLAUDE.md`. Поведение каждого flow — его flow doc.
 
 ## Экраны
@@ -41,10 +41,11 @@
 
 ## Mock PNR
 
-Данные детерминированные: фиксированные PNR, даты и Office. Источник — `src/mocks/pnr-search.mock.ts`.
+Данные детерминированные: фиксированные PNR, даты и Office. Источник — `src/mocks/pnr-search.mock.ts`. Каждый найденный PNR открывает бронирование — `src/mocks/bookings.mock.ts` (дата создания; остальное — из того же источника). Таблица бронирований — `projects/booking-overview/README.md` → «Mock-бронирования».
 
 | PNR | Где существует | Creation office | Skydesk знает GDS? | Итог поиска без контекста |
 |---|---|---|---|---|
+| `BBV14Q` | Sabre | `D4M5` | да (есть в History) | Found. Бронирование из Figma Booking Overview |
 | `7JRWT4` | Amadeus | `B3R7` | да | Found |
 | `K2M9QP` | Sabre | `7MTR` | да | Found. С Office `X4PD` — Error: у Office нет доступа |
 | `ABC123` | Galileo | `C1Z2` | нет | GDS Required → Galileo → Found |
@@ -61,8 +62,8 @@
 
 | Слой | Где | Что внутри |
 |---|---|---|
-| Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts`, `src/lib/booking-history.ts`, `src/lib/user.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
-| Данные | `src/mocks/` | Mock-реализация `PnrDirectory`, Office, personas |
+| Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts`, `src/lib/booking-history.ts`, `src/lib/booking.ts`, `src/lib/user.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
+| Данные | `src/mocks/` | Mock-реализации `PnrDirectory`, `BookingDirectory`, `BookingHistory`; Office, personas |
 | Состояние | `src/hooks/` | Default Offices (localStorage), адрес sandbox |
 | Компоненты | `src/components/ui/` — shadcn/ui примитивы (включая `sidebar.tsx`); `src/components/skydesk/` — компоненты Skydesk из них | UI без логики экрана |
 | Экран | `src/pages/<flow>/` | UI; локальные компоненты — в `components/` |

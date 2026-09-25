@@ -31,7 +31,6 @@
 
 План Фазы 2 утверждён пользователем 2026-09-25; задачи Фазы 1 идут параллельно. Как делать каждую — `projects/booking-overview/README.md`.
 
-- [2.2] Модель Booking для Header (`src/lib/booking.ts`: тип, интерфейс данных, `getBooking`, число пассажиров, дата создания — с тестами) и mock-бронирования по PNR (`BBV14Q` + `7JRWT4`, `K2M9QP`, `ABC123`) — Фаза 2 · начало 1.11
 - [2.3] Компонент Booking Header (`src/components/skydesk/booking-header/`) по Figma `308:12504`, stories — Фаза 2 · зависит от: 2.2
 - [2.4] Экран Booking (`src/pages/booking/`, `?page=booking&pnr=…`): App Sidebar + Header + вкладка «Booking Overview» + пустая зона виджетов, stories — Фаза 2 · зависит от: 2.3
 - [2.5] Переход Found → Booking, заглушка Found удаляется; решить, куда уходит «Use as default» (open question #24) — Фаза 2 · зависит от: 2.4
@@ -84,3 +83,4 @@
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 2.1 | План Фазы 2 и flow doc `projects/booking-overview/README.md`; open questions #22–#26, #3 закрыт | `[2.1]` |
+| 2.2 | Модель Booking для Header (`src/lib/booking.ts`) и mock-бронирования по PNR, `BBV14Q` находится поиском | `[2.2]` |

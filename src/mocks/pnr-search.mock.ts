@@ -6,6 +6,16 @@ import { GdsError, type BookingSummary, type PnrDirectory } from '@/lib/pnr-sear
 /** Bookings as they exist in each GDS. */
 export const MOCK_BOOKINGS: BookingSummary[] = [
   {
+    // From Figma (Booking Header 308:12504, History 548:16649). Passenger names — first three
+    // of the Passengers widget in Figma 4678:125394; Creation office and departure — sandbox.
+    pnr: 'BBV14Q',
+    gds: 'Sabre',
+    creationOffice: 'D4M5',
+    passengers: ['NGUYEN/DANIEL MR', 'NGUYEN/THI THUY VAN MR', 'NGUYEN/THI THUY NGA MR'],
+    route: 'CDG → LON → JFK',
+    departureDate: '2026-10-20',
+  },
+  {
     pnr: '7JRWT4',
     gds: 'Amadeus',
     creationOffice: 'B3R7',
@@ -33,6 +43,7 @@ export const MOCK_BOOKINGS: BookingSummary[] = [
 
 /** PNRs Skydesk has processed before, so it already knows their GDS. ABC123 is new to Skydesk. */
 const KNOWN_GDS: Record<string, GDS> = {
+  'BBV14Q': 'Sabre', // in History, so Skydesk has opened it before
   '7JRWT4': 'Amadeus',
   'K2M9QP': 'Sabre',
   'ERR000': 'Amadeus',

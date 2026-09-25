@@ -1,7 +1,7 @@
 # Flow: Booking Overview
 
 > Flow doc. Читать до кода, обновлять в том же изменении, что и поведение.
-> Updated: 2026-09-25. Phase: **coverage** (см. CLAUDE.md → «Фаза»). Кода ещё нет — документ написан до него (правило 4).
+> Updated: 2026-09-25. Phase: **coverage** (см. CLAUDE.md → «Фаза»).
 
 **Principle:** агент открыл PNR — и сразу видит бронирование. Экран показывает, что есть в бронировании, и не просит агента ничего выбирать: GDS и Office уже определил PNR Search.
 
@@ -78,7 +78,7 @@
 - **App Sidebar — тот же компонент, что на PNR Search.** Если открытое бронирование есть в History, его History item — Active (`isActive`, состояние уже описано в `projects/app-sidebar/README.md`). History при открытии бронирования не меняется — open question #25.
 - **Mock-данные бронирования привязаны к PNR** (решение пользователя, 2026-09-25). Каждый PNR, который PNR Search находит, открывает своё бронирование. Добавляется `BBV14Q` из Figma — он уже есть в History, данные согласованы с ним.
 - **Модель Booking растёт вместе с виджетами.** В итерации 1 — только поля Header. Поля виджетов добавляются в задаче виджета, не заранее: иначе модель придумывается без Figma.
-- **Логика — в `src/lib/booking.ts`, данные — через интерфейс** (как `PnrDirectory` у PNR Search). Экран вызывает `getBooking` и форматтеры, реальный API заменит одну реализацию.
+- **Логика — в `src/lib/booking.ts`, данные — через интерфейс** (как `PnrDirectory` у PNR Search). Интерфейс `BookingDirectory` (`get(pnr, gds)`), форматтеры `passengerCountLabel` и `formatCreated`. Экран вызывает их, реальный API заменит одну реализацию `BookingDirectory`.
 
 ## Mock-бронирования
 
@@ -86,12 +86,14 @@
 
 | PNR | GDS | Creation office | Пассажиры | Created | Откуда значения |
 |---|---|---|---|---|---|
-| `BBV14Q` | Sabre | `D4M5` | 3 | 08/10/2025 13:44 | Figma; Creation office — выбран в sandbox |
-| `7JRWT4` | Amadeus | `B3R7` | 2 | выбрать в 2.2 | Mock PNR Search |
-| `K2M9QP` | Sabre | `7MTR` | 1 | выбрать в 2.2 | Mock PNR Search |
-| `ABC123` | Galileo | `C1Z2` | 1 | выбрать в 2.2 | Mock PNR Search |
+| `BBV14Q` | Sabre | `D4M5` | 3 | 08/10/2025 13:44 | Figma; Creation office и дата вылета — sandbox. Имена — первые три пассажира виджета Passengers в Figma `4678:125394`, титулы как в Figma |
+| `7JRWT4` | Amadeus | `B3R7` | 2 | 02/09/2026 09:15 | Mock PNR Search; дата — sandbox |
+| `K2M9QP` | Sabre | `7MTR` | 1 | 14/09/2026 16:30 | Mock PNR Search; дата — sandbox |
+| `ABC123` | Galileo | `C1Z2` | 1 | 27/08/2026 11:05 | Mock PNR Search; дата — sandbox |
 
-`BBV14Q` Skydesk знает (он в History) — поиск находит его в Sabre без шага GDS Required.
+`BBV14Q` Skydesk знает (он в History) — поиск находит его в Sabre без шага GDS Required; с persona `agent-with-defaults` — через Default Office `5GW5`.
+
+**Один источник данных.** PNR, GDS, Creation office и пассажиры берутся из `MOCK_BOOKINGS` (`src/mocks/pnr-search.mock.ts`) — то, что нашёл поиск. `src/mocks/bookings.mock.ts` добавляет к ним только поля Booking (дату создания). Поэтому результат поиска и открытое бронирование не расходятся; тест `src/lib/booking.test.ts` это проверяет.
 
 ## Scenarios
 
@@ -131,7 +133,7 @@
 
 ## Known gaps (coverage)
 
-Итерация 1 не начата. Задачи 2.2–2.6 в `ROADMAP.md`.
+Итерация 1: модель и mock-данные готовы (2.2). Нет экрана — Header, страница и переход из PNR Search: задачи 2.3–2.5 в `ROADMAP.md`.
 
 ## Open questions
 
@@ -139,4 +141,4 @@
 
 ## Test cases
 
-Будут: `src/lib/booking.test.ts` (поиск бронирования по PNR, число пассажиров, формат даты создания), stories Header и страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).
+`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование, `BBV14Q` совпадает с Figma. Будут: stories Header и страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).
