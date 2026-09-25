@@ -30,7 +30,6 @@
 Сверху — следующая. Порядок меняет только пользователь.
 
 - [1.7] Figma node экранов — в flow doc своего flow. Проверить, нужна ли задача отдельно: компоненты с Figma пока не связываем (решение пользователя, 2026-09-25) — Фаза 1
-- [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`; новый компонент — с JSDoc над `meta` и props, без ссылок на Figma) и `extract-tokens` (HSL и семантические токены) — Фаза 1
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
 - [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
 - [1.11] Доменная модель Booking (`src/lib/booking.ts`) и сценарные mock-бронирования (`src/mocks/`) — Фаза 1
@@ -55,7 +54,11 @@
 - `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `build-widget`, `record-decision`.
 
 **Storybook**
+- Stories нет у `ui/label.tsx` и `ui/sidebar.tsx` (sidebar покрыт через App Sidebar).
 - Сниппеты addon-mcp пишут `import … from 'skydesk-sandbox'`. Тег `@import` в JSDoc компонента не сработал — найти способ задать путь `@/components/…`.
+
+**Токены**
+- Токены из пресета shadcn округлены (`primary` `174 84% 32%` вместо `174.7 83.9% 31.6%`). Решить, приводить ли к точным значениям — со сравнением скриншотов.
 
 **Документы**
 - `APPLICATION.md`: разделы «Personas» и «Mock PNR» относятся в основном к PNR Search — решить, когда появятся данные Booking.
@@ -78,4 +81,5 @@
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
 | 1.6 | Storybook — каталог компонентов: autodocs, описания в JSDoc над `meta` (без Figma), props через react-docgen-typescript, манифест для addon-mcp без ошибок | `[1.6]` |
 | 1.14 | Storybook MCP в Claude Code: `.mcp.json`, `enabledMcpjsonServers`, SessionStart-хук для облака (npm install + Storybook) | `[1.14]` |
+| 1.8 | Skills `build-component` (каталог — Storybook/MCP, структура папок, story как документация и тест, без Figma) и `extract-tokens` (HSL-каналы точно, семантические имена, Tailwind, `extendTailwindMerge`, проверка скриншотами) | `[1.8]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
