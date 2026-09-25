@@ -35,7 +35,7 @@
    Решает: design. Добавлено 2026-09-23.
 
 15. **Названия новых токенов.** Figma-файл с переменными не был доступен, названия выбраны в sandbox: `surface`, `loading-start/end`, `radius-card` (16px), `radius-control` (12px), `font-size-heading`, `font-size-2xs`, `shadow-popover`, `drop-shadow-card`.
-   Сейчас: значения точно как в Figma-макете, названия — наши. Если в Figma переменные называются иначе — переименовать под Figma.
+   Сейчас: значения точно как в Figma-макете, названия — наши. Если в Figma переменные называются иначе — переименовать под Figma. Добавлены 2026-09-25 для Booking Header: `divider` (`#e2e6ed`, в Figma — stroke без переменной), `drop-shadow-header`.
    Решает: design. Добавлено 2026-09-23.
 
 ## App Sidebar

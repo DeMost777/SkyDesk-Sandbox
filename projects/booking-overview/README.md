@@ -58,7 +58,22 @@
 
 Скрыто в Figma и **не показываем**: «Time Limit: 12 OCT 13:44», кнопка Primary. Иконка часов справа есть только в конечном виде — не показываем.
 
-Размеры, шрифты и цвета снимаются из Figma в задаче 2.3 (компонент), не здесь.
+**Компонент** — `src/components/skydesk/booking-header/` (`BookingHeader`, props: `booking`, `onToggleSidebar`, `onTogglePanel`). Stories — `Skydesk / Booking Header`.
+
+| Что | Figma | В коде |
+|---|---|---|
+| Высота, отступы | 44px, 16 / 8 | `h-11 px-4 py-2` |
+| Фон, нижняя граница, тень | background, border, `0 1px 6px rgba(0,0,0,.08)` | `bg-background border-b drop-shadow-header` (новый токен) |
+| Промежуток между элементами | 16px | `gap-4` |
+| Разделитель | 0×16, stroke 1px `#e2e6ed` по центру — места не занимает | `Divider`, цвет — новый токен `divider` |
+| PNR | Geist Medium 16 / 20 | `text-base font-medium leading-5`, это `<h1>` страницы |
+| GDS, пассажиры, «Created:» | Geist Regular 14 / 20 | `text-sm` |
+| Время создания | 12 / 16, muted-foreground | `text-xs text-muted-foreground` |
+| Кнопки | Button Icon 28×28, иконка 16; слева радиус 8, справа 6 | `Button variant="ghost"`, `size-7`; иконки lucide `PanelLeft`, `PanelRight`, `Users` |
+
+Положение элементов сверено со story в Chromium: x совпадает с Figma до 1–2px (разница — отрисовка шрифта). Ширина Header — вся область, при узкой области элементы остаются в одну строку и обрезаются, кнопка панели всегда видна (story `Narrow`).
+
+Названия кнопок для скринридера — «Toggle sidebar», «Toggle panel»: в Figma их нет, выбраны в sandbox. Hover и Focus кнопок — стандартные у shadcn `ghost` (фон `accent`); с Figma не сверены.
 
 ### Вкладка «Booking Overview»
 
@@ -133,7 +148,7 @@
 
 ## Known gaps (coverage)
 
-Итерация 1: модель и mock-данные готовы (2.2). Нет экрана — Header, страница и переход из PNR Search: задачи 2.3–2.5 в `ROADMAP.md`.
+Итерация 1: модель и mock-данные (2.2) и компонент Header (2.3) готовы. Нет страницы и перехода из PNR Search: задачи 2.4–2.5 в `ROADMAP.md`.
 
 ## Open questions
 
@@ -141,4 +156,4 @@
 
 ## Test cases
 
-`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование с датой создания, `BBV14Q` совпадает с Figma. `src/lib/pnr-search.test.ts`: поиск находит `BBV14Q` в Sabre через Default Office `5GW5`. Будут: stories Header и страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).
+`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование с датой создания, `BBV14Q` совпадает с Figma. `src/lib/pnr-search.test.ts`: поиск находит `BBV14Q` в Sabre через Default Office `5GW5`. Stories Header (`booking-header.stories.tsx`): текст и высота 44px, Office не показан, `1 passenger`, кнопки вызывают обработчики, узкая область. Будут: stories страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).

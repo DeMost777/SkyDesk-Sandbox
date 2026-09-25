@@ -48,6 +48,7 @@ const config: Config = {
           foreground: 'hsl(var(--brand-foreground))',
         },
         surface: 'hsl(var(--surface))',
+        divider: 'hsl(var(--divider))',
         loading: {
           start: 'hsl(var(--loading-start))',
           end: 'hsl(var(--loading-end))',
@@ -82,6 +83,7 @@ const config: Config = {
       },
       dropShadow: {
         card: 'var(--drop-shadow-card)',
+        header: 'var(--drop-shadow-header)',
       },
       fontFamily: {
         sans: ['Geist', 'system-ui', 'sans-serif'],

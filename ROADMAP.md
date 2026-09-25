@@ -31,7 +31,6 @@
 
 План Фазы 2 утверждён пользователем 2026-09-25; задачи Фазы 1 идут параллельно. Как делать каждую — `projects/booking-overview/README.md`.
 
-- [2.3] Компонент Booking Header (`src/components/skydesk/booking-header/`) по Figma `308:12504`, stories — Фаза 2 · зависит от: 2.2
 - [2.4] Экран Booking (`src/pages/booking/`, `?page=booking&pnr=…`): App Sidebar + Header + вкладка «Booking Overview» + пустая зона виджетов, stories — Фаза 2 · зависит от: 2.3
 - [2.5] Переход Found → Booking, заглушка Found удаляется; решить, куда уходит «Use as default» (open question #24) — Фаза 2 · зависит от: 2.4
 - [2.6] Проверка в браузере, `APPLICATION.md`, `docs/testing-plan.md` — Фаза 2 · зависит от: 2.5
@@ -52,6 +51,7 @@
 - Виджеты по порядку из Figma: Passengers, Segments («Flight information»), Ticket, Services, EMD, Remarks, Messages, Contacts — Фаза 3.
 - Tabs над виджетами: сейчас одна вкладка «Booking Overview» — какие ещё, решить с design.
 - Header: иконка часов справа, Time Limit (скрыт в Figma), действие кнопок sidebar и панели.
+- Header: сверить Hover / Focus кнопок с Figma (сейчас — shadcn `ghost`); названия кнопок для скринридера — с design.
 - Чат справа (362px): mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить — Фаза 4.
 
 **Агенты**
@@ -84,3 +84,4 @@
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 2.1 | План Фазы 2 и flow doc `projects/booking-overview/README.md`; open questions #22–#26, #3 закрыт | `[2.1]` |
 | 2.2 | Модель Booking для Header (`src/lib/booking.ts`) и mock-бронирования по PNR, `BBV14Q` находится поиском | `[2.2]` |
+| 2.3 | Компонент Booking Header по Figma `308:12504`, stories, токены `divider` и `drop-shadow-header` | `[2.3]` |
