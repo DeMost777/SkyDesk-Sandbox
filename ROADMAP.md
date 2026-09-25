@@ -23,7 +23,7 @@
 
 ## Сейчас
 
-- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Шаг 2 ✅ `.mcp.json`, SessionStart hook (Storybook в фоне), субагент `storybook-reader`, запасной `npm run storybook:docs`. Дальше: Foundations (токены) в MDX, JSDoc + Figma у всех компонентов, проверка полноты в `npm test`, удалить `docs/components.md`, перевести skills — Фаза 1
+- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Шаг 2 ✅ `.mcp.json`, SessionStart hook (Storybook в фоне), субагент `storybook-reader`, запасной `npm run storybook:docs`. Шаг 3 ✅ Foundations: Overview, Colors, Typography, Spacing, Radius and Shadows (генерируются из токенов, `npm run foundations`), Layout (вручную); тест свежести. Дальше: JSDoc + Figma у всех компонентов, проверка полноты в `npm test`, удалить `docs/components.md`, перевести skills — Фаза 1
 
 ## Дальше
 
@@ -65,6 +65,7 @@
 - `APPLICATION.md`: разделы «Personas» и «Mock PNR» относятся в основном к PNR Search — решить, когда появятся данные Booking.
 
 **Craft (Фаза 5)**
+- 9 цветовых токенов с округлённым HSL рисуются не тем hex, что в Figma (`primary` #0d9688 вместо #0d9488, `muted-foreground`, `destructive`, `border`, `brand`, `chart-*`) — Storybook → Foundations / Colors, ⚠️. Перевести на точный HSL = видимое изменение цвета; решить.
 - Полировка по Figma, визуальная регрессия по скриншотам.
 
 ## Сделано

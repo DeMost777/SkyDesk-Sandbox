@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Overview" />
+
+# Foundations
+
+Визуальная основа Skydesk: цвета, типографика, отступы, радиусы, тени, размеры раскладки. Storybook — единственный источник правды об UI (решение пользователя, 2026-09-25).
+
+| Страница | Что | Как появляется |
+| --- | --- | --- |
+| Foundations / Colors | Цветовые токены, классы Tailwind, hex в браузере и в Figma | Генерируется из `src/tokens/index.css` и `tailwind.config.ts` |
+| Foundations / Typography | Семейства, размеры, line height | Генерируется из `tailwind.config.ts` и шкалы Tailwind |
+| Foundations / Spacing | Шкала отступов и соответствие переменным Figma | Генерируется из шкалы Tailwind |
+| Foundations / Radius and Shadows | Радиусы и тени | Генерируется из токенов |
+| Foundations / Layout | Размеры раскладки из Figma вне шкалы | Пишется вручную; тест требует каждый такой размер из кода |
+
+## Правила
+
+- **Только токены.** Цвет, радиус, размер шрифта и тень — классом токена (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`), не значением. `npm run lint:tokens` ловит хардкод.
+- **Отступы — шкала Tailwind** (Foundations / Spacing). Значение вне шкалы — только размер раскладки из Figma, с комментарием в коде и строкой в Foundations / Layout.
+- **Новый токен:** значение в `src/tokens/index.css` (точный HSL и hex Figma в комментарии), класс в `tailwind.config.ts`, класс в `extendTailwindMerge` (`src/lib/utils.ts`), затем `npm run foundations`. Страницы Foundations без этого устареют — `npm test` упадёт.
+- **Тёмная тема** (`.dark` в токенах) в sandbox не используется и здесь не описана.
+
+## Figma
+
+Токены сняты с Figma «Sky-Desk-Console---Design», узел `7764:306270` (2026-09-22). Названия части токенов выбраны в sandbox — open question #15.

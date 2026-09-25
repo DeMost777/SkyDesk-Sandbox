@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Layout" />
+
+# Layout
+
+Размеры раскладки из Figma, которых нет в шкале отступов. В коде — произвольным значением Tailwind (`w-[220px]`) с комментарием, откуда оно. Тест `src/foundations/foundations.test.ts` требует, чтобы каждый такой размер из кода был в этой таблице.
+
+| Что | Значение | В коде | Figma |
+| --- | --- | --- | --- |
+| Ширина App Sidebar | 229px | токен `--sidebar-width`, `w-[--sidebar-width]` | `548:16649` |
+| Высота History item | 54px | `h-[54px]` | `4920:69057` |
+| Высота Booking Header | 44px | `h-11` (шкала) | `308:12504` |
+| Высота строки вкладок Booking | 36px | `py-2` + `leading-5` (шкала) | `5123:368550` |
+| Колонка виджетов Booking Overview | 800px | `max-w-[800px]` | `4678:125394` |
+| Отступ сверху экрана PNR Search | 140px | `pt-[140px]` | `7936:79314` |
+| Ширина контента PNR Search | 838px | `max-w-[838px]` | `7936:79314` |
+| Ширина popover Office Selector | 220px | `w-[220px]` | не записан |
+| Высота списка Office Selector | 168px | `max-h-[168px]` | не записан |
+| Высота списка Command | 300px | `max-h-[300px]` | shadcn Command, не Figma |
+| Разделитель Booking Header: смещение линии | 0.5px | `-left-[0.5px]` | `308:12504` (линия 1px по центру элемента шириной 0) |
