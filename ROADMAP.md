@@ -31,8 +31,7 @@
 
 План Фазы 2 утверждён пользователем 2026-09-25; задачи Фазы 1 идут параллельно. Как делать каждую — `projects/booking-overview/README.md`.
 
-- [2.5] Переход Found → Booking, заглушка Found удаляется; решить, куда уходит «Use as default» (open question #24) — Фаза 2 · зависит от: 2.4
-- [2.6] Проверка в браузере, `APPLICATION.md`, `docs/testing-plan.md` — Фаза 2 · зависит от: 2.5
+- [2.6] Проверка в браузере, `APPLICATION.md`, `docs/testing-plan.md` — Фаза 2 · зависит от: 2.4
 - [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
 - [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
@@ -46,6 +45,7 @@
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview** (конечный вид — Figma `4678:125394`)
+- [2.5] Переход Found → Booking, заглушка Found удаляется; решить, куда уходит «Use as default» (open question #24). Блок: команда утверждает PNR Search с заглушкой Found (решение пользователя, 2026-09-25). До тех пор в Booking ведёт навигация sandbox.
 - Контракт виджета: аккордеон, заголовок, счётчик справа, раскрытие и сворачивание — Фаза 3.
 - Виджеты по порядку из Figma: Passengers, Segments («Flight information»), Ticket, Services, EMD, Remarks, Messages, Contacts — Фаза 3.
 - Tabs над виджетами: сейчас одна вкладка «Booking Overview» — какие ещё, решить с design.
