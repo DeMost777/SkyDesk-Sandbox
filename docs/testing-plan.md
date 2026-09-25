@@ -74,6 +74,21 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 - **Нет доступа у Office:** адрес 11 → в Office Selector выбрать `5GW5` → кнопка поиска → Found через `5GW5`.
 - **Смена ввода сбрасывает результат:** на любом результате изменить PNR или Office → результат исчезает.
 
+## Booking
+
+Flow doc — `projects/booking-overview/README.md`. Сравнивать с Figma `7994:305661` (скриншот в задаче 2.1).
+
+| # | Адрес | Ожидаемо |
+|---|---|---|
+| B1 | `?page=booking&pnr=BBV14Q` (или ссылка «Booking» в навигации) | Header: `BBV14Q │ Sabre │ 3 passengers │ Created: 08/10/2025 13:44`, справа кнопка панели. Ниже вкладка «Booking Overview», под ней пустая серая область. В History `BBV14Q` — Active |
+| B2 | `?page=booking&pnr=K2M9QP` | «1 passenger», «Created: 14/09/2026 16:30» |
+| B3 | `?page=booking&pnr=ABC123&gds=Galileo` | Header с `Galileo` |
+| B4 | `?page=booking&pnr=XYZ789&gds=Sabre` | Открывается PNR Search: «PNR XYZ789 not found in Sabre…», адрес `?pnr=XYZ789&gds=Sabre&state=result` |
+| B5 | `?page=booking&pnr=ABC123` | PNR Search, шаг GDS Required |
+| B6 | `?page=booking` | PNR Search: «Please provide the PNR.» |
+| B7 | Открыть B4, нажать «Назад» в браузере | Возврат на страницу до B4, не на Booking |
+| B8 | Кнопки ◧ и ◨ в Header | Ничего не делают (open question #21) |
+
 ## Office Selector
 
 Все состояния — в Storybook: Components / ui / Office Selector (`npm run storybook`). Story `Default` сама проверяет порядок: сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше по алфавиту.

@@ -1,10 +1,13 @@
+import BookingPage from '@/pages/booking'
 import PnrSearchPage from '@/pages/pnr-search'
 import { navigate, useSandboxUrl } from '@/hooks/use-sandbox-url'
 import type { SandboxPage } from '@/lib/sandbox-url'
 import { cn } from '@/lib/utils'
 
-const NAV_ITEMS: { value: SandboxPage; label: string }[] = [
+// Booking opens by PNR; the nav link opens the booking from Figma (projects/booking-overview/README.md).
+const NAV_ITEMS: { value: SandboxPage; label: string; pnr?: string }[] = [
   { value: 'pnr-search', label: 'PNR Search' },
+  { value: 'booking', label: 'Booking', pnr: 'BBV14Q' },
 ]
 
 // Storybook: served at /storybook/ on Vercel; `npm run storybook` locally.
@@ -22,7 +25,7 @@ export default function App() {
         {NAV_ITEMS.map((item) => (
           <button
             key={item.value}
-            onClick={() => navigate({ page: item.value, persona: params.persona })}
+            onClick={() => navigate({ page: item.value, persona: params.persona, pnr: item.pnr })}
             className={cn(
               'rounded px-2.5 py-1 text-xs font-medium transition-colors',
               page === item.value
@@ -44,6 +47,7 @@ export default function App() {
       <div className="flex-1 min-h-0">
         {/* navKey remounts the page so it re-reads its initial state from the URL */}
         {page === 'pnr-search' && <PnrSearchPage key={navKey} params={params} />}
+        {page === 'booking' && <BookingPage key={navKey} params={params} />}
       </div>
     </div>
   )

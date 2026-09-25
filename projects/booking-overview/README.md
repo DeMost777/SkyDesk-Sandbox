@@ -77,11 +77,11 @@
 
 ### Вкладка «Booking Overview»
 
-В Figma это компонент **Tabs** с одной вкладкой. В итерации 1 — одна вкладка, всегда активна, переключать нечего.
+В Figma это компонент **Tabs** с одной вкладкой. В итерации 1 — одна вкладка, всегда активна, переключать нечего. Строка вкладок — фон `secondary`, нижняя граница `border`; вкладка — `px-4 py-2`, Geist Medium 16 / 20, 168×36 (сверено в Chromium). Подчёркивания у вкладки нет — так в макете страницы (в компоненте Figma подчёркнутая primary-вкладка скрыта). Разметка — `tablist` / `tab` / `tabpanel`, локальный `BookingTabs` в `src/pages/booking/index.tsx`: общий компонент Tabs — когда вкладок станет больше одной.
 
 ### Зона виджетов
 
-Колонка под вкладкой. В конечном виде — ширина 800px по центру области, виджеты друг под другом с отступом 16px (Figma `4678:125394`). В итерации 1 пустая: без заглушек и текста — так на скриншоте.
+Область под вкладками — Figma «Widgets overview»: фон `secondary`, граница слева `sidebar-border`, прокручивается сама, Header и вкладка остаются на месте. Колонка виджетов в ней. В конечном виде — ширина 800px по центру области, виджеты друг под другом с отступом 16px (Figma `4678:125394`). В итерации 1 пустая: без заглушек и текста — так на скриншоте.
 
 ## Decided
 
@@ -120,16 +120,22 @@
 
 ## States and how to reach them
 
-Адреса — предложение для 2.4, сверить при реализации. Параметры `persona`, `pnr`, `office`, `gds` — те же, что у PNR Search (`projects/pnr-search/README.md` → «Параметры адреса»): Booking открывается тем же `searchPnr`, поэтому Office и GDS выбираются по тем же правилам.
+Параметры `persona`, `pnr`, `office`, `gds` — те же, что у PNR Search (`projects/pnr-search/README.md` → «Параметры адреса»): Booking открывается функцией `openBooking` (`src/lib/booking.ts`), она вызывает тот же `searchPnr`, поэтому Office и GDS выбираются по тем же правилам. В верхней навигации sandbox ссылка «Booking» открывает `BBV14Q`. Stories — `Pages / booking`, по одной на адрес.
 
 | State | Address | Status |
 |---|---|---|
-| Booking — Sabre, 3 passengers (Figma) | `?page=booking&pnr=BBV14Q` | ⏳ 2.4 |
-| Booking — 1 passenger | `?page=booking&pnr=K2M9QP` | ⏳ 2.4 |
-| Booking — через выбранный Office | `?page=booking&pnr=7JRWT4&office=E6T8` | ⏳ 2.4 |
-| Booking — после GDS Required | `?page=booking&pnr=ABC123&gds=Galileo` | ⏳ 2.4 |
+| Booking — Sabre, 3 passengers (Figma) | `?page=booking&pnr=BBV14Q` | ✅ |
+| Booking — 1 passenger | `?page=booking&pnr=K2M9QP` | ✅ |
+| Booking — через выбранный Office | `?page=booking&pnr=7JRWT4&office=E6T8` | ✅ |
+| Booking — после GDS Required | `?page=booking&pnr=ABC123&gds=Galileo` | ✅ |
+| Booking — через Creation office | `?page=booking&persona=agent-no-defaults&pnr=BBV14Q` | ✅ (на экране не отличается: Office в Header нет) |
 | Переход из PNR Search | `?pnr=BBV14Q` → Search | ⏳ 2.5 |
-| Ссылка на ненайденный PNR → PNR Search | `?page=booking&pnr=XYZ789` | ⏳ 2.4 |
+| Ссылка на PNR, который не открывается → PNR Search | `?page=booking&pnr=XYZ789&gds=Sabre` → Not Found; `?page=booking&pnr=ABC123` → GDS Required; `?page=booking` → PNR Required; `?page=booking&pnr=ERR000` → Error | ✅ адрес заменяется на `?…&state=result`, «Назад» не возвращает на Booking |
+
+## Решения и gotchas
+
+- **Бронирование, которое не открывается, уходит в PNR Search по тому же адресу** (2026-09-25). `openBooking` возвращает `not-opened` с результатом поиска; страница заменяет адрес на `page=pnr-search&…&state=result` через `redirect` (`replaceState`, «Назад» не возвращает на Booking). Так Booking не рисует своих Not Found / Error без Figma. Если показывать ошибку на странице Booking, появится второй, несогласованный вариант этих состояний.
+- **Логика открытия — `openBooking` в `src/lib/booking.ts`, не в экране.** Он вызывает `searchPnr`, поэтому Office и GDS выбираются по правилам PNR Search, а не повторяются в странице.
 
 ## Deliberately dropped
 
@@ -148,7 +154,7 @@
 
 ## Known gaps (coverage)
 
-Итерация 1: модель и mock-данные (2.2) и компонент Header (2.3) готовы. Нет страницы и перехода из PNR Search: задачи 2.4–2.5 в `ROADMAP.md`.
+Итерация 1: модель и mock-данные (2.2), Header (2.3), страница по адресу (2.4) готовы. Нет перехода из PNR Search: после поиска по-прежнему заглушка Found — задача 2.5.
 
 ## Open questions
 
@@ -156,4 +162,4 @@
 
 ## Test cases
 
-`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование с датой создания, `BBV14Q` совпадает с Figma. `src/lib/pnr-search.test.ts`: поиск находит `BBV14Q` в Sabre через Default Office `5GW5`. Stories Header (`booking-header.stories.tsx`): текст и высота 44px, Office не показан, `1 passenger`, кнопки вызывают обработчики, узкая область. Будут: stories страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).
+`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование с датой создания, `BBV14Q` совпадает с Figma. `src/lib/pnr-search.test.ts`: поиск находит `BBV14Q` в Sabre через Default Office `5GW5`. Stories Header (`booking-header.stories.tsx`): текст и высота 44px, Office не показан, `1 passenger`, кнопки вызывают обработчики, узкая область. Stories страницы (`src/pages/booking/booking.stories.tsx`): Header, выбранная вкладка, пустая зона виджетов, Active item в History. `src/lib/booking.test.ts` → `openBooking`: Default Office, Creation office, выбранный Office, GDS Required, всё, что не открывается. Перенаправление в PNR Search проверено в браузере (Storybook его не проверяет: оно меняет адрес страницы). Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).

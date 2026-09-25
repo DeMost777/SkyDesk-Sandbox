@@ -3,10 +3,11 @@
 //   ?page=pnr-search&persona=agent-no-defaults&pnr=7JRWT4&office=A2K9&tried=Amadeus,Sabre&gds=Galileo&state=result
 //
 // Table of addresses: projects/pnr-search/README.md → "Параметры адреса".
+// page=booking takes the same persona / pnr / office / gds: projects/booking-overview/README.md.
 
 import { GDS_LIST, type GDS } from './office'
 
-export type SandboxPage = 'pnr-search'
+export type SandboxPage = 'pnr-search' | 'booking'
 /** idle = form only; loading = spinner; result = run the search on load and show its outcome. */
 export type SearchView = 'idle' | 'loading' | 'result'
 
@@ -20,7 +21,7 @@ export interface SandboxParams {
   state: SearchView
 }
 
-const PAGES: SandboxPage[] = ['pnr-search']
+const PAGES: SandboxPage[] = ['pnr-search', 'booking']
 const VIEWS: SearchView[] = ['idle', 'loading', 'result']
 
 export const DEFAULT_PARAMS: SandboxParams = {

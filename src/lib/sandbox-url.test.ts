@@ -29,4 +29,9 @@ describe('sandbox URL', () => {
     expect(buildSandboxUrl({ pnr: '7JRWT4' })).toBe('?pnr=7JRWT4')
     expect(buildSandboxUrl({ tried: ['Amadeus', 'Sabre'] })).toBe('?tried=Amadeus,Sabre')
   })
+
+  it('reads the Booking page address', () => {
+    expect(parseSandboxUrl('?page=booking&pnr=bbv14q')).toMatchObject({ page: 'booking', pnr: 'BBV14Q' })
+    expect(buildSandboxUrl({ page: 'booking', pnr: 'BBV14Q' })).toBe('?page=booking&pnr=BBV14Q')
+  })
 })

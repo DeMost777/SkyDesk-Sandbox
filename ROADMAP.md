@@ -31,7 +31,6 @@
 
 План Фазы 2 утверждён пользователем 2026-09-25; задачи Фазы 1 идут параллельно. Как делать каждую — `projects/booking-overview/README.md`.
 
-- [2.4] Экран Booking (`src/pages/booking/`, `?page=booking&pnr=…`): App Sidebar + Header + вкладка «Booking Overview» + пустая зона виджетов, stories — Фаза 2 · зависит от: 2.3
 - [2.5] Переход Found → Booking, заглушка Found удаляется; решить, куда уходит «Use as default» (open question #24) — Фаза 2 · зависит от: 2.4
 - [2.6] Проверка в браузере, `APPLICATION.md`, `docs/testing-plan.md` — Фаза 2 · зависит от: 2.5
 - [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
@@ -85,3 +84,4 @@
 | 2.1 | План Фазы 2 и flow doc `projects/booking-overview/README.md`; open questions #22–#26, #3 закрыт | `[2.1]` |
 | 2.2 | Модель Booking для Header (`src/lib/booking.ts`) и mock-бронирования по PNR, `BBV14Q` находится поиском | `[2.2]` |
 | 2.3 | Компонент Booking Header по Figma `308:12504`, stories, токены `divider` и `drop-shadow-header` | `[2.3]` |
+| 2.4 | Экран Booking `?page=booking&pnr=…`: App Sidebar + Header + вкладка + пустая зона виджетов; `openBooking`; PNR, который не открывается, → PNR Search | `[2.4]` |

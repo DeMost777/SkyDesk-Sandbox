@@ -95,7 +95,7 @@ CDG → LON → JFK       15:12     ← Itinerary             Interaction time
 | History item: Default / Hover / Pressed / Focus / Active × One way / Round / Multi trip | Storybook → Skydesk / App Sidebar / History Item |
 | Header, New chat, Footer: Default / Hover / Pressed / Focus | Storybook → Skydesk / App Sidebar / Parts |
 
-Active и hover-состояния в приложении по адресу не открываются: поведения нет, выбранного бронирования нет. Появится поведение — появится URL-параметр.
+Active в приложении — на странице Booking: History item открытого бронирования (`?page=booking&pnr=BBV14Q`, решение 2026-09-25, `projects/booking-overview/README.md`). Hover по адресу не открывается.
 
 ## Open questions
 

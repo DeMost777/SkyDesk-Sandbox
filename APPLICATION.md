@@ -8,8 +8,9 @@
 | Page | Адрес | Flow doc | Код |
 |---|---|---|---|
 | PNR Search | `/` или `?page=pnr-search` | `projects/pnr-search/README.md` | `src/pages/pnr-search/` |
+| Booking | `?page=booking&pnr=BBV14Q` (ссылка «Booking» в верхней навигации) | `projects/booking-overview/README.md` | `src/pages/booking/` |
 
-Слева на экране — **App Sidebar** (flow doc `projects/app-sidebar/README.md`, код `src/components/skydesk/app-sidebar/`). Клики в нём пока ничего не делают.
+Слева на экране — **App Sidebar** (flow doc `projects/app-sidebar/README.md`, код `src/components/skydesk/app-sidebar/`). Клики в нём пока ничего не делают. На странице Booking History item открытого бронирования — Active.
 
 ## Storybook
 
@@ -21,6 +22,7 @@
 | Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Skydesk / Booking Header | Default (`BBV14Q`, как в Figma), One Passenger, Buttons, Narrow |
+| Pages / booking | Default (`BBV14Q`), One Passenger, Selected Office, After GDS Required, Creation Office |
 | Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
 ## Адреса
@@ -30,6 +32,7 @@
 | Экран | Где |
 |---|---|
 | PNR Search | `projects/pnr-search/README.md` → «States and how to reach them» |
+| Booking | `projects/booking-overview/README.md` → «States and how to reach them». Те же `persona`, `pnr`, `office`, `gds`; PNR, который не открывается, уводит в PNR Search |
 
 ## Personas
 

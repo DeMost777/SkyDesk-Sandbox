@@ -14,6 +14,12 @@ export function navigate(params: Partial<SandboxParams>) {
   window.dispatchEvent(new Event(NAVIGATE_EVENT))
 }
 
+/** Opens an address in place of the current one: Back skips the page that redirected. */
+export function redirect(params: Partial<SandboxParams>) {
+  window.history.replaceState(null, '', href(params))
+  window.dispatchEvent(new Event(NAVIGATE_EVENT))
+}
+
 /** Records where the user is now, without remounting — so the URL is always shareable. */
 export function replaceUrl(params: Partial<SandboxParams>) {
   window.history.replaceState(null, '', href(params))
@@ -27,7 +33,9 @@ export function useSandboxUrl(): { params: SandboxParams; navKey: number } {
   const read = () => parseSandboxUrl(window.location.search)
   const [state, setState] = React.useState(() => ({ params: read(), navKey: 0 }))
 
-  React.useEffect(() => {
+  // Layout effect: subscribed before any page's passive effect runs, so a page that
+  // redirects on mount (Booking → PNR Search) is heard on the very first render.
+  React.useLayoutEffect(() => {
     const onNav = () => setState((s) => ({ params: read(), navKey: s.navKey + 1 }))
     window.addEventListener('popstate', onNav)
     window.addEventListener(NAVIGATE_EVENT, onNav)
