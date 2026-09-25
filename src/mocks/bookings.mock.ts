@@ -15,13 +15,12 @@ const CREATED_AT: Record<string, Date> = {
   ABC123: at(2026, 8, 27, 11, 5),
 }
 
-const BOOKINGS: Booking[] = MOCK_BOOKINGS.map((b) => ({
-  pnr: b.pnr,
-  gds: b.gds,
-  creationOffice: b.creationOffice,
-  passengers: b.passengers,
-  createdAt: CREATED_AT[b.pnr],
-}))
+const BOOKINGS: Booking[] = MOCK_BOOKINGS.map((b) => {
+  const createdAt = CREATED_AT[b.pnr]
+  // A PNR added to the search mock without a creation date would open a broken Header.
+  if (!createdAt) throw new Error(`bookings.mock: no creation date for ${b.pnr}`)
+  return { pnr: b.pnr, gds: b.gds, creationOffice: b.creationOffice, passengers: b.passengers, createdAt }
+})
 
 export const mockBookingDirectory: BookingDirectory = {
   get: (pnr, gds) => BOOKINGS.find((b) => b.pnr === pnr && b.gds === gds) ?? null,

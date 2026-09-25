@@ -156,3 +156,14 @@ describe('Error — Office without access', () => {
     expect(new GdsError('access-denied').reason).toBe('access-denied')
   })
 })
+
+describe('BBV14Q — the booking from Figma Booking Overview', () => {
+  it('is known to Skydesk and found in Sabre through the Default Office', () => {
+    const r = run({ pnr: 'BBV14Q' })
+    expect(r).toMatchObject({
+      status: 'found',
+      booking: { pnr: 'BBV14Q', gds: 'Sabre', creationOffice: 'D4M5' },
+      resolved: { office: { code: '5GW5', gds: 'Sabre' } },
+    })
+  })
+})

@@ -71,7 +71,7 @@
 ## Decided
 
 - **Office в Header не показываем** (решение пользователя, 2026-09-25). Его нет ни в Figma, ни на скриншоте. Office, в котором открыто бронирование, экран знает (он пришёл из PNR Search) — просто не выводит. Вопрос — open question #22.
-- **Дата создания — `DD/MM/YYYY`, время — `HH:mm`** (решение пользователя, 2026-09-25). Тот же порядок день/месяц, что в History. Порядок в Figma из примера не виден — open question #23.
+- **Дата создания — `DD/MM/YYYY`, время — `HH:mm`** (решение пользователя, 2026-09-25). Тот же порядок день/месяц, что в History. Порядок в Figma из примера не виден — open question #23. Время показываем как есть, без перевода в часовой пояс — в каком поясе оно (агента или Office), open question #27.
 - **Число пассажиров — с согласованием: `1 passenger`, `N passengers`.** Figma показывает только множественное.
 - **Кнопки Header пока ничего не делают** (решение пользователя, 2026-09-25) — как клики в App Sidebar (open question #21). Кнопки со всеми состояниями, поведения нет.
 - **Found → Booking сразу, без промежуточного экрана** (решение пользователя, 2026-09-25). Успешный поиск открывает Booking; заглушка Found в PNR Search удаляется. Следует из принципа `PNR → Booking`. Куда переезжает предложение сохранить Default Office — open question #24.
@@ -82,7 +82,7 @@
 
 ## Mock-бронирования
 
-Одно бронирование на каждый PNR, который находит PNR Search, плюс `BBV14Q` из Figma. GDS, Creation office и маршрут совпадают с `src/mocks/pnr-search.mock.ts` и `src/mocks/booking-history.mock.ts`.
+Одно бронирование на каждый PNR, который находит PNR Search; среди них `BBV14Q` из Figma. PNR и GDS `BBV14Q` совпадают с его History item (`src/mocks/booking-history.mock.ts`).
 
 | PNR | GDS | Creation office | Пассажиры | Created | Откуда значения |
 |---|---|---|---|---|---|
@@ -99,7 +99,7 @@
 
 | # | Сценарий | Путь |
 |---|---|---|
-| A | Агент открывает PNR | PNR Search → Found → **Booking** |
+| A | Агент открывает PNR | PNR Search → **Booking** (успешный поиск сразу открывает Booking) |
 | B | Агент открывает бронирование по ссылке (review, Slack) | Адрес `?page=booking&pnr=…` → **Booking** |
 | C | Ссылка на PNR, который не находится | Адрес `?page=booking&pnr=XYZ789` → PNR Search с результатом поиска (Not Found / Error) |
 
@@ -137,8 +137,8 @@
 
 ## Open questions
 
-См. `docs/open-questions.md`, раздел «Booking Overview»: #22–#26.
+См. `docs/open-questions.md`, раздел «Booking Overview»: #22–#27.
 
 ## Test cases
 
-`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование, `BBV14Q` совпадает с Figma. Будут: stories Header и страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).
+`src/lib/booking.test.ts`: число пассажиров, формат даты создания, каждый найденный поиском PNR открывает согласованное бронирование с датой создания, `BBV14Q` совпадает с Figma. `src/lib/pnr-search.test.ts`: поиск находит `BBV14Q` в Sabre через Default Office `5GW5`. Будут: stories Header и страницы. Ручная проверка — `docs/testing-plan.md` (раздел добавляется в 2.6).

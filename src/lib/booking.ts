@@ -11,7 +11,7 @@ export interface Booking {
   creationOffice: string
   /** Passenger names as the GDS stores them: 'LINDQVIST/ANNA MRS'. */
   passengers: string[]
-  /** When the PNR was created, in the agent's local time. */
+  /** When the PNR was created. Shown as stored, without time-zone conversion (open question #27). */
   createdAt: Date
 }
 

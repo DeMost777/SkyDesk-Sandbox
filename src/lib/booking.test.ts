@@ -35,6 +35,7 @@ describe('mock bookings', () => {
         creationOffice: found.creationOffice,
         passengers: found.passengers,
       })
+      expect(booking!.createdAt, `${found.pnr} createdAt`).toBeInstanceOf(Date)
     }
   })
 
