@@ -68,6 +68,20 @@
    Сейчас: ничего — решение пользователя, 2026-09-23. Active item в приложении поэтому не появляется, только в Storybook.
    Решает: product. Добавлено 2026-09-23.
 
+## Токены
+
+22. **Семантические цвета кода расходятся с Figma «shadcn kit - Trava».** Токены, где значение в Figma — другой шаг палитры, сохраняют старое значение: замена меняет вид существующих экранов. Все расхождения видны в Storybook (Foundations / Colors → Semantic — Light, строки «Differs»). Сейчас в коде → в Figma (light):
+   - `ring`, `sidebar-ring`: teal `#0d9488` → zinc-400 `#a1a1aa`. Затрагивает кольцо фокуса всех компонентов (Button, Input…). Figma Overview использует третье значение: Focus ring карточки = gray-400 `#9ca3af`, двойное кольцо.
+   - `popover`: белый → stone-50 `#fafaf9` (Office Selector, Command, Dialog).
+   - `input`: `#e7e5e4` → zinc-200 `#e4e4e7`.
+   - `secondary-foreground`, `accent-foreground`: `#0c0a09` → stone-900 `#1c1917`.
+   - `destructive-foreground`: `#fafafa` → red-50 `#fef2f2`.
+   - `sidebar-primary-foreground`: `#fafaf9` → neutral-50 `#fafafa`; `sidebar-accent`: `#f5f5f4` → zinc-100 `#f4f4f5`; `sidebar-accent-foreground`: `#1c1917` → zinc-900 `#18181b`.
+   - `chart-2`: teal `#0d9488` → `#2a9d90`.
+   Dark-тема приведена к Figma целиком (в приложении не используется). `destructive` в dark в Figma инвертирован (светлая заливка `#fef2f2`, тёмный текст `#991b1b`) — перенесено как есть.
+   Сейчас: значения не менялись; проверить, что Figma — намеренный редизайн, и решить пакетом.
+   Решает: design. Добавлено 2026-09-28.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».

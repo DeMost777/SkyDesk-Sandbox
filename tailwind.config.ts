@@ -85,8 +85,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Geist', 'system-ui', 'sans-serif'],
-        // Figma "Fonts/Font Mono" — History item
-        mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
+        // Figma "Fonts/Font Mono" — History item, Booking Overview tables
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
       },
     },
   },

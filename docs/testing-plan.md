@@ -89,8 +89,19 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 5. Клики ничего не меняют: URL и экран поиска остаются как были.
 6. Окно ниже списка History — History прокручивается, header и footer на месте.
 
+## Цвета (Foundations / Colors)
+
+Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; семантические токены = значения Figma; токены с пометкой «pending» действительно ещё расходятся) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого «совпадающего» образца с Figma).
+
+Вручную в Storybook (`npm run storybook`) → Foundations / Colors:
+1. Palette — 22 шкалы по 11 оттенков, под каждым образцом номер и hex.
+2. Semantic — Light / Dark: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Строки «Differs from Figma» — вопрос #22.
+3. History item в sidebar набран IBM Plex Mono (не Roboto Mono); текст не выходит за карточку.
+
 ## Последний прогон
 
 - 2026-09-23 (App Sidebar): typecheck, lint:tokens, test (unit + storybook), build, build-storybook — зелёные. Sidebar проверен в headless Chromium на dev-сервере: вёрстка против Figma `7936:79314`, hover / pressed / focus, stories Hover / Pressed / Focus / Round Trip / Long Name.
 
 - 2026-09-23 (после удаления кнопок из Error): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.
+
+- 2026-09-28 (токены цвета, шрифт): typecheck, lint:tokens, test (unit + storybook, 180 тестов), build — зелёные. Foundations / Colors и sidebar с IBM Plex Mono просмотрены в headless Chromium на Storybook dev.

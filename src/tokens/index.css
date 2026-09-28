@@ -5,74 +5,79 @@
 
   Base palette: stone (warm grays)
   Primary: Trava teal #0d9488
+
+  Two layers. Palette (palette.css, generated): --palette-<scale>-<step>, the 22 Figma "Primitives"
+  scales. Semantic tokens (this file): shadcn names that alias a palette step, so the value is exact.
+  Where a semantic token still differs from Figma it carries a "pending" comment (open question #22).
 */
+@import './palette.css';
 
 @layer base {
   :root {
     /* Base */
     --background: 0 0% 100%;           /* #ffffff */
-    --foreground: 20 14% 4%;           /* stone-950 #0c0a09 */
+    --foreground: var(--palette-stone-950); /* stone-950 #0c0a09 */
 
     /* Card / Popover */
     --card: 0 0% 100%;
-    --card-foreground: 20 14% 4%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14% 4%;
+    --card-foreground: var(--palette-stone-950); /* stone-950 */
+    --popover: 0 0% 100%;  /* pending: Figma: stone-50, open question #22 */
+    --popover-foreground: var(--palette-stone-950); /* stone-950 */
 
     /* Primary: Trava teal */
-    --primary: 174 84% 32%;            /* #0d9488 */
-    --primary-foreground: 60 9% 98%;   /* stone-50 #fafaf9 */
+    --primary: var(--palette-teal-600);  /* teal-600 #0d9488 */
+    --primary-foreground: var(--palette-stone-50); /* stone-50 #fafaf9 */
 
     /* Secondary: stone-100 */
-    --secondary: 60 5% 96%;            /* #f5f5f4 */
-    --secondary-foreground: 20 14% 4%;
+    --secondary: var(--palette-stone-100); /* stone-100 #f5f5f4 */
+    --secondary-foreground: 20 14% 4%;  /* pending: Figma: stone-900, open question #22 */
 
     /* Muted: stone-100 */
-    --muted: 60 5% 96%;
-    --muted-foreground: 30 5% 32%;     /* stone-600 #57534e */
+    --muted: var(--palette-stone-100);   /* stone-100 */
+    --muted-foreground: var(--palette-stone-600); /* stone-600 #57534e */
 
     /* Accent: stone-100 */
-    --accent: 60 5% 96%;
-    --accent-foreground: 20 14% 4%;
+    --accent: var(--palette-stone-100);  /* stone-100 */
+    --accent-foreground: 20 14% 4%;  /* pending: Figma: stone-900, open question #22 */
 
     /* Destructive: red-600 */
-    --destructive: 0 72% 51%;          /* #dc2626 */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: var(--palette-red-600); /* red-600 #dc2626 */
+    --destructive-foreground: 0 0% 98%;  /* pending: Figma: red-50, open question #22 */
 
     /* Border / Input / Ring */
-    --border: 30 6% 90%;               /* stone-200 #e7e5e4 */
-    --input: 30 6% 90%;
-    --ring: 174 84% 32%;               /* teal — matches primary */
+    --border: var(--palette-stone-200);  /* stone-200 #e7e5e4 */
+    --input: 30 6% 90%;  /* pending: Figma: zinc-200, open question #22 */
+    --ring: 174 84% 32%;  /* pending: Figma: zinc-400, open question #22 */
 
     /* Border variants */
-    --border-destructive: 0 72% 51%;
-    --border-primary: 174 84% 32%;
+    --border-destructive: var(--palette-red-600); /* red-600 */
+    --border-primary: var(--palette-teal-600); /* teal-600 */
 
     /* Radius — matches shadcn default */
     --radius: 0.5rem;
 
     /* Brand — alias for primary teal */
-    --brand: 174 84% 32%;              /* #0d9488 */
-    --brand-foreground: 60 9% 98%;
+    --brand: var(--palette-teal-600);    /* teal-600 #0d9488 */
+    --brand-foreground: var(--palette-stone-50); /* stone-50 */
 
     /* Sidebar — Figma 548:16649 variables */
     --sidebar-background: 0 0% 100%;          /* Sidebar Background #ffffff */
-    --sidebar-foreground: 240 5.3% 26.1%;     /* Sidebar Foreground #3f3f46 — title, user, icons */
-    --sidebar-primary: 240 5.9% 10%;          /* Sidebar Primary #18181b — New chat label */
-    --sidebar-primary-foreground: 60 9% 98%;
-    --sidebar-accent: 60 5% 96%;              /* Secondary #f5f5f4 — Hover / Active (Figma 4920:69057) */
-    --sidebar-accent-foreground: 24 9.8% 10%; /* Accent Foreground #1c1917 — PNR */
-    --sidebar-border: 220 13% 91%;            /* Sidebar Border #e5e7eb — right edge */
-    --sidebar-ring: 174 84% 32%;              /* focus ring, teal — not in Figma */
-    --border-muted: 60 5% 96%;                /* Border Muted #f5f5f4 — avatar */
+    --sidebar-foreground: var(--palette-zinc-700); /* zinc-700 #3f3f46 — title, user, icons */
+    --sidebar-primary: var(--palette-zinc-900); /* zinc-900 #18181b — New chat label */
+    --sidebar-primary-foreground: 60 9% 98%;  /* pending: Figma: neutral-50, open question #22 */
+    --sidebar-accent: 60 5% 96%;  /* pending: Figma: zinc-100, open question #22 */
+    --sidebar-accent-foreground: 24 9.8% 10%;  /* pending: Figma: zinc-900, open question #22 */
+    --sidebar-border: var(--palette-gray-200); /* gray-200 #e5e7eb — right edge */
+    --sidebar-ring: 174 84% 32%;  /* pending: Figma: zinc-400, open question #22 */
+    --border-muted: var(--palette-stone-100); /* stone-100 #f5f5f4 — avatar */
     --sidebar-width: 229px;                   /* Width/Sidebar Width */
 
     /* Surfaces — search card, GDS buttons (Figma: stone-50) */
-    --surface: 60 9% 98%;              /* #fafaf9 */
+    --surface: var(--palette-stone-50);  /* stone-50 #fafaf9 */
 
     /* Loading text gradient (Figma) — exact values, rounding shifts the hex */
-    --loading-start: 25 5.3% 44.7%;    /* #78716c stone-500 */
-    --loading-end: 0 0% 89.8%;         /* #e5e5e5 */
+    --loading-start: var(--palette-stone-500); /* stone-500 #78716c */
+    --loading-end: var(--palette-neutral-200); /* neutral-200 #e5e5e5 */
 
     /* Radius — named Figma radii (base --radius above stays 8px) */
     --radius-card: 16px;               /* search card */
@@ -98,45 +103,54 @@
   }
 
   .dark {
-    --background: 20 14% 4%;           /* stone-950 */
-    --foreground: 60 9% 98%;           /* stone-50 */
+    --background: var(--palette-zinc-950); /* zinc-950 #09090b */
+    --foreground: var(--palette-stone-50); /* stone-50 */
 
-    --card: 20 14% 4%;
-    --card-foreground: 60 9% 98%;
-    --popover: 20 14% 4%;
-    --popover-foreground: 60 9% 98%;
+    --card: var(--palette-stone-950);    /* stone-950 */
+    --card-foreground: var(--palette-stone-50);
+    --popover: var(--palette-stone-950);
+    --popover-foreground: var(--palette-stone-50);
 
-    --primary: 174 84% 32%;
-    --primary-foreground: 60 9% 98%;
+    --primary: var(--palette-teal-600);  /* teal-600 */
+    --primary-foreground: var(--palette-stone-900); /* stone-900 */
 
-    --secondary: 25 6% 15%;            /* stone-900 */
-    --secondary-foreground: 60 9% 98%;
+    --secondary: var(--palette-stone-800); /* stone-800 #292524 */
+    --secondary-foreground: var(--palette-stone-50);
 
-    --muted: 25 6% 15%;
-    --muted-foreground: 30 6% 64%;     /* stone-400 */
+    --muted: var(--palette-stone-800);
+    --muted-foreground: var(--palette-stone-400); /* stone-400 #a8a29e */
 
-    --accent: 25 6% 15%;
-    --accent-foreground: 60 9% 98%;
+    --accent: var(--palette-stone-800);
+    --accent-foreground: var(--palette-stone-50);
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 60 9% 98%;
+    --destructive: var(--palette-red-50); /* red-50 — as in Figma */
+    --destructive-foreground: var(--palette-red-800); /* red-800 — as in Figma */
 
-    --border: 25 6% 15%;
-    --input: 25 6% 15%;
-    --ring: 174 84% 32%;
+    --border: var(--palette-zinc-800);   /* zinc-800 #27272a */
+    --input: var(--palette-zinc-800);
+    --ring: var(--palette-zinc-300);      /* zinc-300 #d4d4d8 */
+    --border-destructive: var(--palette-red-900); /* red-900 */
+    --border-primary: var(--palette-neutral-50);  /* neutral-50 */
 
-    --brand: 174 84% 32%;
-    --brand-foreground: 60 9% 98%;
+    --brand: var(--palette-teal-600);
+    --brand-foreground: var(--palette-stone-50);
 
-    --sidebar-background: 25 6% 10%;
-    --sidebar-foreground: 30 6% 64%;
-    --sidebar-primary: 174 84% 32%;
-    --sidebar-primary-foreground: 60 9% 98%;
-    --sidebar-accent: 25 6% 15%;
-    --sidebar-accent-foreground: 60 9% 98%;
-    --sidebar-border: 25 6% 15%;
-    --sidebar-ring: 174 84% 32%;
-    --border-muted: 25 6% 15%;
+    --sidebar-background: var(--palette-stone-900); /* stone-900 #1c1917 */
+    --sidebar-foreground: var(--palette-zinc-100); /* zinc-100 #f4f4f5 */
+    --sidebar-primary: var(--palette-blue-700); /* blue-700 #1d4ed8 */
+    --sidebar-primary-foreground: 0 0% 100%; /* #ffffff */
+    --sidebar-accent: var(--palette-zinc-800);
+    --sidebar-accent-foreground: var(--palette-zinc-100);
+    --sidebar-border: var(--palette-zinc-800);
+    --sidebar-ring: var(--palette-zinc-300);
+    --border-muted: var(--palette-zinc-800);
+
+    /* Chart colours — Figma, dark mode */
+    --chart-1: 219.9 70.2% 50%;        /* #2662d9 */
+    --chart-2: 160 60% 45.1%;          /* #2eb88a */
+    --chart-3: 30 80% 54.9%;           /* #e88c30 */
+    --chart-4: 280 64.7% 60%;          /* #af57db */
+    --chart-5: 339.8 74.8% 54.9%;      /* #e23670 */
 
     --surface: 25 6% 10%;
     --loading-start: 30 6% 64%;        /* stone-400 */

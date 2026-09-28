@@ -19,6 +19,7 @@
 | Раздел | Stories |
 |---|---|
 | Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
+| Foundations / Colors | Palette (22 шкалы Figma Primitives), Semantic — Light / Dark (Figma-имя → CSS-переменная → Tailwind → hex), Charts and unbound |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
@@ -61,6 +62,7 @@
 
 | Слой | Где | Что внутри |
 |---|---|---|
+| Токены | `src/tokens/` | `palette.css` / `palette.ts` (генерируются `npm run tokens:palette`), `index.css` (семантические токены → шаг палитры), `semantic-colors.ts` (привязка Figma → переменные) |
 | Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts`, `src/lib/booking-history.ts`, `src/lib/user.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
 | Данные | `src/mocks/` | Mock-реализация `PnrDirectory`, Office, personas |
 | Состояние | `src/hooks/` | Default Offices (localStorage), адрес sandbox |
