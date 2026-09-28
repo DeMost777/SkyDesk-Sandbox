@@ -108,7 +108,9 @@ export async function buildFoundations() {
     `# Colors\n\nКласс Tailwind = префикс + имя: \`bg-surface\`, \`text-muted-foreground\`, \`border-divider\`. ` +
     `Хардкод цвета запрещён (\`npm run lint:tokens\`). Значения — светлая тема; тёмная (\`.dark\`) в sandbox не используется.\n\n` +
     `**В браузере** — hex, который даёт HSL токена; **Figma** — hex из комментария к токену. ` +
-    `⚠️ — не совпадают: HSL токена округлён (${mismatches} шт.). Новые токены задаются точным HSL.\n\n` +
+    (mismatches
+      ? `⚠️ — не совпадают (${mismatches} шт.): HSL токена не даёт hex Figma.\n\n`
+      : `Все совпадают: HSL каждого токена даёт ровно hex Figma. Новый токен — тоже точный HSL.\n\n`) +
     table(['Token', 'Tailwind', 'В браузере', 'Figma', 'HSL', 'Группа', 'Комментарий'], colourRows) +
     `\n\n## Образцы\n\n<TokenSwatches />\n`
 

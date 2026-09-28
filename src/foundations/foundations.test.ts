@@ -26,6 +26,12 @@ describe('Storybook Foundations', () => {
     }
   })
 
+  it('every colour renders exactly the Figma hex written in its token comment', async () => {
+    const pages: Record<string, string> = await buildFoundations()
+    const drifted = pages['colors.mdx'].split('\n').filter((line) => line.includes('⚠️') && line.startsWith('|'))
+    expect(drifted, 'fix the HSL in src/tokens/index.css').toEqual([])
+  })
+
   it('every layout size outside the spacing scale is listed in Foundations / Layout', async () => {
     const layout = await readFile(path.join(root, 'src/foundations/layout.mdx'), 'utf8')
     const missing: string[] = []

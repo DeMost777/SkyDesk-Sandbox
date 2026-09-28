@@ -23,11 +23,13 @@
 
 ## Сейчас
 
-- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Шаг 2 ✅ `.mcp.json`, SessionStart hook (Storybook в фоне), субагент `storybook-reader`, запасной `npm run storybook:docs`. Шаг 3 ✅ Foundations: Overview, Colors, Typography, Spacing, Radius and Shadows (генерируются из токенов, `npm run foundations`), Layout (вручную); тест свежести. Дальше: JSDoc + Figma у всех компонентов, проверка полноты в `npm test`, удалить `docs/components.md`, перевести skills — Фаза 1
+—
 
 ## Дальше
 
 Сверху — следующая. Порядок меняет только пользователь.
+
+- [1.14] Storybook — единственный источник UI для агента (решение пользователя, 2026-09-25). Шаг 1 ✅ Storybook MCP (`@storybook/addon-mcp` 10.6) работает в облачном окружении: `docs-list` ≈150 токенов на всю библиотеку, `docs-show` одного компонента ≈500 (описание, props, stories с кодом); понадобился `react-docgen-typescript`. Шаг 2 ✅ `.mcp.json`, SessionStart hook (Storybook в фоне), субагент `storybook-reader`, запасной `npm run storybook:docs`. Шаг 3 ✅ Foundations: Overview, Colors, Typography, Spacing, Radius and Shadows (генерируются из токенов, `npm run foundations`), Layout (вручную); тест свежести. Дальше: JSDoc + Figma у всех компонентов, проверка полноты в `npm test`, удалить `docs/components.md`, перевести skills — Фаза 1
 
 Каркас Booking Overview (Фаза 2, итерация 1) готов: 2.1–2.4, 2.6. Переход Found → Booking (2.5) ждёт утверждения PNR Search — в «Потом». Flow doc — `projects/booking-overview/README.md`.
 
@@ -51,7 +53,7 @@
 - Чат справа (362px): mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить — Фаза 4.
 
 **Агенты**
-- `storybook-reader`: проверить в новой сессии, что MCP-сервер `storybook` подключается сам (в этой сессии `.mcp.json` не загружен — проверено только через HTTP и `npm run storybook:docs`). Если MCP-клиент подключается раньше, чем hook поднимет Storybook, — перевести hook в async или добавить повторное подключение.
+- Storybook MCP при старте сессии: 2026-09-28 (resume) hook поднял Storybook («Storybook MCP ready»), но MCP-клиент подключался раньше и получил ECONNREFUSED — инструменты `mcp__storybook__*` в сессии недоступны, `storybook-reader` работает через `npm run storybook:docs`. Варианты: переподключить сервер командой `/mcp` в сессии; держать Storybook запущенным в образе окружения; оставить запасной путь основным.
 - Storybook MCP: у `Skydesk / App Sidebar / Parts` нет `meta.component` — MCP показывает ошибку вместо документации. Импорт в сниппетах — `from 'skydesk-sandbox'` (имя пакета), настоящего пути нет.
 - `qa-tester`: добавить в `npm run qa` ручные сценарии PNR Search (Default Office, persona, порядок Office…) и App Sidebar; запуск против preview-ссылки Vercel (`QA_BASE_URL`) — проверить.
 - `domain-researcher` — домен GDS и reference из production Skydesk → `projects/<flow>/research.md`. Когда начнётся Фаза 2.
@@ -65,7 +67,6 @@
 - `APPLICATION.md`: разделы «Personas» и «Mock PNR» относятся в основном к PNR Search — решить, когда появятся данные Booking.
 
 **Craft (Фаза 5)**
-- 9 цветовых токенов с округлённым HSL рисуются не тем hex, что в Figma (`primary` #0d9688 вместо #0d9488, `muted-foreground`, `destructive`, `border`, `brand`, `chart-*`) — Storybook → Foundations / Colors, ⚠️. Перевести на точный HSL = видимое изменение цвета; решить.
 - Полировка по Figma, визуальная регрессия по скриншотам.
 
 ## Сделано
@@ -84,6 +85,7 @@
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 1.12 | Субагент `qa-tester` и прогон `npm run qa` (`scripts/qa/`): Booking B1–B13, PNR Search 1–12 + живые сценарии, отчёт и скриншоты в `qa-report/` | `[1.12]` |
 | 1.6 | Каталог компонентов `docs/components.md`: 3 компонента Skydesk и 9 ui — назначение, props, состояния, Figma, stories | `[1.6]` |
+| 1.15 | Цвета = Figma: 12 токенов с округлённым HSL (`primary` и вся teal-группа, `muted-foreground`, `destructive`, `border`, `chart-*`) переведены на точный HSL, сверено с переменными Figma; тест «цвет = hex Figma» | `[1.15]` |
 | 2.1 | План Фазы 2 и flow doc `projects/booking-overview/README.md`; open questions #22–#26, #3 закрыт | `[2.1]` |
 | 2.2 | Модель Booking для Header (`src/lib/booking.ts`) и mock-бронирования по PNR, `BBV14Q` находится поиском | `[2.2]` |
 | 2.3 | Компонент Booking Header по Figma `308:12504`, stories, токены `divider` и `drop-shadow-header` | `[2.3]` |

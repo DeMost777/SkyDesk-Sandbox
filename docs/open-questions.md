@@ -90,6 +90,16 @@
    Сейчас: mock хранит дату и время как локальные и показывает без перевода. Если backend отдаст время с поясом — решить, в каком поясе показывать.
    Решает: product + backend. Добавлено 2026-09-25.
 
+## Токены
+
+28. **Три цвета в коде отличаются от переменных Figma по значению, не округлением** (сверка 2026-09-28, Figma `4678:125394`): `popover` — код `#ffffff`, Figma `#fafaf9`; `secondary-foreground` — код `#0c0a09`, Figma `#1c1917`; `input` — код `#e7e5e4`, Figma `#e4e4e7`.
+   Сейчас: как в коде. Заметно: фон popover Office Selector, граница полей.
+   Решает: design (или пользователь: взять Figma). Добавлено 2026-09-28.
+
+29. **Цветов нет среди переменных Figma:** `destructive` (`#dc2626`), `chart-1…5`. И наоборот: в Figma есть переменные, которых нет в токенах — `Success` `#059669`, `Warning` `#f59e0b`, `Icons` `#3f3f46`, `Amber/900`, `Orange/100–200`, `Blue/100–900`, `Lime/300–600`, `Border Primary 50`, `Sidebar Foreground 70`.
+   Сейчас: `destructive` и `chart-*` — hex из первого снятия токенов; недостающие переменные Figma добавляются, когда их использует виджет.
+   Решает: design. Добавлено 2026-09-28.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».

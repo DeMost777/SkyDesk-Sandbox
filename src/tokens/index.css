@@ -5,6 +5,8 @@
 
   Base palette: stone (warm grays)
   Primary: Trava teal #0d9488
+  Colours are exact HSL for the Figma hex in each comment (checked against Figma variables
+  2026-09-28); src/foundations/foundations.test.ts fails if a colour renders a different hex.
 */
 
 @layer base {
@@ -20,7 +22,7 @@
     --popover-foreground: 20 14% 4%;
 
     /* Primary: Trava teal */
-    --primary: 174 84% 32%;            /* #0d9488 */
+    --primary: 174.7 83.9% 31.6%;            /* #0d9488 */
     --primary-foreground: 60 9% 98%;   /* stone-50 #fafaf9 */
 
     /* Secondary: stone-100 */
@@ -29,30 +31,30 @@
 
     /* Muted: stone-100 */
     --muted: 60 5% 96%;
-    --muted-foreground: 30 5% 32%;     /* stone-600 #57534e */
+    --muted-foreground: 33.3 5.5% 32.4%;     /* stone-600 #57534e */
 
     /* Accent: stone-100 */
     --accent: 60 5% 96%;
     --accent-foreground: 20 14% 4%;
 
     /* Destructive: red-600 */
-    --destructive: 0 72% 51%;          /* #dc2626 */
+    --destructive: 0 72.2% 50.6%;      /* red-600 #dc2626 — not among Figma variables yet */
     --destructive-foreground: 0 0% 98%;
 
     /* Border / Input / Ring */
-    --border: 30 6% 90%;               /* stone-200 #e7e5e4 */
+    --border: 20 6% 90%;               /* stone-200 #e7e5e4 */
     --input: 30 6% 90%;
-    --ring: 174 84% 32%;               /* teal — matches primary */
+    --ring: 174.7 83.9% 31.6%;         /* teal — matches primary #0d9488 */
 
     /* Border variants */
-    --border-destructive: 0 72% 51%;
-    --border-primary: 174 84% 32%;
+    --border-destructive: 0 72.2% 50.6%;   /* #dc2626 — matches destructive */
+    --border-primary: 174.7 83.9% 31.6%;   /* Figma Border Primary #0d9488 */
 
     /* Radius — matches shadcn default */
     --radius: 0.5rem;
 
     /* Brand — alias for primary teal */
-    --brand: 174 84% 32%;              /* #0d9488 */
+    --brand: 174.7 83.9% 31.6%;              /* #0d9488 */
     --brand-foreground: 60 9% 98%;
 
     /* Sidebar — Figma 548:16649 variables */
@@ -63,7 +65,7 @@
     --sidebar-accent: 60 5% 96%;              /* Secondary #f5f5f4 — Hover / Active (Figma 4920:69057) */
     --sidebar-accent-foreground: 24 9.8% 10%; /* Accent Foreground #1c1917 — PNR */
     --sidebar-border: 220 13% 91%;            /* Sidebar Border #e5e7eb — right edge */
-    --sidebar-ring: 174 84% 32%;              /* focus ring, teal — not in Figma */
+    --sidebar-ring: 174.7 83.9% 31.6%;              /* focus ring, teal — not in Figma */
     --border-muted: 60 5% 96%;                /* Border Muted #f5f5f4 — avatar */
     --sidebar-width: 229px;                   /* Width/Sidebar Width */
 
@@ -93,12 +95,12 @@
     --drop-shadow-header: 0px 1px 6px rgba(0, 0, 0, 0.08);   /* Booking Header, Figma 308:12504 */
     --shadow-popover: 0 2px 2px rgba(0, 0, 0, 0.10), 0 4px 3px rgba(0, 0, 0, 0.10);
 
-    /* Chart colors */
-    --chart-1: 14 71% 61%;             /* #e76e50 */
-    --chart-2: 174 84% 32%;            /* #0d9488 teal */
-    --chart-3: 200 34% 24%;            /* #274754 */
+    /* Chart colors — not among Figma variables yet; hex from the first token extraction */
+    --chart-1: 12 76% 61%;             /* #e76e50 */
+    --chart-2: 174.7 83.9% 31.6%;            /* #0d9488 teal */
+    --chart-3: 197 37% 24%;            /* #274754 */
     --chart-4: 43 74% 66%;             /* #e8c468 */
-    --chart-5: 27 82% 66%;             /* #f4a463 */
+    --chart-5: 26.9 86.8% 67.3%;             /* #f4a463 */
   }
 
   .dark {
