@@ -72,7 +72,7 @@
 
 22. **`destructive-foreground` в коде отличается от Figma из-за контраста.** Figma «shadcn kit - Trava»: red-50 `#fef2f2`; на red-600 `#dc2626` это 4.41:1, а AA для 14px требует 4.5:1 — падают stories Destructive у Button и Badge. В коде `#fafafa` (neutral-50, 4.63:1); на глаз разницы нет.
    Решено 2026-09-29–30: остальные светлые токены приведены к Figma; кольцо `ring` / `sidebar-ring` пользователь поменял в Figma на zinc-500 `#71717a` (4.83:1), код следует Figma; кольцо Focus карточки Overview — Gray/500 `#6b7280`, тоже в Figma.
-   Осталось: чтобы закрыть, в Figma заменить `Destructive Foreground` на `#fafafa` (или взять фон темнее: red-50 на red-700 `#b91c1c` даёт 5.91:1), либо принять red-50 и пометить stories Destructive `a11y: todo`.
+   Решение пользователя, 2026-09-30: поправить Figma на `#fafafa` (код уже такой). Осталось: заменить `Destructive Foreground` в Figma (проверено 2026-09-30 — там пока `#fef2f2`), затем перечитать `206:9602`, убрать `kept` у `destructive-foreground` в `semantic-colors.ts` и закрыть вопрос.
    Сейчас: значение кода `#fafafa`, причина в Storybook (Foundations / Colors → Semantic), проверяется `colors.test.ts`.
    Решает: design. Добавлено 2026-09-28, сужено 2026-09-30.
 
