@@ -218,7 +218,7 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
                     aria-label="Search booking"
                     className="bg-primary flex items-center justify-center h-10 w-10 rounded-control shrink-0 hover:bg-primary/90 transition-colors disabled:cursor-default"
                   >
-                    <ArrowUp className="size-4 text-primary-foreground" strokeWidth={1.5} />
+                    <ArrowUp className="size-4 text-primary-foreground" strokeWidth={2} />
                   </button>
                 </div>
               </div>

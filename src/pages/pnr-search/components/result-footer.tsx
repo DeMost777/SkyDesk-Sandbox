@@ -64,7 +64,7 @@ function GdsChoice({
         })}
       </div>
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={2} aria-hidden />
         <p className="text-sm text-muted-foreground leading-5">{message}</p>
       </div>
     </div>
@@ -83,7 +83,7 @@ export function GdsRequiredFooter({ onSelect }: { onSelect: (gds: GDS) => void }
 function NotFoundNote({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2">
-      <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+      <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={2} aria-hidden />
       <p className="text-sm text-muted-foreground leading-5">{children}</p>
     </div>
   )
@@ -131,7 +131,7 @@ export function NotFoundFooter({
 function ErrorNote({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2">
-      <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={1.5} aria-hidden />
+      <AlertCircle className="size-4 text-destructive shrink-0" strokeWidth={2} aria-hidden />
       <p className="text-sm text-destructive leading-5" role="alert">
         {children}
       </p>
@@ -188,7 +188,7 @@ export function FoundFooter({
   return (
     <div className="flex items-center justify-between gap-4 px-3 py-2 flex-wrap">
       <div className="flex items-center gap-2 min-w-0">
-        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} aria-hidden />
+        <Info className="size-4 text-muted-foreground shrink-0" strokeWidth={2} aria-hidden />
         <p className="text-sm leading-5 text-foreground">
           Opening <span className="font-medium">{booking.pnr}</span> in {code} · {gds}
         </p>

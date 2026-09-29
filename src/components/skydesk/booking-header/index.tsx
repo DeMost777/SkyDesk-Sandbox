@@ -37,7 +37,7 @@ export function BookingHeader({ pnr, gds, passengerCount, createdAt, className }
     >
       <div className="flex min-w-0 flex-1 items-center gap-4">
         <IconButton label="Toggle sidebar">
-          <PanelLeft className="size-4" strokeWidth={1.5} />
+          <PanelLeft className="size-4" strokeWidth={2} />
         </IconButton>
         <Divider />
         <h1 className="shrink-0 text-base font-medium">{pnr}</h1>
@@ -45,7 +45,7 @@ export function BookingHeader({ pnr, gds, passengerCount, createdAt, className }
         <span className="shrink-0 text-sm">{gds}</span>
         <Divider />
         <span className="flex shrink-0 items-center gap-2 text-sm">
-          <Users aria-hidden className="size-4 text-icon" strokeWidth={1.5} />
+          <Users aria-hidden className="size-4 text-icon" strokeWidth={2} />
           {passengersLabel(passengerCount)}
         </span>
         <Divider />
@@ -56,10 +56,10 @@ export function BookingHeader({ pnr, gds, passengerCount, createdAt, className }
       </div>
       <div className="flex items-center gap-2">
         <IconButton label="History">
-          <Clock className="size-4" strokeWidth={1.5} />
+          <Clock className="size-4" strokeWidth={2} />
         </IconButton>
         <IconButton label="Toggle chat">
-          <PanelRight className="size-4" strokeWidth={1.5} />
+          <PanelRight className="size-4" strokeWidth={2} />
         </IconButton>
       </div>
     </header>

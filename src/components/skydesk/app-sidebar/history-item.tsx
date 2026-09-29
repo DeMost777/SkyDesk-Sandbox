@@ -46,7 +46,7 @@ export function HistoryItem({ entry, now, isActive = false, onSelect, className 
         <span className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
           {itinerary.stops.map((stop, i) => (
             <Fragment key={i}>
-              {i > 0 && <Arrow aria-hidden className="size-2.5 shrink-0" strokeWidth={1.5} />}
+              {i > 0 && <Arrow aria-hidden className="size-2.5 shrink-0" strokeWidth={2} />}
               <span>{stop}</span>
             </Fragment>
           ))}
