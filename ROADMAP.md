@@ -23,13 +23,12 @@
 
 ## Сейчас
 
-—
+- [2.1] Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, зона виджетов (по центру, max 800px), шапка бронирования — Фаза 2 · зависит от: 1.11
 
 ## Дальше
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [2.1] Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, зона виджетов (по центру, max 800px), шапка бронирования — Фаза 2 · зависит от: 1.11
 - [3.1] Виджет Overview: табличная основа (`MatrixTable`, stories) + матрица Passenger × Segment; карточки Pricing / Ticket без stories до фидбека команды — Фаза 3 · зависит от: 1.11, 2.1
 - [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { BOOKING_SCENARIOS, MOCK_BOOKING_DETAILS, findBooking } from '@/mocks/bookings'
 import { MOCK_OFFICES } from '@/mocks/offices.mock'
-import { bookingRoute, formatSegmentDate, segmentRoute, validateBooking, type Booking } from './booking'
+import { bookingRoute, formatCreated, formatSegmentDate, passengersLabel, segmentRoute, validateBooking, type Booking } from './booking'
 import { summarizeBooking } from './pnr-search'
 
 const bbv14q = findBooking('BBV14Q')!
@@ -102,6 +102,19 @@ describe('formatting', () => {
 
   it('does not let the time zone move the day', () => {
     expect(formatSegmentDate('2026-06-14T23:59:00Z')).toBe('14 Jun 2026')
+  })
+})
+
+describe('booking header', () => {
+  it('writes Created as DD/MM/YYYY and HH:mm in local time', () => {
+    // Built from local parts, so the check does not depend on the machine's time zone.
+    const created = new Date(2025, 9, 8, 13, 44).toISOString()
+    expect(formatCreated(created)).toEqual({ date: '08/10/2025', time: '13:44' })
+  })
+
+  it('counts passengers in the singular and the plural', () => {
+    expect(passengersLabel(1)).toBe('1 passenger')
+    expect(passengersLabel(3)).toBe('3 passengers')
   })
 })
 

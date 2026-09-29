@@ -139,3 +139,19 @@ export function validateBooking(booking: Booking): string[] {
   }
   return problems
 }
+
+const pad2 = (n: number) => String(n).padStart(2, '0')
+
+/** `08/10/2025` and `13:44` in the agent's local time, as the booking header shows "Created". */
+export function formatCreated(isoDateTime: string): { date: string; time: string } {
+  const at = new Date(isoDateTime)
+  return {
+    date: `${pad2(at.getDate())}/${pad2(at.getMonth() + 1)}/${at.getFullYear()}`,
+    time: `${pad2(at.getHours())}:${pad2(at.getMinutes())}`,
+  }
+}
+
+/** `3 passengers`, `1 passenger`. */
+export function passengersLabel(count: number): string {
+  return `${count} ${count === 1 ? 'passenger' : 'passengers'}`
+}
