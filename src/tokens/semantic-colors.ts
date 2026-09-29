@@ -25,8 +25,6 @@ const c = (
   figma: string, cssVar: string, tailwind: string, light: string, dark: string | undefined, kept?: SemanticColor['kept'],
 ): SemanticColor => ({ figma, var: cssVar, tailwind, light, dark, ...(kept ? { kept } : {}) })
 
-const RING_KEPT = { hex: '#0d9488', reason: 'Kept teal: Figma zinc-400 is 2.56:1 on white, focus needs 3:1' }
-
 export const SEMANTIC_GROUPS: SemanticGroup[] = [
   {
     title: 'Base',
@@ -65,7 +63,7 @@ export const SEMANTIC_GROUPS: SemanticGroup[] = [
       c('Border Primary', 'border-primary', '—', '#0d9488', '#fafafa'),
       c('Border Destructive', 'border-destructive', '—', '#dc2626', '#7f1d1d'),
       c('Input', 'input', 'input', '#e4e4e7', '#27272a'),
-      c('Ring', 'ring', 'ring', '#a1a1aa', '#d4d4d8', RING_KEPT),
+      c('Ring', 'ring', 'ring', '#71717a', '#d4d4d8'),
     ],
   },
   {
@@ -82,7 +80,7 @@ export const SEMANTIC_GROUPS: SemanticGroup[] = [
       c('Sidebar Accent', 'sidebar-accent', 'sidebar-accent', '#f4f4f5', '#27272a'),
       c('Sidebar Accent Foreground', 'sidebar-accent-foreground', 'sidebar-accent-foreground', '#18181b', '#f4f4f5'),
       c('Sidebar Border', 'sidebar-border', 'sidebar-border', '#e5e7eb', '#27272a'),
-      c('Sidebar Ring', 'sidebar-ring', 'sidebar-ring', '#a1a1aa', '#d4d4d8', RING_KEPT),
+      c('Sidebar Ring', 'sidebar-ring', 'sidebar-ring', '#71717a', '#d4d4d8'),
     ],
   },
 ]

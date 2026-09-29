@@ -49,7 +49,7 @@
    Решает: design / владелец среды. Добавлено 2026-09-23.
 
 17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active; в Figma shadcn kit `Sidebar Ring` = zinc-400 (см. #22).
-   Сейчас: Pressed и Focus — та же заливка `sidebar-accent`, что у Hover (правило пользователя, 2026-09-23). Открыто только кольцо фокуса: `sidebar-ring` (teal, 2px), как в shadcn — нужно ли оно, в Figma его нет.
+   Сейчас: Pressed и Focus — та же заливка `sidebar-accent`, что у Hover (правило пользователя, 2026-09-23). Открыто только кольцо фокуса: `sidebar-ring` (2px), в Figma кольца у пунктов sidebar нет; цвет — zinc-500 из переменной Sidebar Ring shadcn kit.
    Решает: design. Добавлено 2026-09-23.
 
 18. **Формат даты в History.** В Figma `12/03/26` — порядок день/месяц не виден из примеров.
@@ -70,11 +70,11 @@
 
 ## Токены
 
-22. **Три токена сознательно отличаются от Figma «shadcn kit - Trava» из-за контраста.** Решение пользователя, 2026-09-29: остальные светлые токены приведены к Figma (`popover`, `input`, `secondary-foreground`, `accent-foreground`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `chart-2`); эти три остаются:
-   - `ring`, `sidebar-ring`: teal `#0d9488` (3.74:1 на белом) вместо zinc-400 `#a1a1aa` из Figma (2.56:1; WCAG 1.4.11 требует 3:1 для индикатора фокуса). Автотесты этого не ловят.
-   - `destructive-foreground`: `#fafafa` (4.63:1 на red-600) вместо red-50 `#fef2f2` из Figma (4.41:1; AA требует 4.5:1 — падают stories Destructive у Button и Badge).
-   Сейчас: значения кода, причина указана в Storybook (Foundations / Colors → Semantic) и проверяется `colors.test.ts`. Кольцо Focus карточки Overview решено отдельно: полоса `gray-500` `#6b7280` вместо `gray-400` (4.83:1), в Figma заменяет пользователь — см. `projects/booking-overview/overview-widget.md`.
-   Решает: design. Добавлено 2026-09-28, сужено 2026-09-29.
+22. **`destructive-foreground` в коде отличается от Figma из-за контраста.** Figma «shadcn kit - Trava»: red-50 `#fef2f2`; на red-600 `#dc2626` это 4.41:1, а AA для 14px требует 4.5:1 — падают stories Destructive у Button и Badge. В коде `#fafafa` (neutral-50, 4.63:1); на глаз разницы нет.
+   Решено 2026-09-29–30: остальные светлые токены приведены к Figma; кольцо `ring` / `sidebar-ring` пользователь поменял в Figma на zinc-500 `#71717a` (4.83:1), код следует Figma; кольцо Focus карточки Overview — Gray/500 `#6b7280`, тоже в Figma.
+   Осталось: чтобы закрыть, в Figma заменить `Destructive Foreground` на `#fafafa` (или взять фон темнее: red-50 на red-700 `#b91c1c` даёт 5.91:1), либо принять red-50 и пометить stories Destructive `a11y: todo`.
+   Сейчас: значение кода `#fafafa`, причина в Storybook (Foundations / Colors → Semantic), проверяется `colors.test.ts`.
+   Решает: design. Добавлено 2026-09-28, сужено 2026-09-30.
 
 ## Booking Overview
 

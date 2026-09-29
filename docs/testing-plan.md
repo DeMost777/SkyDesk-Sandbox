@@ -86,13 +86,13 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 1. Sidebar слева, 229px, на всю высоту под навигацией sandbox; сверху «Trava Sky Desk», снизу Alex Pupkin.
 2. General — только New chat. General и History — заголовки, не кликаются.
 3. History: 11 бронирований, первое — «Today 15:12». Маршруты: `YYZ ⇆ LON` (K7Q2LM), `LAX → SEA` (P9D3XA), `CDG → LON → JFK` (BBV14Q).
-4. Без наведения — у элементов нет фона. Наведение на логотип, New chat, History item, пользователя — фон `#f5f5f4`; нажатие — тот же фон; Tab — тот же фон и teal-кольцо.
+4. Без наведения — у элементов нет фона. Наведение на логотип, New chat, History item, пользователя — фон `#f5f5f4`; нажатие — тот же фон; Tab — тот же фон и серое кольцо (`#71717a`).
 5. Клики ничего не меняют: URL и экран поиска остаются как были.
 6. Окно ниже списка History — History прокручивается, header и footer на месте.
 
 ## Цвета (Foundations / Colors)
 
-Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; светлые семантические токены = значения Figma, кроме трёх с пометкой `kept`, которые держат заданное значение) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого образца с тем цветом, который он заявляет).
+Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; светлые семантические токены = значения Figma, кроме `destructive-foreground` с пометкой `kept`, которая держит заданное значение) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого образца с тем цветом, который он заявляет).
 
 Вручную в Storybook (`npm run storybook`) → Foundations / Colors:
 1. Palette — 22 шкалы по 11 оттенков, под каждым образцом номер и hex.
