@@ -1,7 +1,7 @@
 # Flow: Booking Overview
 
 > Flow doc. Read it before the code; update it in the same change as the behavior.
-> Updated: 2026-09-29. Phase: **coverage** (see CLAUDE.md → «Фаза»). Статус: каркас не построен (ROADMAP 2.1), есть модель и mock-данные (1.11).
+> Updated: 2026-09-30. Phase: **coverage** (see CLAUDE.md → «Фаза»). Статус: каркас построен (ROADMAP 2.1: страница, шапка, рамка виджета), есть модель и mock-данные (1.11). Содержимое виджетов — 3.1 и дальше.
 
 **Principle:** агент открывает бронирование и видит его целиком — виджеты, каждый со своей частью PNR. Skydesk показывает факты, а не оценивает бронирование.
 
@@ -19,7 +19,15 @@
 - справа будет чат (Фаза 4), пока места под него нет;
 - виджеты идут вертикально в одной колонке, **по центру области Booking Overview**, **максимальная ширина виджета 800px**.
 
-**Виджет** — секция с заголовком-аккордеоном (chevron, название, бейдж со счётчиком). Развёрнут по умолчанию (пользователь, 2026-09-29).
+**Виджет** — секция с заголовком-аккордеоном (chevron, название, бейдж со счётчиком). Развёрнут по умолчанию (пользователь, 2026-09-29). Рамка — компонент `WidgetSection` (`src/components/skydesk/widget-section/`): вокруг 16px, снизу линия 1px, содержимое до 800px по центру (Figma `Width/Widget Max Width`), заголовок — кнопка `aria-expanded`, содержимое остаётся в DOM при сворачивании. Высота строки заголовка 36px (в Figma 36 у Overview и 32 у свёрнутых строк — взято 36).
+
+**Шапка бронирования** — `BookingHeader` (`src/components/skydesk/booking-header/`, Figma `8014:11426`): высота 44px, снизу линия и тень `shadow-header`; слева кнопка панели, `PNR | GDS | N passengers | Created: DD/MM/YYYY HH:mm` (время мельче и серее; в местном времени агента), справа кнопки «History» и «Toggle chat». Три кнопки пока ничего не делают (как клики в sidebar, #21). Сверху PNR — `h1` страницы.
+
+**Полоса названия** — под шапкой, 36px, фон `secondary`, снизу линия: «Booking Overview» (Figma `Tabs` `8014:11329`, одна активная вкладка; другие вкладки скрыты).
+
+**Фон области виджетов** — `#f5f5f5` (Neutral/100, токен `page`): в Figma-узле фон не найден, значение измерено по скриншоту пользователя (2026-09-29). Шапка, sidebar и таблицы — белые.
+
+**History в sidebar без выделенного элемента**, как на скриншоте, хотя `AppSidebar` умеет `activePnr` (см. #21).
 
 **Один Booking — источник для всех.** Ввод PNR, History, шапка и виджеты читают одно и то же бронирование (`src/mocks/bookings/`). Модель — `src/lib/booking.ts`. Виджеты не хранят своих данных, а получают Booking и выводят из него своё представление (для Overview — `buildOverviewMatrix`).
 
@@ -41,12 +49,27 @@
 
 ## States and how to reach them
 
-Страницы пока нет (ROADMAP 2.1). Адрес: `?page=booking-overview&pnr=<PNR>` — PNR из таблицы сценариев в `overview-widget.md`.
+Адрес: `?page=booking-overview&pnr=<PNR>`, PNR — из таблицы сценариев в `overview-widget.md`. Верхняя навигация sandbox → «Booking Overview» открывает `BBV14Q`. Панель «Booking» над шапкой переключает между девятью сценариями (у каждой кнопки в подсказке — что проверяет сценарий).
+
+| Состояние | Адрес |
+|---|---|
+| Booking открыт | `?page=booking-overview&pnr=BBV14Q` (любой PNR из сценариев) |
+| Один пассажир: «1 passenger» | `?page=booking-overview&pnr=K2M9QP` |
+| Широкая матрица (для 3.1) | `?page=booking-overview&pnr=WIDE55` |
+| Нет booking по PNR / нет PNR | `?page=booking-overview&pnr=XYZ789` или без `pnr` — сообщение «No mock booking…» (только в sandbox: в продукте Booking приходит из PNR Search) |
+| Виджет свёрнут | клик по заголовку «Overview» |
+
+Storybook: Pages / booking-overview (те же адреса), Skydesk / Booking Header, Skydesk / Widget Section.
+
+Содержимое виджета Overview — заглушка «Overview matrix: N passengers × M segments» до задачи 3.1; счётчик в заголовке уже настоящий (`documentCount`).
 
 ## Known gaps
 
-- Страница, шапка, зона виджетов, переход Found → Booking (open question #3).
+- Переход Found → Booking из PNR Search (open question #3): страница открывается адресом и панелью «Booking».
+- Левая рейка иконок со счётчиками (Figma `Toolbar` `8014:11327`: Passengers, Flights, Tickets, Services, Remarks) — не построена: неизвестно, что она делает (open question #26). В Figma её счётчики (2 / 4 / 2 / 6 / 22) не выводятся из наших mock-данных.
+- Остальные виджеты страницы (Passengers, Segments, Ticket, Pricing, Services, EMD, Remarks, Messages, Contacts) — в Figma есть, у нас нет.
 - Ширина зоны при узком окне и появление чата справа.
+- Поведение трёх кнопок шапки.
 
 ## Open questions
 

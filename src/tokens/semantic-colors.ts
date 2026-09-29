@@ -11,7 +11,8 @@ export interface SemanticColor {
   /** Tailwind colour key: bg-<key>, text-<key>, border-<key>. */
   tailwind: string
   light: string
-  dark: string
+  /** Not read from Figma for every token; dark theme is unused (decision 2026-09-29). */
+  dark?: string
   kept?: { hex: string; reason: string }
 }
 
@@ -21,7 +22,7 @@ export interface SemanticGroup {
 }
 
 const c = (
-  figma: string, cssVar: string, tailwind: string, light: string, dark: string, kept?: SemanticColor['kept'],
+  figma: string, cssVar: string, tailwind: string, light: string, dark: string | undefined, kept?: SemanticColor['kept'],
 ): SemanticColor => ({ figma, var: cssVar, tailwind, light, dark, ...(kept ? { kept } : {}) })
 
 const RING_KEPT = { hex: '#0d9488', reason: 'Kept teal: Figma zinc-400 is 2.56:1 on white, focus needs 3:1' }
@@ -66,6 +67,10 @@ export const SEMANTIC_GROUPS: SemanticGroup[] = [
       c('Input', 'input', 'input', '#e4e4e7', '#27272a'),
       c('Ring', 'ring', 'ring', '#a1a1aa', '#d4d4d8', RING_KEPT),
     ],
+  },
+  {
+    title: 'Other',
+    colors: [c('Icons', 'icon', 'icon', '#3f3f46', undefined)],
   },
   {
     title: 'Sidebar',

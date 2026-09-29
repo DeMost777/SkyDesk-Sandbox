@@ -102,7 +102,15 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 Автоматически: `npm test` — `src/lib/booking.test.ts` (каждый сценарий из `src/mocks/bookings/` согласован: ссылки покрытия, уникальные id и номера билетов, Office в своей GDS, все типы пассажиров ADT / CHD / INF; сводка для PNR Search совпадает с прежней; маршрут, формат даты) и `src/lib/overview-matrix.test.ts` (эталонная ячейка из спецификации, Deleted и «No document», все статусы Pricing, порядок и равные времена, покрытие, счётчик, цель клика).
 
-Вручную — после появления страницы (ROADMAP 2.1): `?page=booking-overview&pnr=<PNR>`, PNR и что проверяет каждый — в `projects/booking-overview/overview-widget.md` → «Mock scenarios». PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
+Вручную на `?page=booking-overview&pnr=BBV14Q` (или верхняя навигация → «Booking Overview»):
+1. Слева App Sidebar, History без выделенного элемента. Сверху панель «Booking» с девятью PNR — клик открывает другое бронирование.
+2. Шапка 44px: `BBV14Q | Sabre | 3 passengers | Created: 08/10/2025 13:44` (время серое и мельче), справа иконки History и панели. Tab проходит: панель слева → History → чат.
+3. Под шапкой полоса «Booking Overview» на сером фоне; область ниже — `#f5f5f5`.
+4. Виджет Overview по центру области, ширина 800px; слева chevron вниз, справа бейдж с иконкой и счётчиком (BBV14Q — 6, K2M9QP — 1, DEL3T3 — 1). Клик или Enter по заголовку сворачивает содержимое и меняет chevron.
+5. Без `pnr` или с неизвестным (`XYZ789`): сообщение «No mock booking…».
+6. Окно шире и уже: колонка остаётся по центру.
+
+PNR и что проверяет каждый — `projects/booking-overview/overview-widget.md` → «Mock scenarios». Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
 
 ## Последний прогон
 
@@ -111,3 +119,5 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 - 2026-09-23 (после удаления кнопок из Error): все пункты выше пройдены в headless Chromium на production build (`vite preview`); ошибок в консоли нет.
 
 - 2026-09-28 (токены цвета, шрифт): typecheck, lint:tokens, test (unit + storybook, 180 тестов), build — зелёные. Foundations / Colors и sidebar с IBM Plex Mono просмотрены в headless Chromium на Storybook dev.
+
+- 2026-09-30 (Booking Overview, 2.1): typecheck, lint:tokens, test (unit + storybook, 217 тестов), build — зелёные. Страница проверена в headless Chromium на 1440×900: шапка 44px, виджет 800px по центру (x 435–1235 при области 229–1440), счётчик 6 у `BBV14Q`.

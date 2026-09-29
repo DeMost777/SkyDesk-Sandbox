@@ -48,6 +48,8 @@ const config: Config = {
           foreground: 'hsl(var(--brand-foreground))',
         },
         surface: 'hsl(var(--surface))',
+        page: 'hsl(var(--page))',
+        icon: 'hsl(var(--icon))',
         loading: {
           start: 'hsl(var(--loading-start))',
           end: 'hsl(var(--loading-end))',
@@ -79,6 +81,7 @@ const config: Config = {
       },
       boxShadow: {
         popover: 'var(--shadow-popover)',
+        header: 'var(--shadow-header)',
       },
       dropShadow: {
         card: 'var(--drop-shadow-card)',

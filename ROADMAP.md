@@ -23,7 +23,7 @@
 
 ## Сейчас
 
-- [2.1] Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, зона виджетов (по центру, max 800px), шапка бронирования — Фаза 2 · зависит от: 1.11
+—
 
 ## Дальше
 
@@ -78,3 +78,4 @@
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |
 | 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |
+| 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
