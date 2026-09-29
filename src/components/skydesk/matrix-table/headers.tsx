@@ -1,4 +1,4 @@
-import { formatSegmentDate, segmentRoute, type Passenger, type Segment } from '@/lib/booking'
+import { formatSegmentDate, formatSegmentDay, segmentRoute, type Passenger, type Segment } from '@/lib/booking'
 import { cn } from '@/lib/utils'
 
 // Headers of a Passenger × Segment table. Figma 8014:11347 (passenger), 8014:11380 (segment).
@@ -30,7 +30,7 @@ export function PassengerHeader({ passenger }: { passenger: Pick<Passenger, 'ref
   )
 }
 
-/** `S1  KBP–FRA` over `14 Jun 2026  SK 400`. */
+/** `S1  KBP–FRA` over `14 Jun  SK 400`. The year is only in the tooltip: it does not fit next to the flight. */
 export function SegmentHeader({ segment }: { segment: Segment }) {
   return (
     <div className="flex flex-col gap-1.5">
@@ -38,8 +38,8 @@ export function SegmentHeader({ segment }: { segment: Segment }) {
         <RefBadge tone="segment">{segment.ref}</RefBadge>
         <span className="flex-1 text-right font-mono text-sm uppercase leading-5">{segmentRoute(segment)}</span>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-x-2 font-mono text-xs leading-4 text-muted-foreground">
-        <span>{formatSegmentDate(segment.departureDate)}</span>
+      <div className="flex items-center justify-between gap-x-2 font-mono text-xs leading-4 text-muted-foreground">
+        <span title={formatSegmentDate(segment.departureDate)}>{formatSegmentDay(segment.departureDate)}</span>
         <span>{segment.flightNumber}</span>
       </div>
     </div>

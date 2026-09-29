@@ -119,7 +119,7 @@ Overview на `?page=booking-overview&pnr=<PNR>` (сценарии — `overview
 - Клик: под виджетом «Sandbox: would open …».
 - `WIDE55`: 5 пассажиров — таблица прокручивается по горизонтали, колонка Segments остаётся на месте; `BBV14Q` (3 пассажира) не прокручивается.
 - `PRC5TS`: все статусы Pricing бейджами; Active — без бейджа. `DEL3T3`: Deleted не виден, счётчик 1. `TIE5AM`: порядок Pricing, Pricing, Ticket.
-- Дата сегмента с годом; рейс переносится на вторую строку (вопрос #29).
+- Дата сегмента без года (`14 Jun`), в одной строке с рейсом; наведение показывает полную дату с годом.
 
 Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
 

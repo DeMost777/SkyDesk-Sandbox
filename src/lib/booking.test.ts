@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { BOOKING_SCENARIOS, MOCK_BOOKING_DETAILS, findBooking } from '@/mocks/bookings'
 import { MOCK_OFFICES } from '@/mocks/offices.mock'
-import { bookingRoute, formatCreated, formatSegmentDate, passengersLabel, segmentRoute, validateBooking, type Booking } from './booking'
+import { bookingRoute, formatCreated, formatSegmentDate, formatSegmentDay, passengersLabel, segmentRoute, validateBooking, type Booking } from './booking'
 import { summarizeBooking } from './pnr-search'
 
 const bbv14q = findBooking('BBV14Q')!
@@ -95,12 +95,18 @@ describe('formatting', () => {
     expect(segmentRoute({ from: 'KBP', to: 'FRA' })).toBe('KBP–FRA')
   })
 
-  it('writes a segment date with the year, without a leading zero', () => {
+  it('writes a segment date without the year and without a leading zero', () => {
+    expect(formatSegmentDay('2026-06-14')).toBe('14 Jun')
+    expect(formatSegmentDay('2026-12-03')).toBe('3 Dec')
+  })
+
+  it('writes the full date with the year for a tooltip', () => {
     expect(formatSegmentDate('2026-06-14')).toBe('14 Jun 2026')
-    expect(formatSegmentDate('2026-12-03')).toBe('3 Dec 2026')
+    expect(formatSegmentDate('2027-01-03')).toBe('3 Jan 2027')
   })
 
   it('does not let the time zone move the day', () => {
+    expect(formatSegmentDay('2026-06-14T23:59:00Z')).toBe('14 Jun')
     expect(formatSegmentDate('2026-06-14T23:59:00Z')).toBe('14 Jun 2026')
   })
 })

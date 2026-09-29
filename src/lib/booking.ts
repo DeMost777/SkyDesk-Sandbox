@@ -101,10 +101,21 @@ export function segmentRoute(segment: Pick<Segment, 'from' | 'to'>): string {
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-/** `2026-06-14` → `14 Jun 2026`. Read from the ISO string itself, so the time zone cannot shift the day. */
-export function formatSegmentDate(isoDate: string): string {
+function dateParts(isoDate: string): { year: number; month: number; day: number } {
   const [year, month, day] = isoDate.slice(0, 10).split('-').map(Number)
-  return `${day} ${MONTHS[month - 1]} ${year}`
+  return { year, month, day }
+}
+
+/** `2026-06-14` → `14 Jun`: the date as a segment cell shows it (Figma, decision of 2026-09-30). */
+export function formatSegmentDay(isoDate: string): string {
+  const { month, day } = dateParts(isoDate)
+  return `${day} ${MONTHS[month - 1]}`
+}
+
+/** `2026-06-14` → `14 Jun 2026`: the full date, for a tooltip. Read from the ISO string itself, so the time zone cannot shift the day. */
+export function formatSegmentDate(isoDate: string): string {
+  const { year } = dateParts(isoDate)
+  return `${formatSegmentDay(isoDate)} ${year}`
 }
 
 const TICKET_NUMBER = /^\d{3}-\d{10}$/

@@ -49,7 +49,11 @@ export const Segments: Story = {
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByText('KBP–FRA')).toBeVisible() // en dash
-    await expect(canvas.getAllByText('14 Jun 2026')).toHaveLength(2)
-    await expect(canvas.getByText('3 Jan 2027')).toBeVisible()
+    // The year is not shown, only in the tooltip.
+    await expect(canvas.getAllByText('14 Jun')).toHaveLength(2)
+    await expect(canvas.getByText('3 Jan')).toHaveAttribute('title', '3 Jan 2027')
+    // Date and flight stay on one line in the 140px column.
+    const date = canvas.getAllByText('14 Jun')[0]
+    await expect(date.getBoundingClientRect().top).toBe(canvas.getByText('SK 400').getBoundingClientRect().top)
   },
 }
