@@ -40,7 +40,7 @@
 | `Popover` | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverAnchor` | Default |
 | `Command` | `Command`, `CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`, `CommandEmpty`, `CommandSeparator`, `CommandShortcut`, `CommandDialog` | Default |
 
-Заметки: teal `primary` с текстом не проходит контраст AA (3.5:1, нужно 4.5:1) — stories помечены `a11y: todo`, нарушение видно в панели, но тест не падает: Button Default, Link, Small, CssCheck; Badge Default; Dialog Default; Office Selector LoadError (open question #14). Кольцо фокуса — `ring` (teal, осознанно не по Figma, вопрос #22).
+Заметки: teal `primary` с текстом не проходит контраст AA (3.5:1, нужно 4.5:1) — stories помечены `a11y: todo`, нарушение видно в панели, но тест не падает: Button Default, Link, Small, CssCheck; Badge Default; Dialog Default; Office Selector LoadError (open question #14). Кольцо фокуса — `ring` (zinc-500 `#71717a`, как в Figma). Осознанное отличие от Figma — только `destructive-foreground` (CLAUDE.md → «Решения и gotchas»).
 
 ## `ui/office-selector.tsx` — Office Selector
 
@@ -56,7 +56,7 @@
 - **Props `AppSidebar`:** `history: HistoryEntry[]`, `user: AgentUser`, `activePnr`, `now`, `onBrandClick`, `onNewChat`, `onSelect(entry)`, `onUserClick`, `className`.
 - **Части:** `SidebarBrand`, `NewChatButton`, `SidebarUser`, `HistoryItem`, `TravaLogo` (знак перерисован SVG, вопрос #16).
 - **`HistoryItem`:** `entry`, `now`, `isActive`, `onSelect`. Показывает `PNR · GDS code`, дату или «Today» и Itinerary (`A → B`, `A ⇆ B`, `A → B → C`).
-- **Состояния:** Default, Hover, Pressed, Focus, Active; варианты маршрута One way / Round / Multi city. Pressed и Focus в Figma нет: pressed = hover, focus = `sidebar-ring` (вопрос #17). Клики ничего не делают в приложении (вопрос #21).
+- **Состояния:** Default, Hover, Pressed, Focus, Active; варианты маршрута One way / Round / Multi city. Pressed и Focus в Figma нет: pressed = hover, focus = `sidebar-ring`, zinc-500 (вопрос #17). Клики ничего не делают в приложении (вопрос #21).
 - **Stories:** Skydesk / App Sidebar (Default, Clicks, ActiveItem, EmptyHistory, LongHistory); / History Item (Default, Hover, Pressed, Focus, Active, SelectsOnClick, OneWay, RoundTrip, MultiCity); / Parts (Header, New chat, Footer × Default / Hover / Pressed / Focus, FooterLongName).
 - **Figma:** `548:16649` (Type=Default), `4920:69057` (состояния History item), `7936:79314` (раскладка PNR Search с sidebar).
 

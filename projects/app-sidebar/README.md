@@ -58,7 +58,7 @@ CDG → LON → JFK       15:12     ← Itinerary             Interaction time
 | Hover | Курсор над элементом | Фон `sidebar-accent` |
 | Pressed | Нажатие мышью (`:active`) | Как Hover (Figma не различает) |
 | Active | Открытое сейчас бронирование (`isActive`) | Как Hover, плюс `aria-current="page"` |
-| Focus | Фокус с клавиатуры (`:focus-visible`) | Фон `sidebar-accent` (правило пользователя, 2026-09-23) + кольцо `sidebar-ring` 2px — кольца нет в Figma, см. open questions |
+| Focus | Фокус с клавиатуры (`:focus-visible`) | Фон `sidebar-accent` (правило пользователя, 2026-09-23) + кольцо `sidebar-ring` 2px (zinc-500 `#71717a`, переменная Sidebar Ring из shadcn kit) — кольца у пунктов нет в Figma, см. open questions |
 
 Те же Default / Hover / Pressed / Focus — у New chat, Header и Footer: одна кнопка `SidebarMenuButton` на всё.
 

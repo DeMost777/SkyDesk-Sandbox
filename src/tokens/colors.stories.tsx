@@ -90,7 +90,7 @@ function SemanticRow({ color }: { color: SemanticColor }) {
       <td className="py-2 font-mono text-xs">{color.tailwind}</td>
       <td className="py-2 font-mono text-xs">{color.light}</td>
       <td className="py-2 text-xs text-muted-foreground">
-        {color.kept ? `${color.kept.reason} (#22)` : 'Matches Figma'}
+        {color.kept ? color.kept.reason : 'Matches Figma'}
       </td>
     </tr>
   )
@@ -140,8 +140,8 @@ export const Semantic: Story = {
         story:
           'Figma → Foundations → Color → Light, bound to our CSS variables (`src/tokens/index.css`). ' +
           'A token that aliases a palette step is exact by construction; the play function checks ' +
-          'every swatch. Three tokens keep a value other than Figma on purpose, for contrast ' +
-          '(--ring, --sidebar-ring, --destructive-foreground): the row says why (open question #22).',
+          'every swatch. One token keeps a value other than Figma on purpose, for contrast ' +
+          '(--destructive-foreground): its row says why (decision of 2026-09-30).',
       },
     },
   },

@@ -8,7 +8,7 @@
 
   Two layers. Palette (palette.css, generated): --palette-<scale>-<step>, the 22 Figma "Primitives"
   scales. Semantic tokens (this file): shadcn names that alias a palette step, so the value is exact.
-  Every light semantic token equals Figma (colors.test.ts) except three kept on purpose for contrast (--ring, --sidebar-ring, --destructive-foreground; open question #22). Dark values are kept but unused.
+  Every light semantic token equals Figma (colors.test.ts) except --destructive-foreground, kept on purpose for contrast (decision of 2026-09-30, CLAUDE.md). Dark values are kept but unused.
 */
 @import './palette.css';
 
@@ -42,12 +42,12 @@
 
     /* Destructive: red-600 */
     --destructive: var(--palette-red-600); /* red-600 #dc2626 */
-    --destructive-foreground: var(--palette-neutral-50); /* neutral-50 #fafafa — kept: Figma red-50 gives 4.41:1 on red-600 (< 4.5:1), open question #22 */
+    --destructive-foreground: var(--palette-neutral-50); /* neutral-50 #fafafa — kept: Figma red-50 gives 4.41:1 on red-600 (< 4.5:1); decision of 2026-09-30 */
 
     /* Border / Input / Ring */
     --border: var(--palette-stone-200);  /* stone-200 #e7e5e4 */
     --input: var(--palette-zinc-200); /* zinc-200 #e4e4e7 */
-    --ring: var(--palette-teal-600); /* teal-600 #0d9488 — kept: Figma zinc-400 gives 2.56:1 (< 3:1), open question #22 */
+    --ring: var(--palette-zinc-500); /* zinc-500 #71717a — Figma (changed from zinc-400 by the user, 2026-09-30: 4.83:1 on white) */
 
     /* Border variants */
     --border-destructive: var(--palette-red-600); /* red-600 */
@@ -68,7 +68,7 @@
     --sidebar-accent: var(--palette-zinc-100); /* zinc-100 #f4f4f5 — Hover / Active (Figma 4920:69057) */
     --sidebar-accent-foreground: var(--palette-zinc-900); /* zinc-900 #18181b — PNR */
     --sidebar-border: var(--palette-gray-200); /* gray-200 #e5e7eb — right edge */
-    --sidebar-ring: var(--palette-teal-600); /* teal-600 #0d9488 — kept, see --ring */
+    --sidebar-ring: var(--palette-zinc-500); /* zinc-500 #71717a — as --ring */
     --border-muted: var(--palette-stone-100); /* stone-100 #f5f5f4 — avatar */
     --sidebar-width: 229px;                   /* Width/Sidebar Width */
 
