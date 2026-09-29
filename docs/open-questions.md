@@ -73,7 +73,7 @@
 22. **Три токена сознательно отличаются от Figma «shadcn kit - Trava» из-за контраста.** Решение пользователя, 2026-09-29: остальные светлые токены приведены к Figma (`popover`, `input`, `secondary-foreground`, `accent-foreground`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `chart-2`); эти три остаются:
    - `ring`, `sidebar-ring`: teal `#0d9488` (3.74:1 на белом) вместо zinc-400 `#a1a1aa` из Figma (2.56:1; WCAG 1.4.11 требует 3:1 для индикатора фокуса). Автотесты этого не ловят.
    - `destructive-foreground`: `#fafafa` (4.63:1 на red-600) вместо red-50 `#fef2f2` из Figma (4.41:1; AA требует 4.5:1 — падают stories Destructive у Button и Badge).
-   Сейчас: значения кода, причина указана в Storybook (Foundations / Colors → Semantic) и проверяется `colors.test.ts`. Тот же вопрос у кольца Focus карточки Overview: двойное кольцо Figma `gray-400` даёт 2.54:1 — решить при 3.1.
+   Сейчас: значения кода, причина указана в Storybook (Foundations / Colors → Semantic) и проверяется `colors.test.ts`. Кольцо Focus карточки Overview решено отдельно: полоса `gray-500` `#6b7280` вместо `gray-400` (4.83:1), в Figma заменяет пользователь — см. `projects/booking-overview/overview-widget.md`.
    Решает: design. Добавлено 2026-09-28, сужено 2026-09-29.
 
 ## Booking Overview
