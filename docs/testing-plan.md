@@ -96,7 +96,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 Вручную в Storybook (`npm run storybook`) → Foundations / Colors:
 1. Palette — 22 шкалы по 11 оттенков, под каждым образцом номер и hex.
-2. Semantic: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Колонка Status: «Matches Figma» или причина, почему значение осознанно другое (вопрос #22). Тёмная тема не проверяется (решение 2026-09-29).
+2. Semantic: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Колонка Status: «Matches Figma» или причина, почему значение осознанно другое (`destructive-foreground`). Тёмная тема не проверяется (решение 2026-09-29).
 3. History item в sidebar набран IBM Plex Mono (не Roboto Mono); текст не выходит за карточку.
 
 ## Booking и Overview (модель и mock-данные)

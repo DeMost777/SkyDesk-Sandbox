@@ -40,7 +40,7 @@
 | `Popover` | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverAnchor` | Default |
 | `Command` | `Command`, `CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`, `CommandEmpty`, `CommandSeparator`, `CommandShortcut`, `CommandDialog` | Default |
 
-Заметки: teal `primary` с текстом не проходит контраст AA (3.5:1, нужно 4.5:1) — stories помечены `a11y: todo`, нарушение видно в панели, но тест не падает: Button Default, Link, Small, CssCheck; Badge Default; Dialog Default; Office Selector LoadError (open question #14). Кольцо фокуса — `ring` (zinc-500 `#71717a`, как в Figma). Осознанное отличие от Figma — только `destructive-foreground` (вопрос #22).
+Заметки: teal `primary` с текстом не проходит контраст AA (3.5:1, нужно 4.5:1) — stories помечены `a11y: todo`, нарушение видно в панели, но тест не падает: Button Default, Link, Small, CssCheck; Badge Default; Dialog Default; Office Selector LoadError (open question #14). Кольцо фокуса — `ring` (zinc-500 `#71717a`, как в Figma). Осознанное отличие от Figma — только `destructive-foreground` (CLAUDE.md → «Решения и gotchas»).
 
 ## `ui/office-selector.tsx` — Office Selector
 

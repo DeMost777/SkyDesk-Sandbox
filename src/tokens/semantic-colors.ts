@@ -1,7 +1,7 @@
 // Semantic colours: Figma "shadcn kit - Trava" → Foundations → Color (Light / Dark) bound to
 // our CSS variables in src/tokens/index.css. Figma names verbatim; `var` is the variable,
 // `tailwind` the utility suffix (bg-…, text-…, border-…). Hex values are Figma's.
-// `kept`: the code deliberately keeps another value, and why (docs/open-questions.md #22).
+// `kept`: the code deliberately keeps another value, and why (decision of 2026-09-30, CLAUDE.md → «Решения и gotchas»).
 
 export interface SemanticColor {
   /** Name in Figma. */

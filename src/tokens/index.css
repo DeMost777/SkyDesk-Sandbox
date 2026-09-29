@@ -8,7 +8,7 @@
 
   Two layers. Palette (palette.css, generated): --palette-<scale>-<step>, the 22 Figma "Primitives"
   scales. Semantic tokens (this file): shadcn names that alias a palette step, so the value is exact.
-  Every light semantic token equals Figma (colors.test.ts) except --destructive-foreground, kept on purpose for contrast (open question #22). Dark values are kept but unused.
+  Every light semantic token equals Figma (colors.test.ts) except --destructive-foreground, kept on purpose for contrast (decision of 2026-09-30, CLAUDE.md). Dark values are kept but unused.
 */
 @import './palette.css';
 
@@ -42,7 +42,7 @@
 
     /* Destructive: red-600 */
     --destructive: var(--palette-red-600); /* red-600 #dc2626 */
-    --destructive-foreground: var(--palette-neutral-50); /* neutral-50 #fafafa — kept: Figma red-50 gives 4.41:1 on red-600 (< 4.5:1), open question #22 */
+    --destructive-foreground: var(--palette-neutral-50); /* neutral-50 #fafafa — kept: Figma red-50 gives 4.41:1 on red-600 (< 4.5:1); decision of 2026-09-30 */
 
     /* Border / Input / Ring */
     --border: var(--palette-stone-200);  /* stone-200 #e7e5e4 */
