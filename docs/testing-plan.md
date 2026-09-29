@@ -112,7 +112,16 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 6. Окно шире и уже: колонка остаётся по центру, горизонтальной прокрутки нет на ширине 800px и больше (проверено 1440, 1024, 800). Уже ~700px шапка обрезает «Created»: sidebar не сворачивается.
 7. Путь целиком: `/` → ввести `BBV14Q` → Enter → Found → «Open booking» → Booking Overview `BBV14Q`.
 
-PNR и что проверяет каждый — `projects/booking-overview/overview-widget.md` → «Mock scenarios». Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
+Overview на `?page=booking-overview&pnr=<PNR>` (сценарии — `overview-widget.md` → «Mock scenarios»):
+- `BBV14Q`: ячейка P1×S1 сверху вниз — Pricing `Inactive`, Pricing `Ticketed`, Ticket `Voided`, Ticket без бейджа; P3 — «No document» (штриховка); P2×S1 — Pricing без бейджа и Ticket.
+- Наведение на карточку: светлое покрытие «See widget ↗» на всю карточку; нажатая — то же.
+- Tab: между карточками — двойное кольцо (белый зазор и серая полоса); карточка остаётся видимой.
+- Клик: под виджетом «Sandbox: would open …».
+- `WIDE55`: 5 пассажиров — таблица прокручивается по горизонтали, колонка Segments остаётся на месте; `BBV14Q` (3 пассажира) не прокручивается.
+- `PRC5TS`: все статусы Pricing бейджами; Active — без бейджа. `DEL3T3`: Deleted не виден, счётчик 1. `TIE5AM`: порядок Pricing, Pricing, Ticket.
+- Дата сегмента с годом; рейс переносится на вторую строку (вопрос #29).
+
+Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
 
 ## Последний прогон
 
@@ -123,3 +132,5 @@ PNR и что проверяет каждый — `projects/booking-overview/ove
 - 2026-09-28 (токены цвета, шрифт): typecheck, lint:tokens, test (unit + storybook, 180 тестов), build — зелёные. Foundations / Colors и sidebar с IBM Plex Mono просмотрены в headless Chromium на Storybook dev.
 
 - 2026-09-30 (Booking Overview, 2.1): typecheck, lint:tokens, test (unit + storybook, 217 тестов), build — зелёные. Страница проверена в headless Chromium на 1440×900: шапка 44px, виджет 800px по центру (x 435–1235 при области 229–1440), счётчик 6 у `BBV14Q`.
+
+- 2026-09-30 (Overview, 3.1): typecheck, lint:tokens, test (225 тестов), build — зелёные. Виджет проверен в headless Chromium на 1440×900: hover, focus-кольцо, клик, скролл WIDE55 (колонка сегментов на x=436 до и после скролла).

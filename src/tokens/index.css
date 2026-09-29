@@ -96,7 +96,26 @@
     /* Figma "Icons" */
     --icon: var(--palette-zinc-700);     /* zinc-700 #3f3f46 */
 
+    /* Matrix tables and the Overview widget — Figma 8014:11331, 7851:67417, 8013:11314.
+       Names are ours (Figma has none for these); values are palette steps from Figma. */
+    --document: var(--palette-neutral-50);              /* card fill: Neutral/50 #fafafa */
+    --document-muted: var(--palette-neutral-100);       /* status badge fill, hover cover: Neutral/100 */
+    --pricing-accent: var(--palette-orange-300);        /* Pricing: left line, Orange/300 */
+    --pricing-foreground: var(--palette-orange-800);    /* Pricing: icon and label, Orange/800 */
+    --ticket-accent: var(--palette-neutral-300);        /* Ticket: left line, Neutral/300 */
+    --badge-passenger: var(--palette-orange-100);       /* P1, P2… */
+    --badge-passenger-border: var(--palette-orange-200);
+    --badge-passenger-foreground: var(--palette-amber-900);
+    --badge-segment: var(--palette-blue-100);           /* S1, S2… */
+    --badge-segment-border: var(--palette-blue-200);
+    --badge-segment-foreground: var(--palette-blue-900);
+    --focus-ring: var(--palette-gray-500);              /* band of the card focus ring: Gray/500 (Figma has Gray/400, 2.54:1) */
+
     /* Shadows */
+    --shadow-small: 0 1px 3px 0 rgba(0, 0, 0, 0.05);    /* Figma "Shadow Small": cards, tables */
+    --shadow-focus-ring: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--focus-ring)); /* Figma "Focus ring" */
+    /* "No document": faint diagonal stripes — Figma asset fc70b.svg cannot be downloaded, drawn after the screenshot */
+    --pattern-hatch: repeating-linear-gradient(135deg, transparent 0 12px, hsl(var(--document-muted)) 12px 14px);
     --shadow-header: 0 1px 6px rgba(0, 0, 0, 0.08);  /* Booking header, Figma 8014:11426 */
     --drop-shadow-card: 0px 1px 1.5px rgba(0, 0, 0, 0.05);
     --shadow-popover: 0 2px 2px rgba(0, 0, 0, 0.10), 0 4px 3px rgba(0, 0, 0, 0.10);

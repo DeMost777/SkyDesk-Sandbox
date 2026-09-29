@@ -1,7 +1,7 @@
 # Flow: Booking Overview
 
 > Flow doc. Read it before the code; update it in the same change as the behavior.
-> Updated: 2026-09-30. Phase: **coverage** (see CLAUDE.md → «Фаза»). Статус: каркас построен (ROADMAP 2.1: страница, шапка, рамка виджета), есть модель и mock-данные (1.11). Содержимое виджетов — 3.1 и дальше.
+> Updated: 2026-09-30. Phase: **coverage** (see CLAUDE.md → «Фаза»). Статус: каркас (2.1), модель и mock-данные (1.11), виджет Overview (3.1) построены. Остальные виджеты — дальше.
 
 **Principle:** агент открывает бронирование и видит его целиком — виджеты, каждый со своей частью PNR. Skydesk показывает факты, а не оценивает бронирование.
 
@@ -39,7 +39,7 @@
 
 | Виджет | Flow doc | Статус |
 |---|---|---|
-| Overview | `overview-widget.md` | модель и mock готовы, UI — ROADMAP 3.1 |
+| Overview | `overview-widget.md` | построен (ROADMAP 3.1): матрица, карточки, скролл; карточки без stories, ждут фидбека команды |
 | Passengers, Flight information, Tickets, Pricing, Services, Remarks | — | не начаты |
 
 ## Not chosen
@@ -59,10 +59,12 @@
 | Из PNR Search | `/` → PNR → Found → ссылка «Open booking» |
 | Нет booking по PNR / нет PNR | `?page=booking-overview&pnr=XYZ789` или без `pnr` — сообщение «No mock booking…» (только в sandbox: в продукте Booking приходит из PNR Search, дизайна состояния нет и не нужно) |
 | Виджет свёрнут | клик по заголовку «Overview» |
+| Горизонтальный скролл колонок пассажиров | `?page=booking-overview&pnr=WIDE55` (5 пассажиров) |
+| Все статусы Pricing | `?page=booking-overview&pnr=PRC5TS` |
 
 Storybook: Pages / booking-overview (те же адреса), Skydesk / Booking Header, Skydesk / Widget Section.
 
-Содержимое виджета Overview — заглушка «Overview matrix: N passengers × M segments» до задачи 3.1; счётчик в заголовке уже настоящий (`documentCount`).
+Виджет Overview показывает матрицу Passenger × Segment по выбранному сценарию; клик по карточке пишет под виджетом «Sandbox: would open pricing PR-1 …».
 
 ## Known gaps
 

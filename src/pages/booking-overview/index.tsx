@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { ClipboardList } from 'lucide-react'
 import { AppSidebar } from '@/components/skydesk/app-sidebar'
 import { BookingHeader } from '@/components/skydesk/booking-header'
-import { WidgetSection } from '@/components/skydesk/widget-section'
-import { buildOverviewMatrix } from '@/lib/overview-matrix'
+import { OverviewWidget } from '@/components/skydesk/overview-widget'
+import type { EntityRef } from '@/lib/booking'
 import type { SandboxParams } from '@/lib/sandbox-url'
 import { findBooking } from '@/mocks/bookings'
 import { mockBookingHistory } from '@/mocks/booking-history.mock'
@@ -17,7 +16,8 @@ import { SandboxBar } from './components/sandbox-bar'
 export default function BookingOverviewPage({ params }: { params: SandboxParams }) {
   const [history] = React.useState(() => mockBookingHistory.recent())
   const booking = findBooking(params.pnr)
-  const matrix = booking ? buildOverviewMatrix(booking) : null
+  // SANDBOX-ONLY: the Pricing and Ticket widgets do not exist yet, so a click only leaves a note
+  const [opened, setOpened] = React.useState<EntityRef | null>(null)
 
   return (
     <div className="flex h-full bg-background">
@@ -26,7 +26,7 @@ export default function BookingOverviewPage({ params }: { params: SandboxParams 
       <div className="flex min-w-0 flex-1 flex-col">
         <SandboxBar pnr={params.pnr} persona={params.persona} />
 
-        {booking && matrix ? (
+        {booking ? (
           <>
             <BookingHeader
               pnr={booking.pnr}
@@ -39,12 +39,12 @@ export default function BookingOverviewPage({ params }: { params: SandboxParams 
               <p className="text-base font-medium">Booking Overview</p>
             </div>
             <main className="min-h-0 flex-1 overflow-auto bg-page">
-              <WidgetSection title="Overview" icon={ClipboardList} count={matrix.documentCount}>
-                {/* SANDBOX-ONLY placeholder: the Passenger × Segment matrix is ROADMAP 3.1 */}
-                <p className="rounded-md border border-dashed border-border bg-background px-4 py-8 text-center text-sm text-muted-foreground">
-                  Overview matrix: {matrix.passengers.length} passengers × {matrix.rows.length} segments (ROADMAP 3.1)
+              <OverviewWidget booking={booking} onOpen={setOpened} />
+              {opened && (
+                <p role="status" className="px-4 pb-4 text-center text-xs text-muted-foreground">
+                  Sandbox: would open {opened.type} {opened.id} — its widget is not built yet.
                 </p>
-              </WidgetSection>
+              )}
             </main>
           </>
         ) : (

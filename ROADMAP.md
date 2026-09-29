@@ -29,7 +29,6 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [3.1] Виджет Overview: табличная основа (`MatrixTable`, stories) + матрица Passenger × Segment; карточки Pricing / Ticket без stories до фидбека команды — Фаза 3 · зависит от: 1.11, 2.1
 - [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
 - [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
@@ -42,6 +41,8 @@
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview**
+- Stories карточек Pricing / Ticket, «No document» и виджета Overview — после фидбека команды (состояния: Default, Hover, Focus; проверять поведение, не пиксели).
+- Виджет Services на общей `MatrixTable` (в Figma и в записи пользователя он уже есть).
 - Левая рейка Booking Overview (Passengers, Flights, Tickets, Services, Remarks). Блок: open question #26.
 - Дизайн перехода PNR Search → Booking: сейчас ссылка «Open booking». Блок: open question #3.
 - Узкое окно: sidebar не сворачивается, ~700px шапка обрезает «Created». Чат справа — Фаза 4.
@@ -80,3 +81,4 @@
 | 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |
 | 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
+| 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |

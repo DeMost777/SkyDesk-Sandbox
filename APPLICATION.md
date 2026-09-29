@@ -22,6 +22,7 @@
 |---|---|
 | Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
 | Foundations / Colors | Palette (22 шкалы Figma Primitives), Semantic (Figma-имя → CSS-переменная → Tailwind → hex; только Light), Charts and unbound |
+| Skydesk / Matrix Table, Matrix Table / Headers | Табличная основа Passenger × Segment: Default, ScrollsSideways (первая колонка закреплена), FourPassengers, EmptyCells, Keyboard; RefBadge, PassengerHeader, SegmentHeader. Карточки Overview без stories |
 | Skydesk / Booking Header, Widget Section | Шапка бронирования (Default, One passenger, Keyboard); рамка виджета (Expanded, Collapsed, Toggle, Keyboard, Zero / No count) |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Pages / booking-overview | Default (`BBV14Q`), One passenger, Wide, Deleted pricing, No booking, Switch scenario |
