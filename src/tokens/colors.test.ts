@@ -58,14 +58,13 @@ describe('palette', () => {
 describe('semantic colours match Figma', () => {
   // Light theme only; dark values stay in CSS but are not tested (decision 2026-09-29).
   for (const color of SEMANTIC_GROUPS.flatMap((g) => g.colors)) {
-    const actual = hex(color.var, light)
-    if (color.pending) {
-      it(`${color.figma} still differs from Figma — remove "pending" once it is fixed`, () => {
-        expect(actual).not.toBe(color.light)
+    if (color.kept) {
+      it(`${color.figma}: keeps ${color.kept.hex} on purpose, not Figma's ${color.light}`, () => {
+        expect(hex(color.var, light)).toBe(color.kept!.hex)
       })
     } else {
       it(color.figma, () => {
-        expect(actual).toBe(color.light)
+        expect(hex(color.var, light)).toBe(color.light)
       })
     }
   }

@@ -48,7 +48,7 @@
    Сейчас: знак перерисован SVG по скриншоту (`trava-logo.tsx`), цвет — `brand`. Заменить экспортом из Figma (узел `13:5988`).
    Решает: design / владелец среды. Добавлено 2026-09-23.
 
-17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active.
+17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active; в Figma shadcn kit `Sidebar Ring` = zinc-400 (см. #22).
    Сейчас: Pressed и Focus — та же заливка `sidebar-accent`, что у Hover (правило пользователя, 2026-09-23). Открыто только кольцо фокуса: `sidebar-ring` (teal, 2px), как в shadcn — нужно ли оно, в Figma его нет.
    Решает: design. Добавлено 2026-09-23.
 
@@ -70,17 +70,11 @@
 
 ## Токены
 
-22. **Семантические цвета кода расходятся с Figma «shadcn kit - Trava».** Токены, где значение в Figma — другой шаг палитры, сохраняют старое значение: замена меняет вид существующих экранов. Все расхождения видны в Storybook (Foundations / Colors → Semantic — Light, строки «Differs»). Сейчас в коде → в Figma (light):
-   - `ring`, `sidebar-ring`: teal `#0d9488` → zinc-400 `#a1a1aa`. Затрагивает кольцо фокуса всех компонентов (Button, Input…). Figma Overview использует третье значение: Focus ring карточки = gray-400 `#9ca3af`, двойное кольцо.
-   - `popover`: белый → stone-50 `#fafaf9` (Office Selector, Command, Dialog).
-   - `input`: `#e7e5e4` → zinc-200 `#e4e4e7`.
-   - `secondary-foreground`, `accent-foreground`: `#0c0a09` → stone-900 `#1c1917`.
-   - `destructive-foreground`: `#fafafa` → red-50 `#fef2f2`.
-   - `sidebar-primary-foreground`: `#fafaf9` → neutral-50 `#fafafa`; `sidebar-accent`: `#f5f5f4` → zinc-100 `#f4f4f5`; `sidebar-accent-foreground`: `#1c1917` → zinc-900 `#18181b`.
-   - `chart-2`: teal `#0d9488` → `#2a9d90`.
-   Dark-тема приведена к Figma целиком (в приложении не используется и не тестируется — решение 2026-09-29). `destructive` в dark в Figma инвертирован (светлая заливка `#fef2f2`, тёмный текст `#991b1b`) — перенесено как есть.
-   Сейчас: значения не менялись; проверить, что Figma — намеренный редизайн, и решить пакетом.
-   Решает: design. Добавлено 2026-09-28.
+22. **Три токена сознательно отличаются от Figma «shadcn kit - Trava» из-за контраста.** Решение пользователя, 2026-09-29: остальные светлые токены приведены к Figma (`popover`, `input`, `secondary-foreground`, `accent-foreground`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `chart-2`); эти три остаются:
+   - `ring`, `sidebar-ring`: teal `#0d9488` (3.74:1 на белом) вместо zinc-400 `#a1a1aa` из Figma (2.56:1; WCAG 1.4.11 требует 3:1 для индикатора фокуса). Автотесты этого не ловят.
+   - `destructive-foreground`: `#fafafa` (4.63:1 на red-600) вместо red-50 `#fef2f2` из Figma (4.41:1; AA требует 4.5:1 — падают stories Destructive у Button и Badge).
+   Сейчас: значения кода, причина указана в Storybook (Foundations / Colors → Semantic) и проверяется `colors.test.ts`. Тот же вопрос у кольца Focus карточки Overview: двойное кольцо Figma `gray-400` даёт 2.54:1 — решить при 3.1.
+   Решает: design. Добавлено 2026-09-28, сужено 2026-09-29.
 
 ## Booking Overview
 

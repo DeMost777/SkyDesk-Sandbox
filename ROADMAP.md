@@ -78,3 +78,4 @@
 | 1.11 | Модель Booking (`src/lib/booking.ts`), матрица Overview (`overview-matrix.ts`), 9 сценарных mock-бронирований (`src/mocks/bookings/`), PNR Search читает их же; flow doc `projects/booking-overview/`; глоссарий: Pricing, Ticket, Segment, Passenger type, Overview | `[1.11]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |
+| 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |

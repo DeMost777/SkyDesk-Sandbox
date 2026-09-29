@@ -91,11 +91,11 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 ## Цвета (Foundations / Colors)
 
-Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; семантические токены = значения Figma; токены с пометкой «pending» действительно ещё расходятся) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого «совпадающего» образца с Figma).
+Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; светлые семантические токены = значения Figma, кроме трёх с пометкой `kept`, которые держат заданное значение) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого «образца с тем цветом, который он заявляет).
 
 Вручную в Storybook (`npm run storybook`) → Foundations / Colors:
 1. Palette — 22 шкалы по 11 оттенков, под каждым образцом номер и hex.
-2. Semantic: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Строки «Differs from Figma» — вопрос #22. Тёмная тема не проверяется (решение 2026-09-29).
+2. Semantic: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Колонка Status: «Matches Figma» или причина, почему значение осознанно другое (вопрос #22). Тёмная тема не проверяется (решение 2026-09-29).
 3. History item в sidebar набран IBM Plex Mono (не Roboto Mono); текст не выходит за карточку.
 
 ## Booking и Overview (модель и mock-данные)

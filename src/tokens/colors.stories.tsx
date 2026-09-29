@@ -24,12 +24,11 @@ type Story = StoryObj<typeof meta>
 
 const paletteVar = (scale: string, step: number) => `hsl(var(--palette-${scale}-${step}))`
 
-function Swatch({ color, hex, expected }: { color: string; hex: string; expected?: boolean }) {
+function Swatch({ color, hex }: { color: string; hex: string }) {
   return (
     <div
       aria-hidden
       data-swatch={hex}
-      data-expected={expected === false ? 'differs' : 'match'}
       className="h-10 w-full rounded-md border border-border"
       style={{ backgroundColor: color }}
     />
@@ -81,18 +80,17 @@ function SemanticTable() {
 }
 
 function SemanticRow({ color }: { color: SemanticColor }) {
-  const differs = color.pending === true
   return (
     <tr className="border-t border-border">
       <td className="py-2 pr-3">
-        <Swatch color={`hsl(var(--${color.var}))`} hex={color.light} expected={!differs} />
+        <Swatch color={`hsl(var(--${color.var}))`} hex={color.kept?.hex ?? color.light} />
       </td>
       <td className="py-2">{color.figma}</td>
       <td className="py-2 font-mono text-xs">--{color.var}</td>
       <td className="py-2 font-mono text-xs">{color.tailwind}</td>
       <td className="py-2 font-mono text-xs">{color.light}</td>
       <td className="py-2 text-xs text-muted-foreground">
-        {differs ? 'Differs from Figma — pending decision (#22)' : 'Matches Figma'}
+        {color.kept ? `${color.kept.reason} (#22)` : 'Matches Figma'}
       </td>
     </tr>
   )
@@ -103,9 +101,9 @@ function toRgb(hex: string): string {
   return `rgb(${r}, ${g}, ${b})`
 }
 
-/** Every swatch flagged as matching must be painted exactly Figma's colour. */
-async function expectSwatchesMatchFigma(root: HTMLElement) {
-  const swatches = root.querySelectorAll<HTMLElement>('[data-swatch][data-expected="match"]')
+/** Every swatch must be painted exactly the colour it claims: Figma's, or the kept one. */
+async function expectSwatchesMatch(root: HTMLElement) {
+  const swatches = root.querySelectorAll<HTMLElement>('[data-swatch]')
   await expect(swatches.length).toBeGreaterThan(0)
   for (const swatch of swatches) {
     await expect(getComputedStyle(swatch).backgroundColor).toBe(toRgb(swatch.dataset.swatch!))
@@ -131,7 +129,7 @@ export const Palette: Story = {
       ))}
     </div>
   ),
-  play: ({ canvasElement }) => expectSwatchesMatchFigma(canvasElement),
+  play: ({ canvasElement }) => expectSwatchesMatch(canvasElement),
 }
 
 export const Semantic: Story = {
@@ -141,13 +139,14 @@ export const Semantic: Story = {
       description: {
         story:
           'Figma → Foundations → Color → Light, bound to our CSS variables (`src/tokens/index.css`). ' +
-          'A token that aliases a palette step is exact by construction. Rows marked "Differs" keep ' +
-          'their old value until product/design decide (docs/open-questions.md #22).',
+          'A token that aliases a palette step is exact by construction; the play function checks ' +
+          'every swatch. Three tokens keep a value other than Figma on purpose, for contrast ' +
+          '(--ring, --sidebar-ring, --destructive-foreground): the row says why (open question #22).',
       },
     },
   },
   render: () => <SemanticTable />,
-  play: ({ canvasElement }) => expectSwatchesMatchFigma(canvasElement),
+  play: ({ canvasElement }) => expectSwatchesMatch(canvasElement),
 }
 
 export const ChartsAndUnbound: Story = {
@@ -156,8 +155,7 @@ export const ChartsAndUnbound: Story = {
     docs: {
       description: {
         story:
-          'Chart 1–5: Figma Chart 2 is #2a9d90, ours is teal ' +
-          '#0d9488 (pending, #22). The alpha tokens below exist only in the Figma shadcn kit: we have ' +
+          'Chart 1–5 as in Figma. The alpha tokens below exist only in the Figma shadcn kit: we have ' +
           'no variable for them because the app writes opacity as a modifier (`bg-primary/50`).',
       },
     },
