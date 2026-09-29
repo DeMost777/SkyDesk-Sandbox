@@ -56,7 +56,8 @@
 | Booking открыт | `?page=booking-overview&pnr=BBV14Q` (любой PNR из сценариев) |
 | Один пассажир: «1 passenger» | `?page=booking-overview&pnr=K2M9QP` |
 | Широкая матрица (для 3.1) | `?page=booking-overview&pnr=WIDE55` |
-| Нет booking по PNR / нет PNR | `?page=booking-overview&pnr=XYZ789` или без `pnr` — сообщение «No mock booking…» (только в sandbox: в продукте Booking приходит из PNR Search) |
+| Из PNR Search | `/` → PNR → Found → ссылка «Open booking» |
+| Нет booking по PNR / нет PNR | `?page=booking-overview&pnr=XYZ789` или без `pnr` — сообщение «No mock booking…» (только в sandbox: в продукте Booking приходит из PNR Search, дизайна состояния нет и не нужно) |
 | Виджет свёрнут | клик по заголовку «Overview» |
 
 Storybook: Pages / booking-overview (те же адреса), Skydesk / Booking Header, Skydesk / Widget Section.
@@ -65,11 +66,12 @@ Storybook: Pages / booking-overview (те же адреса), Skydesk / Booking 
 
 ## Known gaps
 
-- Переход Found → Booking из PNR Search (open question #3): страница открывается адресом и панелью «Booking».
-- Левая рейка иконок со счётчиками (Figma `Toolbar` `8014:11327`: Passengers, Flights, Tickets, Services, Remarks) — не построена: неизвестно, что она делает (open question #26). В Figma её счётчики (2 / 4 / 2 / 6 / 22) не выводятся из наших mock-данных.
+- Дизайн перехода PNR Search → Booking (open question #3): сейчас ссылка «Open booking» в строке Found (решение пользователя, 2026-09-30) и адрес.
+- Левая рейка иконок со счётчиками (Figma `Toolbar` `8014:11327`: Passengers, Flights, Tickets, Services, Remarks) — не построена по решению пользователя (2026-09-30), пока design не ответит, что она делает (open question #26). В Figma её счётчики (2 / 4 / 2 / 6 / 22) не выводятся из наших mock-данных.
 - Остальные виджеты страницы (Passengers, Segments, Ticket, Pricing, Services, EMD, Remarks, Messages, Contacts) — в Figma есть, у нас нет.
-- Ширина зоны при узком окне и появление чата справа.
-- Поведение трёх кнопок шапки.
+- Чат справа (Фаза 4): места под него в раскладке пока нет.
+- Узкое окно: проверено 1440, 1024, 800 — прокрутки нет, виджет сужается с отступом 16px. Уже ~700px шапка обрезает «Created», потому что sidebar не сворачивается (кнопка панели inert).
+- Поведение трёх кнопок шапки (open question #28).
 
 ## Open questions
 

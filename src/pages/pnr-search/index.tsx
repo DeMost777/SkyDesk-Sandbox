@@ -4,10 +4,10 @@ import { AppSidebar } from '@/components/skydesk/app-sidebar'
 import { OfficeSelector } from '@/components/ui/office-selector'
 import { cn } from '@/lib/utils'
 import { useDefaultOffices } from '@/hooks/use-default-offices'
-import { replaceUrl } from '@/hooks/use-sandbox-url'
+import { navigate, replaceUrl } from '@/hooks/use-sandbox-url'
 import { withDefaultFlags, type DefaultOffices, type GDS, type OfficeSelection } from '@/lib/office'
 import { allGdsTried, searchPnr, type SearchOutcome } from '@/lib/pnr-search'
-import type { SandboxParams, SearchView } from '@/lib/sandbox-url'
+import { buildSandboxUrl, type SandboxParams, type SearchView } from '@/lib/sandbox-url'
 import { MOCK_OFFICES } from '@/mocks/offices.mock'
 import { mockBookingHistory } from '@/mocks/booking-history.mock'
 import { mockPnrDirectory } from '@/mocks/pnr-search.mock'
@@ -236,6 +236,10 @@ export default function PnrSearchPage({ params }: { params: SandboxParams }) {
                   offerDefault={
                     outcome.resolved.source === 'selected' &&
                     result?.defaultBefore !== outcome.resolved.office.code
+                  }
+                  bookingHref={buildSandboxUrl({ page: 'booking-overview', pnr: outcome.booking.pnr, persona: params.persona })}
+                  onOpenBooking={() =>
+                    navigate({ page: 'booking-overview', pnr: outcome.booking.pnr, persona: params.persona })
                   }
                   isDefault={defaults[outcome.resolved.office.gds] === outcome.resolved.office.code}
                   onToggleDefault={(checked) =>

@@ -42,9 +42,10 @@
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview**
-- Каркас Booking Overview — задача 2.1 (flow doc `projects/booking-overview/` есть). Чат справа — Фаза 4.
-- Переход Found → Booking. Блок: open question #3.
-- Виджеты (порядок подтвердить по скриншоту): Passengers, Itinerary / Segments, Tickets, Pricing / Fare rules, Services, Remarks / SSR / OSI, History.
+- Левая рейка Booking Overview (Passengers, Flights, Tickets, Services, Remarks). Блок: open question #26.
+- Дизайн перехода PNR Search → Booking: сейчас ссылка «Open booking». Блок: open question #3.
+- Узкое окно: sidebar не сворачивается, ~700px шапка обрезает «Created». Чат справа — Фаза 4.
+- Виджеты после Overview, по Figma `8014:11324`: Passengers, Segments, Ticket, Pricing, Services, EMD, Remarks, Messages, Contacts.
 - Чат: mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить.
 
 **Агенты**
@@ -78,4 +79,4 @@
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |
 | 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |
-| 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
+| 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |

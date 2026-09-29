@@ -67,6 +67,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 - **Порядок Office:** на `/` открыть «Select office» → сверху `5GW5`, `A2K9`, `Q8L3` с меткой «Default», дальше `7MTR`, `B3R7`, `C1Z2`, `D4M5`, `E6T8`, `F9K1`, `X4PD`. После сохранения `E6T8` как default он поднимается наверх, а `A2K9` уходит в общий список. Persona без defaults — весь список по алфавиту.
 - **Не та GDS:** ввести `ABC123` → Enter → Amadeus → «not found in Amadeus», Amadeus неактивна → Galileo → Found через `Q8L3`.
 - **Все GDS:** ввести `XYZ789` → Amadeus → Sabre → Galileo → «not found in any GDS». URL на каждом шаге содержит `tried`.
+- **Found → Booking:** в любом Found справа ссылка «Open booking»; клик открывает Booking Overview этого PNR (`?page=booking-overview&pnr=7JRWT4`), Ctrl/⌘-клик — новую вкладку. Строка Found и галочка Default Office остаются.
 - **Панель State:** каждая кнопка открывает своё состояние и подсвечивается, включая три варианта Not Found.
 - **Пустой PNR:** на `/` нажать кнопку поиска (или Enter) → «Please provide the PNR.», курсор в поле. Начать вводить → сообщение исчезает.
 - **Повтор после Error:** адрес 10 → кнопка поиска → Loading → снова Error (`ERR000` в mock-данных падает всегда).
@@ -91,7 +92,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 ## Цвета (Foundations / Colors)
 
-Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; светлые семантические токены = значения Figma, кроме трёх с пометкой `kept`, которые держат заданное значение) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого «образца с тем цветом, который он заявляет).
+Автоматически: `npm test` — `src/tokens/colors.test.ts` (палитра в CSS = `palette.ts` до hex; светлые семантические токены = значения Figma, кроме трёх с пометкой `kept`, которые держат заданное значение) и stories Foundations / Colors (play-функция сверяет вычисленный браузером цвет каждого образца с тем цветом, который он заявляет).
 
 Вручную в Storybook (`npm run storybook`) → Foundations / Colors:
 1. Palette — 22 шкалы по 11 оттенков, под каждым образцом номер и hex.
@@ -108,7 +109,8 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 3. Под шапкой полоса «Booking Overview» на сером фоне; область ниже — `#f5f5f5`.
 4. Виджет Overview по центру области, ширина 800px; слева chevron вниз, справа бейдж с иконкой и счётчиком (BBV14Q — 6, K2M9QP — 1, DEL3T3 — 1). Клик или Enter по заголовку сворачивает содержимое и меняет chevron.
 5. Без `pnr` или с неизвестным (`XYZ789`): сообщение «No mock booking…».
-6. Окно шире и уже: колонка остаётся по центру.
+6. Окно шире и уже: колонка остаётся по центру, горизонтальной прокрутки нет на ширине 800px и больше (проверено 1440, 1024, 800). Уже ~700px шапка обрезает «Created»: sidebar не сворачивается.
+7. Путь целиком: `/` → ввести `BBV14Q` → Enter → Found → «Open booking» → Booking Overview `BBV14Q`.
 
 PNR и что проверяет каждый — `projects/booking-overview/overview-widget.md` → «Mock scenarios». Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
 
