@@ -29,7 +29,6 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
 - [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
@@ -82,3 +81,4 @@
 | 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
+| 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |

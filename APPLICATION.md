@@ -15,6 +15,8 @@
 
 ## Storybook
 
+Каталог компонентов — `docs/components.md` (назначение, props, состояния, Figma, stories).
+
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
 - Локально: `npm run storybook` → `http://localhost:6006`.
 
