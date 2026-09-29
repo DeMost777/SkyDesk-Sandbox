@@ -40,11 +40,11 @@ export function WidgetSection({ title, icon: Icon, count, defaultOpen = true, cl
             onClick={() => setOpen((v) => !v)}
             className="flex h-9 w-full items-center rounded-sm px-2 py-1.5 text-left transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Chevron aria-hidden className="mr-2 size-3.5 shrink-0 text-icon" />
+            <Chevron aria-hidden className="mr-2 size-3.5 shrink-0 text-icon" strokeWidth={1.5} />
             <span id={`${id}-title`} className="flex-1">{title}</span>
             {count !== undefined && (
               <Badge variant="outline" className="gap-1 rounded-full py-1 font-normal">
-                <Icon aria-hidden className="size-4" />
+                <Icon aria-hidden className="size-4" strokeWidth={1.5} />
                 <span id={`${id}-count`}>{count}</span>
               </Badge>
             )}

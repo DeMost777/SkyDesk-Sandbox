@@ -94,7 +94,7 @@ export function OfficeSelector({
               role="button"
               aria-label="Clear selection"
             >
-              <X className="size-3.5 text-muted-foreground" strokeWidth={2} />
+              <X className="size-3.5 text-muted-foreground" strokeWidth={1.5} />
             </span>
           ) : (
             <span className="flex items-center ml-2">
@@ -140,7 +140,7 @@ export function OfficeSelector({
                 className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Clear search"
               >
-                <X className="size-3.5" strokeWidth={2} />
+                <X className="size-3.5" strokeWidth={1.5} />
               </button>
             )}
           </div>
