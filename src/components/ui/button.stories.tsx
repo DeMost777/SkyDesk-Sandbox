@@ -51,8 +51,8 @@ export const CssCheck: Story = {
   parameters: { a11y: { test: 'todo' } },
   play: async ({ canvas }) => {
     const button = canvas.getByRole('button', { name: /search booking/i })
-    // Default variant uses bg-primary = hsl(174 84% 32%) from src/tokens/index.css.
+    // Default variant uses bg-primary = teal-600 #0d9488 (src/tokens/index.css → palette.css).
     // Fails if Tailwind or the design tokens did not load.
-    await expect(getComputedStyle(button).backgroundColor).toBe('rgb(13, 150, 136)')
+    await expect(getComputedStyle(button).backgroundColor).toBe('rgb(13, 148, 136)')
   },
 }

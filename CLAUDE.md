@@ -121,6 +121,13 @@ PNR + Select Office/GDS → Booking
 | History item | Одна карточка History: PNR · GDS code, Itinerary, дата и время последнего действия | «session card» |
 | Itinerary | Маршрут бронирования по кодам аэропортов: One way `A → B`, Round `A ⇆ B`, Multi trip `A → B → C` | «route» в UI |
 | PNR Required | Поиск запущен с пустым полем PNR | «empty state» — это начальный экран, до поиска |
+| Booking Overview | Экран бронирования: список виджетов по центру, слева App Sidebar, сверху шапка бронирования | — |
+| Overview | Первый виджет Booking Overview: матрица Passenger × Segment с Pricing и Ticket. Без уточнения «Overview» — это виджет, а не экран | — |
+| Pricing | Оценка: расчёт стоимости для одного или нескольких пассажиров. Агент превращает её в Ticket. Статусы: Active, Ticketed, Unknown, Reprice required, Itinerary changed, Inactive, Deleted | «Quote», «Estimate» в UI |
+| Ticket | Выписанный билет: подтверждённый документ, билет уже куплен. Статусы в V1: Active, Voided | «Document» в значении «билет» |
+| Document | Общее название Pricing и Ticket в Overview. «No document» — ячейка без видимых Pricing и Ticket | — |
+| Segment | Один перелёт `A → B` (`S1`, `S2`…), часть Itinerary | «Leg», «route» в UI |
+| Passenger type | Тип пассажира: `ADT` (adult), `CHD` (child), `INF` (infant) | — |
 
 ## Запуск и проверка
 
@@ -154,7 +161,10 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **Playwright 1.56.1** (2026-09-23) — под Chromium, уже установленный в облачном окружении (`/opt/pw-browsers`). Локально браузер для него: `npx playwright install chromium`.
 - **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
 - **Accessibility-проверка в Storybook падает тестом** (`a11y.test: 'error'` в `.storybook/preview.tsx`, 2026-09-23). Исключение — stories с teal `primary` и текстом (`test: 'todo'`, open question #14): вернуть в `error`, когда design решит. Страница — в `<main>`, панель sandbox — `<aside aria-label="Sandbox controls">`; у popover-диалогов есть `aria-label`. Активное состояние в sandbox-панели и навигации — тёмное (`bg-foreground`), потому что teal + белый 12px не проходит контраст.
-- **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`. Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
+- **Цвета в два слоя: палитра и семантические токены** (2026-09-28). `src/tokens/palette.css` (генерируется `npm run tokens:palette`, 22 шкалы Figma Primitives × 11 оттенков) и `src/tokens/index.css` (shadcn-имена, каждое — ссылка на шаг палитры, поэтому hex точный). Привязка «имя в Figma → переменная → Tailwind» — `src/tokens/semantic-colors.ts`; `colors.test.ts` сверяет её с Figma, Storybook показывает страницу Foundations / Colors. Компоненты палитру напрямую не используют (`lint:tokens` ловит `bg-orange-300`) — нужен цвет из палитры, заводим семантический токен. Три токена осознанно отличаются от Figma из-за контраста (`ring`, `sidebar-ring`, `destructive-foreground`, решение пользователя 2026-09-29) — они помечены `kept` в `semantic-colors.ts`, причина видна в Storybook, вопрос #22. Не «выравнивать» их по Figma молча: тесты доступности упадут.
+- **Тёмная тема не используется и не тестируется** (решение пользователя, 2026-09-29). Токены `.dark` остаются в `src/tokens/index.css`, но ни в приложении, ни в Storybook, ни в тестах её не показываем. Не включать без просьбы пользователя.
+- **Mono-шрифт — IBM Plex Mono** (решение пользователя, 2026-09-28; был Roboto Mono). Так задано `Fonts/Font Mono` в Figma. Файл — `public/fonts/IBMPlexMono-Regular-latin.woff2`, только Regular и латиница. Если добавить другое начертание или язык — добавить файл и `@font-face`, иначе браузер подставит синтетическое начертание.
+- **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`, `page` (фон Booking Overview, `bg-page`), `icon` (Figma «Icons», `text-icon`), `shadow-header`, `shadow-small`, `shadow-focus-ring`, `bg-hatch`, цвета матрицы (`document*`, `pricing-*`, `ticket-accent`, `badge-passenger*`, `badge-segment*`). Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
 - **Creation office всегда доступен агенту** (решение product, 2026-09-24; закрыт open question #5). Бронирование создавалось на стороне агента. Не моделировать «нет доступа к Creation office» — такого сценария нет.
 - **`CLAUDE.md` — правила всей инфраструктуры; правила одного flow — в его flow doc** (правило пользователя, 2026-09-24). Sandbox — среда для многих flows, а не один проект. Правило, записанное здесь, агент применяет к каждому новому экрану. Если снова складывать сюда решения одного flow, они начнут навязываться другим — так skill `create-screen` разошёлся с механикой адресов PNR Search. Решения PNR Search — `projects/pnr-search/README.md`, App Sidebar — `projects/app-sidebar/README.md`, раздел «Решения и gotchas».
 - **Skills — в `.claude/skills/<name>/SKILL.md` с frontmatter `name` и `description`** (2026-09-24). Это официальный формат Claude Code: агент видит список skills по `description` и загружает полный текст, только когда skill нужен. Если вернуть их в `skills/` или убрать frontmatter, агент перестанет их находить сам — придётся каждый раз называть файл.
@@ -169,6 +179,7 @@ skydesk-sandbox/
 ├── ROADMAP.md              ← карта работ: цель, фазы, сейчас / дальше / потом / сделано
 ├── .env                    ← API-ключи (не коммитить)
 ├── docs/
+│   ├── components.md       ← каталог компонентов: назначение, props, состояния, Figma, stories
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
 ├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx
@@ -176,7 +187,9 @@ skydesk-sandbox/
 │   ├── skills/<name>/SKILL.md ← инструкции под конкретные задачи (формат Claude Code)
 │   └── agents/<name>.md    ← субагенты для изолированных задач (формат Claude Code)
 ├── projects/               ← flow doc каждой фичи
-│   └── pnr-search/         ← первый проект: поиск PNR
+│   ├── pnr-search/         ← первый проект: поиск PNR
+│   ├── app-sidebar/        ← App Sidebar
+│   └── booking-overview/   ← экран Booking Overview и его виджеты (Overview)
 └── src/                    ← React-приложение
     ├── components/         ← компонентная библиотека (+ *.stories.tsx рядом)
     ├── hooks/              ← состояние: Default Offices, адрес sandbox
@@ -197,7 +210,7 @@ skydesk-sandbox/
 7. **Доменные правила — в `src/lib/`** как чистые функции с тестами. Экран их вызывает, но не повторяет.
 8. **В конце каждой задачи** — перечислить сценарии и edge cases, которые не покрыты.
 9. **Правки пользователя — это правила продукта.** Записать и применять дальше: общее для всей среды — в «Решения и gotchas», правило одного flow — в его flow doc.
-10. **Storybook** — новый или изменённый компонент получает stories в том же изменении, рядом с компонентом (`*.stories.tsx`). Stories — это и тесты: `npm test` должен проходить.
+10. **Storybook и каталог** — новый или изменённый компонент получает stories в том же изменении, рядом с компонентом (`*.stories.tsx`), и строку в `docs/components.md`. Stories — это и тесты: `npm test` должен проходить.
 11. **`ROADMAP.md` — карта работ, не автопилот** (правило пользователя, 2026-09-24). Сессия не обязана брать задачу из списка: обычно задачу ставит пользователь в разговоре.
     - Новая задача от пользователя — до начала работы записать в «Сейчас» со следующим номером текущей фазы. Если в «Сейчас» что-то было — вернуть наверх «Дальше».
     - Пользователь спрашивает «что дальше» — предложить верх «Дальше».

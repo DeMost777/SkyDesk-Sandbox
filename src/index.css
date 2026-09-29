@@ -12,10 +12,10 @@
   font-display: swap;
 }
 
-/* Latin subset — History item (PNR, GDS code, airports, dates) */
+/* Latin subset, Regular only — Figma "Fonts/Font Mono". History item, Booking Overview tables */
 @font-face {
-  font-family: 'Roboto Mono';
-  src: url('/fonts/RobotoMono-Regular-latin.woff2') format('woff2');
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular-latin.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;

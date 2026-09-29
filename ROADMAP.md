@@ -1,6 +1,6 @@
 # Roadmap
 
-> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-24.
+> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-29.
 > Это не автопилот: сессия не обязана брать задачу отсюда. Обычно задачу ставит пользователь в разговоре — она записывается в «Сейчас» и выполняется. Как вести файл — `CLAUDE.md` → «Правила работы», правило 11.
 > Как делать задачу — в flow doc фичи. Неизвестное — в `docs/open-questions.md`. Здесь — только что и в каком порядке.
 
@@ -29,12 +29,10 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
 - [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
 - [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
-- [1.11] Доменная модель Booking (`src/lib/booking.ts`) и сценарные mock-бронирования (`src/mocks/`) — Фаза 1
 - [1.12] Субагент `qa-tester`: проход состояний из flow doc в Playwright, скриншоты, ошибки консоли, отчёт — Фаза 1
 
 ## Потом
@@ -42,9 +40,12 @@
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview**
-- Flow doc `projects/booking-overview/` и каркас: layout, шапка, зона виджетов, чат справа. Блок: скриншот и Figma Booking Overview.
-- Переход Found → Booking. Блок: open question #3.
-- Виджеты (порядок подтвердить по скриншоту): Passengers, Itinerary / Segments, Tickets, Pricing / Fare rules, Services, Remarks / SSR / OSI, History.
+- Stories карточек Pricing / Ticket, «No document» и виджета Overview — после фидбека команды (состояния: Default, Hover, Focus; проверять поведение, не пиксели).
+- Виджет Services на общей `MatrixTable` (в Figma и в записи пользователя он уже есть).
+- Левая рейка Booking Overview (Passengers, Flights, Tickets, Services, Remarks). Блок: open question #26.
+- Дизайн перехода PNR Search → Booking: сейчас ссылка «Open booking». Блок: open question #3.
+- Узкое окно: sidebar не сворачивается, ~700px шапка обрезает «Created». Чат справа — Фаза 4.
+- Виджеты после Overview, по Figma `8014:11324`: Passengers, Segments, Ticket, Pricing, Services, EMD, Remarks, Messages, Contacts.
 - Чат: mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить.
 
 **Агенты**
@@ -74,4 +75,10 @@
 | — | Параметры адреса PNR Search → его flow doc | `0d13326` |
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
+| 1.11 | Модель Booking (`src/lib/booking.ts`), матрица Overview (`overview-matrix.ts`), 9 сценарных mock-бронирований (`src/mocks/bookings/`), PNR Search читает их же; flow doc `projects/booking-overview/`; глоссарий: Pricing, Ticket, Segment, Passenger type, Overview | `[1.11]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
+| 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |
+| 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |
+| 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
+| 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
+| 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |

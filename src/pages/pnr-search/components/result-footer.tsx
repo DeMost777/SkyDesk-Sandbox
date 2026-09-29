@@ -171,8 +171,13 @@ export function FoundFooter({
   offerDefault,
   isDefault,
   onToggleDefault,
+  bookingHref,
+  onOpenBooking,
 }: {
   outcome: Extract<SearchOutcome, { status: 'found' }>
+  /** Address of the Booking Overview for this PNR, so the link works as a link (new tab, copy). */
+  bookingHref: string
+  onOpenBooking: () => void
   /** Show "Use this as my default office" — only after a manual Office choice. */
   offerDefault: boolean
   isDefault: boolean
@@ -189,17 +194,31 @@ export function FoundFooter({
         </p>
         <span className="text-sm leading-5 text-muted-foreground">{SOURCE_COPY[resolved.source](gds)}</span>
       </div>
-      {offerDefault && (
-        <label className="flex items-center gap-2 text-sm leading-5 text-foreground cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isDefault}
-            onChange={(e) => onToggleDefault(e.target.checked)}
-            className="size-4 accent-primary"
-          />
-          Use this as my default office for {gds}
-        </label>
-      )}
+      <div className="flex items-center gap-4 flex-wrap">
+        {offerDefault && (
+          <label className="flex items-center gap-2 text-sm leading-5 text-foreground cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isDefault}
+              onChange={(e) => onToggleDefault(e.target.checked)}
+              className="size-4 accent-primary"
+            />
+            Use this as my default office for {gds}
+          </label>
+        )}
+        {/* Closes PNR → Booking while the Found design is open (question #3). Dark text: teal fails AA at 14px. */}
+        <a
+          href={bookingHref}
+          onClick={(e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return // let the browser open a new tab
+            e.preventDefault()
+            onOpenBooking()
+          }}
+          className="text-sm leading-5 font-medium text-foreground underline underline-offset-2 rounded-sm hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Open booking
+        </a>
+      </div>
     </div>
   )
 }

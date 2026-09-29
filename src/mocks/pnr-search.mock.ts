@@ -1,41 +1,20 @@
 import type { GDS } from '@/lib/office'
-import { GdsError, type BookingSummary, type PnrDirectory } from '@/lib/pnr-search'
+import { GdsError, summarizeBooking, type BookingSummary, type PnrDirectory } from '@/lib/pnr-search'
+import { MOCK_BOOKING_DETAILS } from './bookings'
 
 // Deterministic fixtures: fixed PNRs, dates and offices. Office codes match offices.mock.ts.
+// The bookings themselves live in bookings/ — one PNR, one Booking for every screen.
 
-/** Bookings as they exist in each GDS. */
-export const MOCK_BOOKINGS: BookingSummary[] = [
-  {
-    pnr: '7JRWT4',
-    gds: 'Amadeus',
-    creationOffice: 'B3R7',
-    passengers: ['LINDQVIST/ANNA MRS', 'LINDQVIST/ERIK MR'],
-    route: 'ARN → LHR → JFK',
-    departureDate: '2026-10-15',
-  },
-  {
-    pnr: 'K2M9QP',
-    gds: 'Sabre',
-    creationOffice: '7MTR',
-    passengers: ['CHEN/WEI MR'],
-    route: 'YYZ → YVR',
-    departureDate: '2026-11-02',
-  },
-  {
-    pnr: 'ABC123',
-    gds: 'Galileo',
-    creationOffice: 'C1Z2',
-    passengers: ['OKAFOR/NGOZI MS'],
-    route: 'LHR → LOS',
-    departureDate: '2026-10-28',
-  },
-]
+/** Bookings as they exist in each GDS: the short form of every Booking scenario (src/mocks/bookings/). */
+export const MOCK_BOOKINGS: BookingSummary[] = MOCK_BOOKING_DETAILS.map(summarizeBooking)
 
-/** PNRs Skydesk has processed before, so it already knows their GDS. ABC123 is new to Skydesk. */
+/**
+ * PNRs Skydesk has processed before, so it already knows their GDS: every scenario Booking except
+ * ABC123, which is new to Skydesk and goes through GDS Required.
+ */
 const KNOWN_GDS: Record<string, GDS> = {
-  '7JRWT4': 'Amadeus',
-  'K2M9QP': 'Sabre',
-  'ERR000': 'Amadeus',
+  ...Object.fromEntries(MOCK_BOOKING_DETAILS.filter((b) => b.pnr !== 'ABC123').map((b) => [b.pnr, b.gds])),
+  ERR000: 'Amadeus',
 }
 
 /** PNRs whose GDS lookup always fails with a technical error — a repeated search fails again. */

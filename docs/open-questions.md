@@ -2,7 +2,7 @@
 
 > Нерешённые вопросы. Не выбирать ответ молча: пока вопрос открыт, в коде — самое простое поведение, и оно указано здесь.
 > Формат: вопрос → что сейчас в коде → кто решает. Закрытый вопрос переносится в «Решения и gotchas»: общий — в `CLAUDE.md`, вопрос одного flow — в его flow doc.
-> Номера не перенумеровываются: на них ссылаются код и документы. Закрыты: #1 и #5 (2026-09-24).
+> Номера не перенумеровываются: на них ссылаются код и документы. Закрыты: #1 и #5 (2026-09-24), #27 и #29 (2026-09-30).
 
 ## PNR Search
 
@@ -11,7 +11,7 @@
    Решает: product. Добавлено 2026-09-23.
 
 3. **Экран «Found» / переход в Booking.** В Figma нет состояния после успешного поиска.
-   Сейчас: заглушка «Opening 7JRWT4 in A2K9 · Amadeus» с причиной выбора Office и checkbox «Use this as my default office». Нужен дизайн.
+   Сейчас: заглушка «Opening 7JRWT4 in A2K9 · Amadeus» с причиной выбора Office, checkbox «Use this as my default office» и ссылкой «Open booking» на Booking Overview (решение пользователя, 2026-09-30: минимальный переход, пока нет дизайна). Нужен дизайн: автоматический ли переход, куда деваются причина Office и checkbox.
    Решает: design. Добавлено 2026-09-23.
 
 4. **Где предлагать сохранить Default Office.** Спецификация: «при ручном выборе Office», место не указано.
@@ -48,7 +48,7 @@
    Сейчас: знак перерисован SVG по скриншоту (`trava-logo.tsx`), цвет — `brand`. Заменить экспортом из Figma (узел `13:5988`).
    Решает: design / владелец среды. Добавлено 2026-09-23.
 
-17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active.
+17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active; в Figma shadcn kit `Sidebar Ring` = zinc-400 (см. #22).
    Сейчас: Pressed и Focus — та же заливка `sidebar-accent`, что у Hover (правило пользователя, 2026-09-23). Открыто только кольцо фокуса: `sidebar-ring` (teal, 2px), как в shadcn — нужно ли оно, в Figma его нет.
    Решает: design. Добавлено 2026-09-23.
 
@@ -67,6 +67,35 @@
 21. **Что делают клики в sidebar** (логотип, New chat, History item, пользователь).
    Сейчас: ничего — решение пользователя, 2026-09-23. Active item в приложении поэтому не появляется, только в Storybook.
    Решает: product. Добавлено 2026-09-23.
+
+## Токены
+
+22. **Три токена сознательно отличаются от Figma «shadcn kit - Trava» из-за контраста.** Решение пользователя, 2026-09-29: остальные светлые токены приведены к Figma (`popover`, `input`, `secondary-foreground`, `accent-foreground`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `chart-2`); эти три остаются:
+   - `ring`, `sidebar-ring`: teal `#0d9488` (3.74:1 на белом) вместо zinc-400 `#a1a1aa` из Figma (2.56:1; WCAG 1.4.11 требует 3:1 для индикатора фокуса). Автотесты этого не ловят.
+   - `destructive-foreground`: `#fafafa` (4.63:1 на red-600) вместо red-50 `#fef2f2` из Figma (4.41:1; AA требует 4.5:1 — падают stories Destructive у Button и Badge).
+   Сейчас: значения кода, причина указана в Storybook (Foundations / Colors → Semantic) и проверяется `colors.test.ts`. Кольцо Focus карточки Overview решено отдельно: полоса `gray-500` `#6b7280` вместо `gray-400` (4.83:1), в Figma заменяет пользователь — см. `projects/booking-overview/overview-widget.md`.
+   Решает: design. Добавлено 2026-09-28, сужено 2026-09-29.
+
+## Booking Overview
+
+23. **Порядок документов при одинаковом времени.** Спецификация: «стабильный порядок от backend».
+   Сейчас: Pricing раньше Tickets, внутри — как в массиве (`overview-matrix.ts`).
+   Решает: backend. Добавлено 2026-09-29.
+
+24. **Текст hover-покрытия карточки.** В Figma — «See widget», в спецификации — «open the corresponding entity». Клик пока заглушка: Pricing и Ticket виджетов нет.
+   Сейчас: текст из Figma, клик вызывает `onOpen({ type, id })`.
+   Решает: design. Добавлено 2026-09-29.
+
+25. **Pressed у карточек Pricing / Ticket.** В Figma нет; принято, что совпадает с Hover (как в sidebar, #17). Disabled карточке не нужен.
+   Решает: design. Добавлено 2026-09-29.
+
+26. **Левая рейка Booking Overview** (Figma `Toolbar` `8014:11327`, 100px, пять пунктов: Passengers 2, Flights 4, Tickets 2, Services 6, Remarks 22): что она делает (прокрутка к виджету? переключение?), что считает — 2 Tickets там не совпадает с матрицей, — и почему у Passengers рамка, а у Services заливка (активный?).
+   Сейчас: не построена (решение пользователя, 2026-09-30: не строить, пока design не ответит); в Known gaps flow doc.
+   Решает: design. Добавлено 2026-09-30.
+
+28. **Три кнопки шапки Booking Overview** (панель, History, чат) и высота строки заголовка виджета (36px у Overview, 32px у свёрнутых строк в Figma).
+   Сейчас: кнопки ничего не делают, как клики в sidebar (#21); берём 36px.
+   Решает: product / design. Добавлено 2026-09-30.
 
 ## Терминология
 
