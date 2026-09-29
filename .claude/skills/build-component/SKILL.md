@@ -13,6 +13,7 @@ description: Pattern for building a UI component in Skydesk Sandbox on top of sh
 2. **Использует токены** — только CSS-переменные из `src/tokens/`, никакого хардкода
 3. **TypeScript** — типизировать все props
 4. **Без лишней абстракции** — компонент решает одну задачу
+5. **Иконки — только Lucide** — сначала реестр `docs/icons.md`, потом каталог https://lucide.dev/icons/; новая иконка → строка в реестре
 
 ## Структура компонента
 

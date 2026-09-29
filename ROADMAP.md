@@ -81,4 +81,5 @@
 | 1.15 | Open question #22: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring`, `sidebar-ring`, `destructive-foreground` оставлены из-за контраста | `[1.15]` |
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
+| 1.16 | Иконки: только Lucide, реестр `docs/icons.md`, правило в `CLAUDE.md`, ссылки в skills `build-component` и `create-screen`, open question #29 | `[1.16]` |
 | 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |

@@ -97,6 +97,12 @@
    Сейчас: кнопки ничего не делают, как клики в sidebar (#21); берём 36px.
    Решает: product / design. Добавлено 2026-09-30.
 
+## Иконки
+
+29. **Иконки: набор Figma и единый стиль.** Есть ли в Figma отдельный набор иконок Skydesk, не совпадающий с Lucide? И какой единый `strokeWidth`: в `office-selector` и `result-footer` задан 1.5, в остальных компонентах — 2 (по умолчанию Lucide).
+   Сейчас: используется Lucide, размер везде `size-4` (у `X` в полях — `size-3.5`), `strokeWidth` разный (см. `docs/icons.md`).
+   Решает: design. Добавлено 2026-09-29.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».

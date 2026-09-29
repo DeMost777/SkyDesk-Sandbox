@@ -16,6 +16,8 @@ description: Pattern for creating a prototype screen in src/pages/ from its flow
 
 2. Проверить CLAUDE.md — применить актуальные продуктовые правила
 
+3. Иконки — только Lucide, сначала реестр `docs/icons.md` (https://lucide.dev/icons/)
+
 ## Структура экрана
 
 ```
