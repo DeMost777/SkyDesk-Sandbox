@@ -8,6 +8,7 @@ import {
   type SemanticColor,
 } from './semantic-colors'
 
+// Light theme only: dark theme is not used or tested in the sandbox (decision 2026-09-29).
 // Colour foundations from Figma "shadcn kit - Trava" → Foundations. Swatches are painted with the
 // CSS variables the app uses, so the page shows what is actually bound, not a copy of the values.
 // Each story is also a test: the browser-computed colour of every bound swatch must equal Figma's.
@@ -52,9 +53,9 @@ function PaletteScale({ scale }: { scale: keyof typeof PALETTE }) {
   )
 }
 
-function SemanticTable({ mode }: { mode: 'light' | 'dark' }) {
+function SemanticTable() {
   return (
-    <div className={mode === 'dark' ? 'dark bg-background p-4 text-foreground' : 'p-4'}>
+    <div className="p-4">
       {SEMANTIC_GROUPS.map((group) => (
         <table key={group.title} className="mb-6 w-full text-left text-sm">
           <caption className="mb-2 text-left text-sm font-medium">{group.title}</caption>
@@ -70,7 +71,7 @@ function SemanticTable({ mode }: { mode: 'light' | 'dark' }) {
           </thead>
           <tbody>
             {group.colors.map((color) => (
-              <SemanticRow key={color.var} color={color} mode={mode} />
+              <SemanticRow key={color.var} color={color} />
             ))}
           </tbody>
         </table>
@@ -79,17 +80,17 @@ function SemanticTable({ mode }: { mode: 'light' | 'dark' }) {
   )
 }
 
-function SemanticRow({ color, mode }: { color: SemanticColor; mode: 'light' | 'dark' }) {
-  const differs = color.pending === true && mode === 'light'
+function SemanticRow({ color }: { color: SemanticColor }) {
+  const differs = color.pending === true
   return (
     <tr className="border-t border-border">
       <td className="py-2 pr-3">
-        <Swatch color={`hsl(var(--${color.var}))`} hex={color[mode]} expected={!differs} />
+        <Swatch color={`hsl(var(--${color.var}))`} hex={color.light} expected={!differs} />
       </td>
       <td className="py-2">{color.figma}</td>
       <td className="py-2 font-mono text-xs">--{color.var}</td>
       <td className="py-2 font-mono text-xs">{color.tailwind}</td>
-      <td className="py-2 font-mono text-xs">{color[mode]}</td>
+      <td className="py-2 font-mono text-xs">{color.light}</td>
       <td className="py-2 text-xs text-muted-foreground">
         {differs ? 'Differs from Figma — pending decision (#22)' : 'Matches Figma'}
       </td>
@@ -133,8 +134,8 @@ export const Palette: Story = {
   play: ({ canvasElement }) => expectSwatchesMatchFigma(canvasElement),
 }
 
-export const SemanticLight: Story = {
-  name: 'Semantic — Light',
+export const Semantic: Story = {
+  name: 'Semantic',
   parameters: {
     docs: {
       description: {
@@ -145,23 +146,7 @@ export const SemanticLight: Story = {
       },
     },
   },
-  render: () => <SemanticTable mode="light" />,
-  play: ({ canvasElement }) => expectSwatchesMatchFigma(canvasElement),
-}
-
-export const SemanticDark: Story = {
-  name: 'Semantic — Dark',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Figma → Foundations → Color → Dark. Dark mode is not used in the app yet; the values are ' +
-          'here so it can be switched on without another Figma pass. `Destructive` is inverted ' +
-          '(light fill, dark text) exactly as in Figma.',
-      },
-    },
-  },
-  render: () => <SemanticTable mode="dark" />,
+  render: () => <SemanticTable />,
   play: ({ canvasElement }) => expectSwatchesMatchFigma(canvasElement),
 }
 
@@ -171,7 +156,7 @@ export const ChartsAndUnbound: Story = {
     docs: {
       description: {
         story:
-          'Chart 1–5 exist in code for both modes; Figma Chart 2 (light) is #2a9d90, ours is teal ' +
+          'Chart 1–5: Figma Chart 2 is #2a9d90, ours is teal ' +
           '#0d9488 (pending, #22). The alpha tokens below exist only in the Figma shadcn kit: we have ' +
           'no variable for them because the app writes opacity as a modifier (`bg-primary/50`).',
       },
@@ -179,26 +164,23 @@ export const ChartsAndUnbound: Story = {
   },
   render: () => (
     <div className="space-y-6">
-      {(['light', 'dark'] as const).map((mode) => (
-        <section key={mode} aria-label={`Chart ${mode}`}>
-          <h3 className="mb-2 text-sm font-medium capitalize">Chart — {mode}</h3>
-          <div className="grid grid-cols-5 gap-2">
-            {CHART_COLORS[mode].map((hex, i) => (
-              <div key={hex}>
-                <div aria-hidden className="h-10 rounded-md border border-border" style={{ backgroundColor: hex }} />
-                <p className="mt-1 font-mono text-xs text-muted-foreground">Chart {i + 1} {hex}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+      <section aria-label="Chart">
+        <h3 className="mb-2 text-sm font-medium">Chart</h3>
+        <div className="grid grid-cols-5 gap-2">
+          {CHART_COLORS.light.map((hex, i) => (
+            <div key={hex}>
+              <div aria-hidden className="h-10 rounded-md border border-border" style={{ backgroundColor: hex }} />
+              <p className="mt-1 font-mono text-xs text-muted-foreground">Chart {i + 1} {hex}</p>
+            </div>
+          ))}
+        </div>
+      </section>
       <table className="w-full text-left text-sm">
         <caption className="mb-2 text-left text-sm font-medium">Figma tokens without a variable</caption>
         <thead className="text-xs text-muted-foreground">
           <tr>
             <th scope="col" className="py-1 font-normal">Figma</th>
-            <th scope="col" className="py-1 font-normal">Light</th>
-            <th scope="col" className="py-1 font-normal">Dark</th>
+            <th scope="col" className="py-1 font-normal">Value</th>
           </tr>
         </thead>
         <tbody>
@@ -206,7 +188,6 @@ export const ChartsAndUnbound: Story = {
             <tr key={t.figma} className="border-t border-border">
               <td className="py-2">{t.figma}</td>
               <td className="py-2 font-mono text-xs">{t.light}</td>
-              <td className="py-2 font-mono text-xs">{t.dark}</td>
             </tr>
           ))}
         </tbody>

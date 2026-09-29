@@ -95,8 +95,14 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 Вручную в Storybook (`npm run storybook`) → Foundations / Colors:
 1. Palette — 22 шкалы по 11 оттенков, под каждым образцом номер и hex.
-2. Semantic — Light / Dark: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Строки «Differs from Figma» — вопрос #22.
+2. Semantic: Figma-имя, CSS-переменная, Tailwind-класс, hex, статус. Строки «Differs from Figma» — вопрос #22. Тёмная тема не проверяется (решение 2026-09-29).
 3. History item в sidebar набран IBM Plex Mono (не Roboto Mono); текст не выходит за карточку.
+
+## Booking и Overview (модель и mock-данные)
+
+Автоматически: `npm test` — `src/lib/booking.test.ts` (каждый сценарий из `src/mocks/bookings/` согласован: ссылки покрытия, уникальные id и номера билетов, Office в своей GDS, все типы пассажиров ADT / CHD / INF; сводка для PNR Search совпадает с прежней; маршрут, формат даты) и `src/lib/overview-matrix.test.ts` (эталонная ячейка из спецификации, Deleted и «No document», все статусы Pricing, порядок и равные времена, покрытие, счётчик, цель клика).
+
+Вручную — после появления страницы (ROADMAP 2.1): `?page=booking-overview&pnr=<PNR>`, PNR и что проверяет каждый — в `projects/booking-overview/overview-widget.md` → «Mock scenarios». PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
 
 ## Последний прогон
 

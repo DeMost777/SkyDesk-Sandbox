@@ -5,6 +5,8 @@
 
 ## Экраны
 
+> Booking Overview (`projects/booking-overview/README.md`) — модель и данные готовы, страницы пока нет (ROADMAP 2.1).
+
 | Page | Адрес | Flow doc | Код |
 |---|---|---|---|
 | PNR Search | `/` или `?page=pnr-search` | `projects/pnr-search/README.md` | `src/pages/pnr-search/` |
@@ -19,7 +21,7 @@
 | Раздел | Stories |
 |---|---|
 | Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
-| Foundations / Colors | Palette (22 шкалы Figma Primitives), Semantic — Light / Dark (Figma-имя → CSS-переменная → Tailwind → hex), Charts and unbound |
+| Foundations / Colors | Palette (22 шкалы Figma Primitives), Semantic (Figma-имя → CSS-переменная → Tailwind → hex; только Light), Charts and unbound |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
@@ -42,7 +44,7 @@
 
 ## Mock PNR
 
-Данные детерминированные: фиксированные PNR, даты и Office. Источник — `src/mocks/pnr-search.mock.ts`.
+Данные детерминированные: фиксированные PNR, даты и Office. Источник — `src/mocks/pnr-search.mock.ts`; бронирования в нём — короткая форма сценариев `src/mocks/bookings/` (см. «Mock Booking»).
 
 | PNR | Где существует | Creation office | Skydesk знает GDS? | Итог поиска без контекста |
 |---|---|---|---|---|
@@ -54,6 +56,24 @@
 
 **Office без прав:** `X4PD` (Sabre) есть в списке Office, но не может открывать бронирования — для сценария «Error — у Office нет доступа».
 
+## Mock Booking
+
+Источник — `src/mocks/bookings/` (модель — `src/lib/booking.ts`). Один PNR — один Booking: PNR Search показывает его короткую форму, виджеты читают полную. Девять сценариев, все находятся поиском на `/`:
+
+| PNR | GDS | Сценарий |
+|---|---|---|
+| `BBV14Q` | Sabre | Эталон спецификации Overview; в History и среди сценариев |
+| `7JRWT4` | Amadeus | Ticketed |
+| `K2M9QP` | Sabre | Pricing only |
+| `ABC123` | Galileo | Repricing; GDS новая для Skydesk |
+| `PRC5TS` | Amadeus | Все статусы Pricing |
+| `CVR4GE` | Galileo | Coverage; ADT, CHD, INF |
+| `DEL3T3` | Amadeus | Deleted Pricing, «No document»; Round |
+| `TIE5AM` | Sabre | Одинаковое время документов |
+| `WIDE55` | Sabre | 5 пассажиров × 4 сегмента |
+
+Что проверяет каждый — `projects/booking-overview/overview-widget.md` → «Mock scenarios». Новому виджету нужен свой случай — добавляется файл-сценарий и строка в `index.ts`, существующие остаются.
+
 ## Mock History
 
 Источник — `src/mocks/booking-history.mock.ts` (интерфейс `BookingHistory`), 11 бронирований из Figma. Первое — всегда «Today 15:12», остальные — фиксированные даты 10–12/03/26. Пользователь в footer — `src/mocks/user.mock.ts` (Alex Pupkin).
@@ -63,7 +83,7 @@
 | Слой | Где | Что внутри |
 |---|---|---|
 | Токены | `src/tokens/` | `palette.css` / `palette.ts` (генерируются `npm run tokens:palette`), `index.css` (семантические токены → шаг палитры), `semantic-colors.ts` (привязка Figma → переменные) |
-| Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts`, `src/lib/booking-history.ts`, `src/lib/user.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
+| Домен | `src/lib/office.ts`, `src/lib/pnr-search.ts`, `src/lib/booking.ts`, `src/lib/overview-matrix.ts`, `src/lib/booking-history.ts`, `src/lib/user.ts` | Типы и правила. Чистые функции, без React, с тестами рядом |
 | Данные | `src/mocks/` | Mock-реализация `PnrDirectory`, Office, personas |
 | Состояние | `src/hooks/` | Default Offices (localStorage), адрес sandbox |
 | Компоненты | `src/components/ui/` — shadcn/ui примитивы (включая `sidebar.tsx`); `src/components/skydesk/` — компоненты Skydesk из них | UI без логики экрана |

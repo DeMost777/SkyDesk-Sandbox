@@ -121,6 +121,13 @@ PNR + Select Office/GDS → Booking
 | History item | Одна карточка History: PNR · GDS code, Itinerary, дата и время последнего действия | «session card» |
 | Itinerary | Маршрут бронирования по кодам аэропортов: One way `A → B`, Round `A ⇆ B`, Multi trip `A → B → C` | «route» в UI |
 | PNR Required | Поиск запущен с пустым полем PNR | «empty state» — это начальный экран, до поиска |
+| Booking Overview | Экран бронирования: список виджетов по центру, слева App Sidebar, сверху шапка бронирования | — |
+| Overview | Первый виджет Booking Overview: матрица Passenger × Segment с Pricing и Ticket. Без уточнения «Overview» — это виджет, а не экран | — |
+| Pricing | Оценка: расчёт стоимости для одного или нескольких пассажиров. Агент превращает её в Ticket. Статусы: Active, Ticketed, Unknown, Reprice required, Itinerary changed, Inactive, Deleted | «Quote», «Estimate» в UI |
+| Ticket | Выписанный билет: подтверждённый документ, билет уже куплен. Статусы в V1: Active, Voided | «Document» в значении «билет» |
+| Document | Общее название Pricing и Ticket в Overview. «No document» — ячейка без видимых Pricing и Ticket | — |
+| Segment | Один перелёт `A → B` (`S1`, `S2`…), часть Itinerary | «Leg», «route» в UI |
+| Passenger type | Тип пассажира: `ADT` (adult), `CHD` (child), `INF` (infant) | — |
 
 ## Запуск и проверка
 
@@ -155,6 +162,7 @@ npm run build-storybook  # статическая сборка в storybook-stat
 - **В `vite.config.ts` два Vitest-проекта: `unit` и `storybook`** (2026-09-23). Init Storybook создал только `storybook`, и юнит-тесты молча перестали запускаться. Не удалять проект `unit`.
 - **Accessibility-проверка в Storybook падает тестом** (`a11y.test: 'error'` в `.storybook/preview.tsx`, 2026-09-23). Исключение — stories с teal `primary` и текстом (`test: 'todo'`, open question #14): вернуть в `error`, когда design решит. Страница — в `<main>`, панель sandbox — `<aside aria-label="Sandbox controls">`; у popover-диалогов есть `aria-label`. Активное состояние в sandbox-панели и навигации — тёмное (`bg-foreground`), потому что teal + белый 12px не проходит контраст.
 - **Цвета в два слоя: палитра и семантические токены** (2026-09-28). `src/tokens/palette.css` (генерируется `npm run tokens:palette`, 22 шкалы Figma Primitives × 11 оттенков) и `src/tokens/index.css` (shadcn-имена, каждое — ссылка на шаг палитры, поэтому hex точный). Привязка «имя в Figma → переменная → Tailwind» — `src/tokens/semantic-colors.ts`; `colors.test.ts` сверяет её с Figma, Storybook показывает страницу Foundations / Colors. Компоненты палитру напрямую не используют (`lint:tokens` ловит `bg-orange-300`) — нужен цвет из палитры, заводим семантический токен. Расхождения с Figma, которые меняют существующие экраны, помечены `pending` и вынесены в open question #22 — не «чинить» их молча.
+- **Тёмная тема не используется и не тестируется** (решение пользователя, 2026-09-29). Токены `.dark` остаются в `src/tokens/index.css`, но ни в приложении, ни в Storybook, ни в тестах её не показываем. Не включать без просьбы пользователя.
 - **Mono-шрифт — IBM Plex Mono** (решение пользователя, 2026-09-28; был Roboto Mono). Так задано `Fonts/Font Mono` в Figma. Файл — `public/fonts/IBMPlexMono-Regular-latin.woff2`, только Regular и латиница. Если добавить другое начертание или язык — добавить файл и `@font-face`, иначе браузер подставит синтетическое начертание.
 - **Все визуальные значения — токены; проверка `lint:tokens`** (2026-09-23). Новые токены: `surface`, `loading-start/end`, `radius-card/control`, `text-heading`, `text-2xs`, `shadow-popover`, `drop-shadow-card`. Значения совпадают с прежними до пикселя — проверено сравнением 50 скриншотов до/после. Цвета заданы точными HSL (`25 5.3% 44.7%`), потому что округление сдвигает hex. Новый токен-класс → добавить его в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его (например, `text-heading` рядом с `text-foreground`).
 - **Creation office всегда доступен агенту** (решение product, 2026-09-24; закрыт open question #5). Бронирование создавалось на стороне агента. Не моделировать «нет доступа к Creation office» — такого сценария нет.
@@ -178,7 +186,9 @@ skydesk-sandbox/
 │   ├── skills/<name>/SKILL.md ← инструкции под конкретные задачи (формат Claude Code)
 │   └── agents/<name>.md    ← субагенты для изолированных задач (формат Claude Code)
 ├── projects/               ← flow doc каждой фичи
-│   └── pnr-search/         ← первый проект: поиск PNR
+│   ├── pnr-search/         ← первый проект: поиск PNR
+│   ├── app-sidebar/        ← App Sidebar
+│   └── booking-overview/   ← экран Booking Overview и его виджеты (Overview)
 └── src/                    ← React-приложение
     ├── components/         ← компонентная библиотека (+ *.stories.tsx рядом)
     ├── hooks/              ← состояние: Default Offices, адрес sandbox

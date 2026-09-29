@@ -9,7 +9,7 @@ const indexCss = read('./index.css')
 const paletteCss = read('./palette.css')
 
 // Resolves `--var: h s% l%` and `--var: var(--other)` chains, then converts to hex.
-const [lightCss, darkCss] = indexCss.split('.dark {')
+const lightCss = indexCss.split('.dark {')[0]
 
 function declarations(css: string): Map<string, string> {
   const map = new Map<string, string>()
@@ -19,7 +19,6 @@ function declarations(css: string): Map<string, string> {
 
 const palette = declarations(paletteCss)
 const light = declarations(lightCss)
-const dark = new Map([...light, ...declarations(darkCss)])
 
 function resolve(name: string, vars: Map<string, string>): string {
   let value = vars.get(name) ?? palette.get(name)
@@ -57,18 +56,17 @@ describe('palette', () => {
 })
 
 describe('semantic colours match Figma', () => {
-  for (const [mode, vars] of [['light', light], ['dark', dark]] as const) {
-    for (const color of SEMANTIC_GROUPS.flatMap((g) => g.colors)) {
-      const actual = hex(color.var, vars)
-      if (color.pending && mode === 'light') {
-        it(`${color.figma} (${mode}) still differs from Figma — remove "pending" once it is fixed`, () => {
-          expect(actual).not.toBe(color[mode])
-        })
-      } else {
-        it(`${color.figma} (${mode})`, () => {
-          expect(actual).toBe(color[mode])
-        })
-      }
+  // Light theme only; dark values stay in CSS but are not tested (decision 2026-09-29).
+  for (const color of SEMANTIC_GROUPS.flatMap((g) => g.colors)) {
+    const actual = hex(color.var, light)
+    if (color.pending) {
+      it(`${color.figma} still differs from Figma — remove "pending" once it is fixed`, () => {
+        expect(actual).not.toBe(color.light)
+      })
+    } else {
+      it(color.figma, () => {
+        expect(actual).toBe(color.light)
+      })
     }
   }
 })

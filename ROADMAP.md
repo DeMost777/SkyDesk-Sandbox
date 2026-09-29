@@ -1,6 +1,6 @@
 # Roadmap
 
-> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-28.
+> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-29.
 > Это не автопилот: сессия не обязана брать задачу отсюда. Обычно задачу ставит пользователь в разговоре — она записывается в «Сейчас» и выполняется. Как вести файл — `CLAUDE.md` → «Правила работы», правило 11.
 > Как делать задачу — в flow doc фичи. Неизвестное — в `docs/open-questions.md`. Здесь — только что и в каком порядке.
 
@@ -23,18 +23,19 @@
 
 ## Сейчас
 
-- Виджет Overview (первый виджет Booking Overview; табличная основа — общая, документируется в Storybook, карточки Pricing/Ticket — без stories до фидбека команды). Сначала план: flow doc `projects/booking-overview/`, модель Booking и сценарные mock-бронирования (задача 1.11). Блок: ответы на оставшиеся вопросы плана (название, страница, глоссарий, порядок).
+—
 
 ## Дальше
 
 Сверху — следующая. Порядок меняет только пользователь.
 
+- [2.1] Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, зона виджетов (по центру, max 800px), шапка бронирования — Фаза 2 · зависит от: 1.11
+- [3.1] Виджет Overview: табличная основа (`MatrixTable`, stories) + матрица Passenger × Segment; карточки Pricing / Ticket без stories до фидбека команды — Фаза 3 · зависит от: 1.11, 2.1
 - [1.6] Каталог компонентов `docs/components.md`: назначение, props, состояния, Figma node, ссылка на stories — Фаза 1
 - [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
 - [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
 - [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
-- [1.11] Доменная модель Booking (`src/lib/booking.ts`) и сценарные mock-бронирования (`src/mocks/`) — Фаза 1
 - [1.12] Субагент `qa-tester`: проход состояний из flow doc в Playwright, скриншоты, ошибки консоли, отчёт — Фаза 1
 
 ## Потом
@@ -42,7 +43,7 @@
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview**
-- Flow doc `projects/booking-overview/` и каркас: layout, шапка, зона виджетов, чат справа. Блок: скриншот и Figma Booking Overview.
+- Каркас Booking Overview — задача 2.1 (flow doc `projects/booking-overview/` есть). Чат справа — Фаза 4.
 - Переход Found → Booking. Блок: open question #3.
 - Виджеты (порядок подтвердить по скриншоту): Passengers, Itinerary / Segments, Tickets, Pricing / Fare rules, Services, Remarks / SSR / OSI, History.
 - Чат: mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить.
@@ -74,5 +75,6 @@
 | — | Параметры адреса PNR Search → его flow doc | `0d13326` |
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
+| 1.11 | Модель Booking (`src/lib/booking.ts`), матрица Overview (`overview-matrix.ts`), 9 сценарных mock-бронирований (`src/mocks/bookings/`), PNR Search читает их же; flow doc `projects/booking-overview/`; глоссарий: Pricing, Ticket, Segment, Passenger type, Overview | `[1.11]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
 | 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |

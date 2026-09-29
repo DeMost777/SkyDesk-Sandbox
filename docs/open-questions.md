@@ -78,9 +78,26 @@
    - `destructive-foreground`: `#fafafa` → red-50 `#fef2f2`.
    - `sidebar-primary-foreground`: `#fafaf9` → neutral-50 `#fafafa`; `sidebar-accent`: `#f5f5f4` → zinc-100 `#f4f4f5`; `sidebar-accent-foreground`: `#1c1917` → zinc-900 `#18181b`.
    - `chart-2`: teal `#0d9488` → `#2a9d90`.
-   Dark-тема приведена к Figma целиком (в приложении не используется). `destructive` в dark в Figma инвертирован (светлая заливка `#fef2f2`, тёмный текст `#991b1b`) — перенесено как есть.
+   Dark-тема приведена к Figma целиком (в приложении не используется и не тестируется — решение 2026-09-29). `destructive` в dark в Figma инвертирован (светлая заливка `#fef2f2`, тёмный текст `#991b1b`) — перенесено как есть.
    Сейчас: значения не менялись; проверить, что Figma — намеренный редизайн, и решить пакетом.
    Решает: design. Добавлено 2026-09-28.
+
+## Booking Overview
+
+23. **Порядок документов при одинаковом времени.** Спецификация: «стабильный порядок от backend».
+   Сейчас: Pricing раньше Tickets, внутри — как в массиве (`overview-matrix.ts`).
+   Решает: backend. Добавлено 2026-09-29.
+
+24. **Текст hover-покрытия карточки.** В Figma — «See widget», в спецификации — «open the corresponding entity». Клик пока заглушка: Pricing и Ticket виджетов нет.
+   Сейчас: текст из Figma, клик вызывает `onOpen({ type, id })`.
+   Решает: design. Добавлено 2026-09-29.
+
+25. **Pressed у карточек Pricing / Ticket.** В Figma нет; принято, что совпадает с Hover (как в sidebar, #17). Disabled карточке не нужен.
+   Решает: design. Добавлено 2026-09-29.
+
+26. **Счётчики левой рейки Booking Overview** (`2 Passengers`, `4 Flights`, `2 Tickets`…) на Figma `8014:11324`: отдельная навигация или часть App Sidebar, и что она считает — число Tickets там не равно числу в матрице.
+   Сейчас: не реализовано.
+   Решает: design. Добавлено 2026-09-29.
 
 ## Терминология
 
