@@ -53,6 +53,9 @@ export function ComponentName({ className }: ComponentNameProps) {
 ## Stories
 
 - Файл рядом с компонентом, `title: 'Skydesk/<Name>'`, `tags: ['ai-generated']`.
+- **JSDoc над `const meta`** — назначение компонента (где используется, какие состояния): его берут страница Docs (autodocs) и Storybook MCP. JSDoc над самим компонентом манифест игнорирует — не дублировать. Figma в JSDoc не писать (node id — комментарием в коде и в `docs/figma-map.md`).
+- **Props** — JSDoc у неочевидных полей интерфейса: они попадают в таблицу props. Нет props в Docs — проверить `meta.component` и импорты через `@/`.
+- **Каталог для поиска готового** — MCP `storybook` (`docs-list`, `docs-show <id>`; локально нужен запущенный `npm run storybook`) или `src/components/**/*.stories.tsx`. Если несколько компонентов в одном файле stories — `component` + `subcomponents`.
 - По story на состояние или вариант; `play` проверяет поведение (роли, `aria-*`, видимость), не пиксели.
 - Каждая story — тест в Chromium, включая проверку доступности (`a11y.test: 'error'`). Исключение — teal `primary` с текстом (`test: 'todo'`, open question #14).
 - Страница — в `<main>`, у popover-диалогов есть `aria-label`.

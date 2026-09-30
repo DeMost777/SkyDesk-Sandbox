@@ -15,10 +15,10 @@
 
 | Компонент | Где | Storybook | Figma | Статус |
 |---|---|---|---|---|
-| Button, Badge, Input, Label | `ui/` | Components / ui / Button, Badge, Input | shadcn kit (узел не записан) | стабильный |
-| Dialog, Popover, Command | `ui/` | Components / ui / Dialog, Popover, Command | shadcn kit (узел не записан) | стабильный |
+| Button, Badge, Input, Label | `ui/` | UI / Button, Badge, Input | shadcn kit (узел не записан) | стабильный |
+| Dialog, Popover, Command | `ui/` | UI / Dialog, Popover, Command | shadcn kit (узел не записан) | стабильный |
 | Sidebar (примитив) | `ui/sidebar.tsx` | через App Sidebar | `4920:69057` | стабильный |
-| Office Selector | `ui/office-selector.tsx` | Components / ui / Office Selector | — | стабильный |
+| Office Selector | `ui/office-selector.tsx` | UI / Office Selector | — | стабильный |
 | App Sidebar, History Item, части | `skydesk/app-sidebar/` | Skydesk / App Sidebar (+ History Item, Parts) | `548:16649`, `4920:69057`, `7936:79314` | стабильный |
 | Booking Header | `skydesk/booking-header/` | Skydesk / Booking Header | `8014:11426` | стабильный |
 | Widget Section | `skydesk/widget-section/` | Skydesk / Widget Section | `8014:11331`, `8014:11397` | стабильный |
@@ -47,7 +47,7 @@
 - **Назначение:** выбор Office (GDS + код) в поле поиска PNR. Сначала Default Offices агента, затем остальные, обе группы по алфавиту кода.
 - **Props:** `offices`, `value: OfficeSelection | null`, `onChange`, `disabled`, `loading`, `error`, `onManageDefaults`, `className`.
 - **Правила:** порядок и подписи — `src/lib/office.ts` (`sortOfficesForPicker`); Flow doc — `projects/pnr-search/README.md`.
-- **Состояния (stories Components / ui / Office Selector):** Default, Selected, WithoutDefaults, Disabled, Loading, LoadError, NoOffices.
+- **Состояния (stories UI / Office Selector):** Default, Selected, WithoutDefaults, Disabled, Loading, LoadError, NoOffices.
 - **Figma:** — (узла в источниках нет).
 
 ## `skydesk/app-sidebar/` — App Sidebar

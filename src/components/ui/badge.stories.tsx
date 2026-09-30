@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from './badge'
 
+/**
+ * Short label next to data: a GDS, a status. shadcn/ui Badge with the Skydesk `brand` variant.
+ */
 const meta = {
+  title: 'UI/Badge',
   component: Badge,
   tags: ['ai-generated'],
   args: { children: 'Amadeus' },

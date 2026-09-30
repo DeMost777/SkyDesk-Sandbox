@@ -18,17 +18,18 @@
 Каталог компонентов — `docs/components.md` (назначение, props, состояния, Figma, stories).
 
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
-- Локально: `npm run storybook` → `http://localhost:6006`.
+- Локально: `npm run storybook` → `http://localhost:6006`. Для агента — MCP-сервер `storybook` из `.mcp.json` (`docs-list`, `docs-show`); в облаке Storybook поднимает хук SessionStart.
+- У каждого раздела страница **Docs**: назначение, таблица props, все stories.
 
 | Раздел | Stories |
 |---|---|
-| Components / ui | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
+| UI | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
 | Foundations / Colors | Palette (22 шкалы Figma Primitives), Semantic (Figma-имя → CSS-переменная → Tailwind → hex; только Light), Charts and unbound |
 | Skydesk / Matrix Table, Matrix Table / Headers | Табличная основа Passenger × Segment: Default, ScrollsSideways (первая колонка закреплена), FourPassengers, EmptyCells, Keyboard; RefBadge, PassengerHeader, SegmentHeader. Карточки Overview без stories |
 | Skydesk / Booking Header, Widget Section | Шапка бронирования (Default, One passenger, Keyboard); рамка виджета (Expanded, Collapsed, Toggle, Keyboard, Zero / No count) |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
 | Pages / booking-overview | Default (`BBV14Q`), One passenger, Wide, Deleted pricing, No booking, Switch scenario |
-| Pages / pnr-search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
+| Pages / PNR Search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
 ## Адреса
 
