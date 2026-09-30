@@ -1,115 +1,71 @@
 ---
 name: build-component
-description: Pattern for building or extending a UI component in Skydesk Sandbox — shadcn/ui primitives, design tokens, and a Storybook story file that is the component's documentation and its test. Use when a screen needs a component that src/components/ does not have yet, or when changing an existing one.
+description: Pattern for building a UI component in Skydesk Sandbox on top of shadcn/ui and the design tokens. Use when a screen needs a component that src/components/ does not have yet, or when extending an existing one.
 ---
 
 # Skill: Build Component
 
-Как добавить или изменить компонент. Каталог компонентов — Storybook, отдельного списка нет (`CLAUDE.md` → «Решения и gotchas»).
+Паттерн создания компонентов Skydesk Sandbox. Компонент — это код, stories (они же тесты) и строка в каталоге, всё в одном изменении.
 
-## 1. Сначала найти готовое
+## Принципы
 
-1. Каталог: MCP-сервер `storybook` (`docs-list`, затем `docs-show <id>`). Если MCP недоступен — `src/components/**/*.stories.tsx`.
-2. Есть подходящий компонент — использовать или расширить (новый prop, вариант), не писать второй.
-3. Есть примитив shadcn/ui в `src/components/ui/`, но нет нужного — собрать поверх него. Нет и примитива — добавить его из shadcn/ui (`components.json` уже настроен), затем строить.
+1. **Базируется на shadcn/ui** — сначала `src/components/ui/`; есть подходящий примитив — расширить через `className` или обёртку, не переписывать.
+2. **Только токены** — цвета, радиусы, размеры шрифта и тени через классы Tailwind (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`). Палитру напрямую не использовать (`bg-orange-300` ловит `lint:tokens`): нужен цвет — заводим семантический токен (см. skill `extract-tokens`). Размеры раскладки из Figma (`w-[220px]`) допустимы с комментарием, откуда они.
+3. **Новый токен-класс** — добавить в `extendTailwindMerge` в `src/lib/utils.ts`, иначе `cn()` может молча выбросить его.
+4. **Без знания предметной области — отдельно от компонента, который её знает.** Таблица или рамка виджета не знает про Pricing и Ticket. Компонент получает готовые значения или типы из `src/lib/`, mock-данные не импортирует.
+5. **Доменные правила — в `src/lib/`** чистыми функциями с тестами; компонент их вызывает, не повторяет.
+6. **Тёмная тема не используется** — не проверять и не рисовать.
+7. **Глоссарий из `CLAUDE.md`** — в тексте UI и в именах: Office, а не PCC; Itinerary, Segment, Pricing, Ticket.
 
-## 2. Куда положить
+## Где лежит
 
 ```
 src/components/
-├── ui/                     ← примитивы shadcn/ui: button.tsx, popover.tsx, sidebar.tsx…
-│   └── button.stories.tsx     story рядом с файлом
-└── skydesk/                ← компоненты Skydesk из нескольких частей
-    └── app-sidebar/           папка в kebab-case
-        ├── index.tsx          главный компонент + его части (SidebarBrand, SidebarUser…)
-        ├── history-item.tsx   крупная часть — отдельным файлом, реэкспорт из index.tsx
-        ├── *.stories.tsx      по файлу stories на компонент
-        └── story-checks.ts    общие проверки для play-функций этой папки
-src/pages/<flow>/components/ ← части одного экрана, которые больше нигде не нужны
+├── ui/                        ← shadcn/ui примитивы
+└── skydesk/
+    └── <component-name>/      ← kebab-case
+        ├── index.tsx          ← компонент (несколько частей — index.ts и файл на часть)
+        └── <component-name>.stories.tsx
 ```
 
-- Файлы в kebab-case, компоненты — PascalCase, именованный export.
-- `office-selector.tsx` лежит в `ui/`, хотя это компонент Skydesk. Так сложилось — не переносить без просьбы пользователя.
-
-## 3. Примитивы shadcn/ui можно менять
-
-Примитивы в `ui/` — не сторонний код: их правят под токены и решения продукта. Каждое отличие от стокового shadcn — комментарий в коде (почему), а правило одного flow — ещё и в его flow doc. Пример — `ui/sidebar.tsx`: у Default нет заливки, у Active нет `font-medium`.
-
-## 4. Код компонента
+## Шаблон
 
 ```tsx
-// src/components/skydesk/booking-header/index.tsx
 import { cn } from '@/lib/utils'
-import { gdsCode } from '@/lib/booking-history'   // доменные правила — только из src/lib
 
-export interface BookingHeaderProps {
-  /** Описание поля — попадёт в таблицу props в Storybook и в MCP. */
-  pnr: string
-  onSelect?: (pnr: string) => void
+// One line: what it is. Figma <node id>. Flow doc: projects/<flow>/README.md.
+
+export interface ComponentNameProps {
   className?: string
 }
 
-export function BookingHeader({ pnr, onSelect, className }: BookingHeaderProps) {
-  return <div className={cn('rounded-card bg-surface text-foreground', className)}>…</div>
+export function ComponentName({ className }: ComponentNameProps) {
+  return <div className={cn('…', className)} />
 }
 ```
 
-- **Props** — экспортируемый interface; у каждого неочевидного поля JSDoc `/** … */`. Назначение компонента сюда не писать — оно в story (шаг 5).
-- **Стили** — только классы токенов (`bg-surface`, `rounded-card`, `text-heading`, `shadow-popover`). Цвета, радиусы, размеры шрифта и тени в `[…]` нельзя — `npm run lint:tokens` упадёт. Размер раскладки из Figma (`w-[220px]`) можно, с комментарием, откуда он.
-- **Классы** — через `cn()`, не `join(' ')`. Нужен новый токен — skill `extract-tokens`.
-- **Логика** — доменные правила (сортировка, форматирование, выбор Office) живут в `src/lib/` с тестами. Компонент их вызывает, не повторяет.
-- **Доступность** — у кнопки без текста `aria-label`, у popover-диалога `aria-label`, у активного пункта `aria-current`. Каждая story проходит a11y-проверку, нарушение роняет `npm test`.
-- **Тексты UI** — из глоссария `CLAUDE.md`, порядок `Office · GDS`.
+Комментарий с Figma node и flow doc — обязателен (так узел попадает в `docs/figma-map.md`). Комментарии — как в соседних файлах: коротко, только «зачем».
 
-## 5. Story — документация и тест
+## Состояния
 
-Story обязательна в том же изменении. Autodocs включён для всех, страница Docs появится сама.
+Учесть те, что относятся к компоненту: default, hover, focus (клавиатура), active, disabled, loading, error, empty. Если состояния нет в Figma — не выдумывать: спросить или записать в `docs/open-questions.md`. Фокус — кольцо `shadow-focus-ring`.
 
-```tsx
-// booking-header.stories.tsx — рядом с компонентом
-import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, fn } from 'storybook/test'
-import { BookingHeader } from './index'
+## Stories
 
-/**
- * Назначение: что показывает, где используется, какие состояния есть.
- * Правила — projects/<flow>/README.md.
- */
-const meta = {
-  title: 'Skydesk/Booking Header',  // UI/… · Skydesk/… · Pages/…
-  component: BookingHeader,
-  tags: ['ai-generated'],
-  args: { pnr: '7JRWT4', onSelect: fn() },
-} satisfies Meta<typeof BookingHeader>
+- Файл рядом с компонентом, `title: 'Skydesk/<Name>'`, `tags: ['ai-generated']`.
+- **JSDoc над `const meta`** — назначение компонента (где используется, какие состояния): его берут страница Docs (autodocs) и Storybook MCP. JSDoc над самим компонентом манифест игнорирует — не дублировать. Figma в JSDoc не писать (node id — комментарием в коде и в `docs/figma-map.md`).
+- **Props** — JSDoc у неочевидных полей интерфейса: они попадают в таблицу props. Нет props в Docs — проверить `meta.component` и импорты через `@/`.
+- **Каталог для поиска готового** — MCP `storybook` (`docs-list`, `docs-show <id>`; локально нужен запущенный `npm run storybook`) или `src/components/**/*.stories.tsx`. Если несколько компонентов в одном файле stories — `component` + `subcomponents`.
+- По story на состояние или вариант; `play` проверяет поведение (роли, `aria-*`, видимость), не пиксели.
+- Каждая story — тест в Chromium, включая проверку доступности (`a11y.test: 'error'`). Исключение — teal `primary` с текстом (`test: 'todo'`, open question #14).
+- Страница — в `<main>`, у popover-диалогов есть `aria-label`.
 
-export default meta
-type Story = StoryObj<typeof meta>
+## Документы (в том же изменении)
 
-export const Default: Story = {}
-export const Hover: Story = { parameters: { pseudo: { hover: true } } }
-export const Selects: Story = {
-  play: async ({ args, canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button'))
-    await expect(args.onSelect).toHaveBeenCalledWith('7JRWT4')
-  },
-}
-```
+- строка в `docs/components.md`: назначение, props, состояния, Figma node, stories;
+- строка в `docs/figma-map.md`;
+- поведение — во flow doc фичи; неизвестное — `docs/open-questions.md`.
 
-- **JSDoc над `const meta`** — единственное место описания: его берут страница Docs и MCP. JSDoc над самим компонентом манифест игнорирует — не дублировать.
-- **Без Figma** — ни ссылок, ни node id, ни тегов в JSDoc и stories (решение пользователя, 2026-09-25).
-- **Несколько компонентов в одном файле stories** — `component` + `subcomponents` (см. `app-sidebar/parts.stories.tsx`), иначе MCP не найдёт компонент.
-- **Состояния** — по story на каждое: Default, Hover / Pressed / Focus (через `parameters.pseudo`, addon `storybook-addon-pseudo-states`), Active, Disabled, Loading, Error, Empty, длинные данные. Какие нужны — из flow doc; нет в flow doc — записать в «Known gaps».
-- **Default без кликов** — клик оставляет focus/hover, и Default покажет чужое состояние. Клики — в отдельных stories.
-- **play-функции** проверяют поведение: колбэки, `aria-*`, доступные имена, порядок. Общие проверки папки — в `story-checks.ts`.
-- **Даты детерминированы** — `now` в args (`new Date(2026, 2, 13, 18, 0)`), не текущее время.
-- **Teal `primary` с текстом** не проходит контраст (open question #14) — у такой story `parameters: { a11y: { test: 'todo' } }` с комментарием. Больше исключений не добавлять.
+## Проверка
 
-## 6. Проверить
-
-```bash
-npm run typecheck && npm run lint:tokens && npm test && npm run build
-```
-
-- Открыть story в браузере (Playwright) и посмотреть все состояния, не только прогнать тесты.
-- MCP `docs-show <id>`: описание есть, props с описаниями, `error` нет. Если props пустые — компонент не найден: проверить `meta.component` и импорты через `@/`.
-- Документы в том же изменении: flow doc (состояния и решения), `APPLICATION.md` (раздел Storybook), `docs/testing-plan.md`.
+`npm run typecheck && npm run lint:tokens && npm test && npm run build` — результат каждого шага в отчёт. Всё видимое — проверить в браузере самому (Playwright + Chromium).

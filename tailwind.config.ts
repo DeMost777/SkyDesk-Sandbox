@@ -48,6 +48,21 @@ const config: Config = {
           foreground: 'hsl(var(--brand-foreground))',
         },
         surface: 'hsl(var(--surface))',
+        page: 'hsl(var(--page))',
+        icon: 'hsl(var(--icon))',
+        document: { DEFAULT: 'hsl(var(--document))', muted: 'hsl(var(--document-muted))' },
+        pricing: { accent: 'hsl(var(--pricing-accent))', foreground: 'hsl(var(--pricing-foreground))' },
+        ticket: { accent: 'hsl(var(--ticket-accent))' },
+        'badge-passenger': {
+          DEFAULT: 'hsl(var(--badge-passenger))',
+          border: 'hsl(var(--badge-passenger-border))',
+          foreground: 'hsl(var(--badge-passenger-foreground))',
+        },
+        'badge-segment': {
+          DEFAULT: 'hsl(var(--badge-segment))',
+          border: 'hsl(var(--badge-segment-border))',
+          foreground: 'hsl(var(--badge-segment-foreground))',
+        },
         loading: {
           start: 'hsl(var(--loading-start))',
           end: 'hsl(var(--loading-end))',
@@ -77,16 +92,22 @@ const config: Config = {
         ],
         '2xs': ['var(--font-size-2xs)', { lineHeight: 'var(--line-height-2xs)' }],
       },
+      backgroundImage: {
+        hatch: 'var(--pattern-hatch)',
+      },
       boxShadow: {
         popover: 'var(--shadow-popover)',
+        header: 'var(--shadow-header)',
+        small: 'var(--shadow-small)',
+        'focus-ring': 'var(--shadow-focus-ring)',
       },
       dropShadow: {
         card: 'var(--drop-shadow-card)',
       },
       fontFamily: {
         sans: ['Geist', 'system-ui', 'sans-serif'],
-        // Figma "Fonts/Font Mono" — History item
-        mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
+        // Figma "Fonts/Font Mono" — History item, Booking Overview tables
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
       },
     },
   },

@@ -1,6 +1,6 @@
 # Roadmap
 
-> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-25.
+> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-30.
 > Это не автопилот: сессия не обязана брать задачу отсюда. Обычно задачу ставит пользователь в разговоре — она записывается в «Сейчас» и выполняется. Как вести файл — `CLAUDE.md` → «Правила работы», правило 11.
 > Как делать задачу — в flow doc фичи. Неизвестное — в `docs/open-questions.md`. Здесь — только что и в каком порядке.
 
@@ -15,7 +15,7 @@
 | Фаза | Что | Статус |
 |---|---|---|
 | 0 | PNR Search: закрыть покрытие | ✅ |
-| 1 | Фундамент среды: skills, агенты, Storybook как каталог компонентов, модель Booking | в работе |
+| 1 | Фундамент среды: skills, агенты, каталог компонентов, карта Figma, модель Booking | в работе |
 | 2 | Каркас Booking Overview: layout, шапка PNR · GDS · Office, контракт виджета | |
 | 3 | Виджеты Booking, по одному | |
 | 4 | Чат и AI-действия | |
@@ -29,20 +29,22 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.7] Figma node экранов — в flow doc своего flow. Проверить, нужна ли задача отдельно: компоненты с Figma пока не связываем (решение пользователя, 2026-09-25) — Фаза 1
-- [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
-- [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
-- [1.11] Доменная модель Booking (`src/lib/booking.ts`) и сценарные mock-бронирования (`src/mocks/`) — Фаза 1
-- [1.12] Субагент `qa-tester`: проход состояний из flow doc в Playwright, скриншоты, ошибки консоли, отчёт — Фаза 1
+- [1.16] CI: GitHub Actions на каждый PR — `typecheck`, `lint:tokens`, `test`, `build`; сейчас эти проверки запускает только агент, а Vercel собирает preview без тестов — Фаза 1
+- [1.18] Skill `build-widget` — до второго виджета (Passengers), чтобы виджеты не разошлись: `WidgetSection`, счётчик, данные из `Booking`, свой mock-сценарий, stories, раздел flow doc — Фаза 1
+- [1.19] Передача открытых вопросов в design пачкой: блокирующие #3, #14, #26, #28, состояния без макета (Pressed / Focus, пустая History, длинный Itinerary, узкое окно, loading / error Booking Overview) — документ или комментарии к узлам Figma; ответы — в `docs/open-questions.md` — Фаза 1
+- [1.20] Визуальная регрессия по скриншотам (Playwright / `@chromatic-com/storybook` уже установлены): эталоны для stories и состояний flow, до перехода в Craft, чтобы полировка не ломала соседние экраны — Фаза 1 (раньше Фазы 5)
 
 ## Потом
 
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview**
-- Flow doc `projects/booking-overview/` и каркас: layout, шапка, зона виджетов, чат справа. Блок: скриншот и Figma Booking Overview.
-- Переход Found → Booking. Блок: open question #3.
-- Виджеты (порядок подтвердить по скриншоту): Passengers, Itinerary / Segments, Tickets, Pricing / Fare rules, Services, Remarks / SSR / OSI, History.
+- Stories карточек Pricing / Ticket, «No document» и виджета Overview — после фидбека команды (состояния: Default, Hover, Focus; проверять поведение, не пиксели).
+- Виджет Services на общей `MatrixTable` (в Figma и в записи пользователя он уже есть).
+- Левая рейка Booking Overview (Passengers, Flights, Tickets, Services, Remarks). Блок: open question #26.
+- Дизайн перехода PNR Search → Booking: сейчас ссылка «Open booking». Блок: open question #3.
+- Узкое окно: sidebar не сворачивается, ~700px шапка обрезает «Created». Чат справа — Фаза 4.
+- Виджеты после Overview, по Figma `8014:11324`: Passengers, Segments, Ticket, Pricing, Services, EMD, Remarks, Messages, Contacts.
 - Чат: mock-сценарии AI-действий («найти в бронировании», «проверить условия возврата»), связь с виджетами. Настоящий Claude API — решить.
 
 **Агенты**
@@ -51,20 +53,17 @@
 - `doc-reviewer` — документы обновлены вместе с кодом, глоссарий соблюдён. Может оказаться skill.
 
 **Skills** (создавать, когда задача повторилась второй раз)
-- `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `build-widget`, `record-decision`.
+- `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `record-decision`.
 
 **Storybook**
 - Stories нет у `ui/label.tsx` и `ui/sidebar.tsx` (sidebar покрыт через App Sidebar).
 - Сниппеты addon-mcp пишут `import … from 'skydesk-sandbox'`. Тег `@import` в JSDoc компонента не сработал — найти способ задать путь `@/components/…`.
 
-**Токены**
-- Токены из пресета shadcn округлены (`primary` `174 84% 32%` вместо `174.7 83.9% 31.6%`). Решить, приводить ли к точным значениям — со сравнением скриншотов.
-
 **Документы**
 - `APPLICATION.md`: разделы «Personas» и «Mock PNR» относятся в основном к PNR Search — решить, когда появятся данные Booking.
 
 **Craft (Фаза 5)**
-- Полировка по Figma, визуальная регрессия по скриншотам.
+- Полировка по Figma. Визуальная регрессия — [1.20].
 
 ## Сделано
 
@@ -79,7 +78,17 @@
 | — | Параметры адреса PNR Search → его flow doc | `0d13326` |
 | 1.4 | `figma-reader` → `.claude/agents/` (tools — явный список, model — sonnet) | `1818d68` |
 | 1.5 | `ROADMAP.md` и правило 11 в `CLAUDE.md` | `[1.5]` |
-| 1.6 | Storybook — каталог компонентов: autodocs, описания в JSDoc над `meta` (без Figma), props через react-docgen-typescript, манифест для addon-mcp без ошибок | `[1.6]` |
-| 1.14 | Storybook MCP в Claude Code: `.mcp.json`, `enabledMcpjsonServers`, SessionStart-хук для облака (npm install + Storybook) | `[1.14]` |
-| 1.8 | Skills `build-component` (каталог — Storybook/MCP, структура папок, story как документация и тест, без Figma) и `extract-tokens` (HSL-каналы точно, семантические имена, Tailwind, `extendTailwindMerge`, проверка скриншотами) | `[1.8]` |
+| 1.11 | Модель Booking (`src/lib/booking.ts`), матрица Overview (`overview-matrix.ts`), 9 сценарных mock-бронирований (`src/mocks/bookings/`), PNR Search читает их же; flow doc `projects/booking-overview/`; глоссарий: Pricing, Ticket, Segment, Passenger type, Overview | `[1.11]` |
 | 1.13 | Ветки: основная — `main` (default на GitHub), изменения сессии влиты через PR #4 | `[1.13]` |
+| 1.14 | Токены цвета из Figma «shadcn kit - Trava»: палитра (22 шкалы), семантические токены привязаны к палитре, Storybook Foundations / Colors, тест соответствия Figma; mono-шрифт Roboto → IBM Plex Mono | `[1.14]` |
+| 1.15 | Open question #22 закрыт: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring` и `sidebar-ring` — zinc-500 по правке в Figma; `destructive-foreground` осознанно `#fafafa` из-за контраста | `[1.15]` |
+| 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
+| 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
+| 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |
+| 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
+| 1.17 | SessionStart-хук и `.claude/settings.json` для облака (`npm install` + запуск Storybook), Storybook MCP для Claude Code (`.mcp.json`) | `[1.17]` |
+| 1.21 | Storybook как каталог для агента: autodocs, JSDoc над `meta`, `title` разделов (`UI/…`, `Skydesk/…`, `Pages/…`), props через react-docgen-typescript, `paths` в корневом `tsconfig.json` | `[1.21]` |
+| 1.8 | Skills `build-component` (путь `skydesk/<kebab-case>/`, stories-тесты, каталог, Figma-карта, токены) и `extract-tokens` (два слоя цвета, HSL, генератор палитры) обновлены под текущий код | `[1.8]` |
+| 1.9 | `figma-reader`: формат вывода под текущие токены (имена Figma, палитра, `unbound`), форматы «Токены», «Узел», «Сверка», вход через `docs/figma-map.md` | `[1.9]` |
+| 1.10 | Skill `create-screen`: подготовка (ROADMAP, flow doc, источники), `src/lib/` с тестами, stories, документы, проверки перед push, конец задачи | `[1.10]` |
+| 1.12 | Субагент `qa-tester` (`.claude/agents/qa-tester.md`): проход состояний flow doc и testing-plan в Playwright, скриншоты, ошибки консоли, отчёт в `qa-report/` (в `.gitignore`); tools — Read, Glob, Grep, Bash, Write, model — sonnet; в деле не запускался | `[1.12]` |

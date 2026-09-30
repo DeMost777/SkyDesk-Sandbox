@@ -19,6 +19,12 @@ describe('sandbox URL', () => {
     expect(parseSandboxUrl(buildSandboxUrl(params))).toEqual(params)
   })
 
+  it('opens Booking Overview by PNR', () => {
+    const address = buildSandboxUrl({ page: 'booking-overview', pnr: 'BBV14Q' })
+    expect(address).toBe('?page=booking-overview&pnr=BBV14Q')
+    expect(parseSandboxUrl(address)).toMatchObject({ page: 'booking-overview', pnr: 'BBV14Q' })
+  })
+
   it('drops unknown values instead of failing', () => {
     const p = parseSandboxUrl('?page=nope&gds=Worldspan&tried=Sabre,Worldspan&state=weird&pnr=%207jrwt4')
     expect(p).toMatchObject({ page: 'pnr-search', gds: null, tried: ['Sabre'], state: 'idle', pnr: '7JRWT4' })

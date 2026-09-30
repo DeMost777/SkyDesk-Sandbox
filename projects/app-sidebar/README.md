@@ -58,7 +58,7 @@ CDG → LON → JFK       15:12     ← Itinerary             Interaction time
 | Hover | Курсор над элементом | Фон `sidebar-accent` |
 | Pressed | Нажатие мышью (`:active`) | Как Hover (Figma не различает) |
 | Active | Открытое сейчас бронирование (`isActive`) | Как Hover, плюс `aria-current="page"` |
-| Focus | Фокус с клавиатуры (`:focus-visible`) | Фон `sidebar-accent` (правило пользователя, 2026-09-23) + кольцо `sidebar-ring` 2px — кольца нет в Figma, см. open questions |
+| Focus | Фокус с клавиатуры (`:focus-visible`) | Фон `sidebar-accent` (правило пользователя, 2026-09-23) + кольцо `sidebar-ring` 2px (zinc-500 `#71717a`, переменная Sidebar Ring из shadcn kit) — кольца у пунктов нет в Figma, см. open questions |
 
 Те же Default / Hover / Pressed / Focus — у New chat, Header и Footer: одна кнопка `SidebarMenuButton` на всё.
 
@@ -69,7 +69,7 @@ CDG → LON → JFK       15:12     ← Itinerary             Interaction time
 - **Клики пока ничего не делают.** Header, New chat, History item и Footer — кнопки со всеми состояниями, но поведения под ними нет (решение пользователя, 2026-09-23). Компонент принимает обработчики (`onBrandClick`, `onNewChat`, `onSelect`, `onUserClick`), экран их пока не передаёт. Не придумывать поведение без решения product.
 - **Порядок History** — как отдаёт источник (последнее действие сверху). Компонент не сортирует.
 - **Данные History — через интерфейс `BookingHistory`** (`src/lib/booking-history.ts`), mock — `src/mocks/booking-history.mock.ts`. Реальный API заменит одну реализацию.
-- **Шрифт History item — Roboto Mono.** В Figma дата набрана IBM Plex Mono, остальное — Roboto Mono (переменная `Fonts/Font Mono`). Используем переменную: один mono-шрифт.
+- **Шрифт History item — IBM Plex Mono** (решение пользователя, 2026-09-28; раньше был Roboto Mono). В Figma `Fonts/Font Mono` теперь IBM Plex Mono (Booking Overview). Один mono-шрифт на всё приложение; файл — `public/fonts/IBMPlexMono-Regular-latin.woff2`, только Regular и латинский набор.
 - **Заливка `sidebar-accent` — только у Hover, Pressed, Focus и Active; у Default её нет** (Figma `4920:69057` + правило пользователя, 2026-09-23). Story `Default` не кликает по элементу: клик оставляет элемент в focus/hover, и story показывала бы заливку. Клики проверяют отдельные stories (`SelectsOnClick`, `Clicks`); `Default` проверяет, что фон прозрачный.
 
 ## Решения и gotchas

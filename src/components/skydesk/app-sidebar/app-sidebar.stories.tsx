@@ -7,6 +7,8 @@ import { AppSidebar } from './index'
 const NOW = new Date(2026, 2, 13, 18, 0)
 const history = createHistoryEntries(NOW)
 
+// Figma 548:16649 (Type=Default). Flow doc: projects/app-sidebar/README.md.
+
 /**
  * App navigation on the left: Trava Sky Desk, General (New chat), History, the agent in the footer.
  * Collapsed variant is not built. Rules — projects/app-sidebar/README.md.

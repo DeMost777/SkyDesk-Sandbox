@@ -1,6 +1,7 @@
 // PNR search domain: how Skydesk turns a PNR (+ optional context) into a result.
 // Pure module — no React. Flow doc: projects/pnr-search/README.md
 
+import { bookingRoute, type Booking } from './booking'
 import { GDS_LIST, resolveOffice, type DefaultOffices, type GDS, type OfficeSelection, type ResolvedOffice } from './office'
 
 export interface BookingSummary {
@@ -10,6 +11,18 @@ export interface BookingSummary {
   passengers: string[]
   route: string
   departureDate: string // ISO date, fixed in mocks
+}
+
+/** The short form of a Booking that search results show. */
+export function summarizeBooking(booking: Booking): BookingSummary {
+  return {
+    pnr: booking.pnr,
+    gds: booking.gds,
+    creationOffice: booking.creationOffice,
+    passengers: booking.passengers.map((p) => p.name),
+    route: bookingRoute(booking).join(' → '),
+    departureDate: booking.segments[0].departureDate,
+  }
 }
 
 /** Where the search reads from. Mocks implement it now; the real API later. */

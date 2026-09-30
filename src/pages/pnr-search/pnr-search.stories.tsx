@@ -47,7 +47,16 @@ export const GdsRequired: Story = {
   },
 }
 
-export const FoundDefaultOffice: Story = { args: at({ pnr: '7JRWT4', state: 'result' }) }
+/** PNR → Booking: Found offers a link to the Booking Overview of this PNR. */
+export const FoundDefaultOffice: Story = {
+  args: at({ pnr: '7JRWT4', state: 'result' }),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('link', { name: 'Open booking' })).toHaveAttribute(
+      'href',
+      '?page=booking-overview&pnr=7JRWT4',
+    )
+  },
+}
 
 export const FoundSelectedOffice: Story = { args: at({ pnr: '7JRWT4', office: 'E6T8', state: 'result' }) }
 
