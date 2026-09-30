@@ -29,7 +29,6 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
 - [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
 - [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
 - [1.12] Субагент `qa-tester`: проход состояний из flow doc в Playwright, скриншоты, ошибки консоли, отчёт — Фаза 1
@@ -82,3 +81,4 @@
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
 | 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |
 | 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
+| 1.8 | Skills `build-component` (путь `skydesk/<kebab-case>/`, stories-тесты, каталог, Figma-карта, токены) и `extract-tokens` (два слоя цвета, HSL, генератор палитры) обновлены под текущий код | `[1.8]` |
