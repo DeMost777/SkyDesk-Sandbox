@@ -29,6 +29,11 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
+- [1.16] CI: GitHub Actions на каждый PR — `typecheck`, `lint:tokens`, `test`, `build`; сейчас эти проверки запускает только агент, а Vercel собирает preview без тестов — Фаза 1
+- [1.17] SessionStart hook и `.claude/settings.json`: `npm install` и разрешения для облачных сессий (skill `session-start-hook`) — Фаза 1
+- [1.18] Skill `build-widget` — до второго виджета (Passengers), чтобы виджеты не разошлись: `WidgetSection`, счётчик, данные из `Booking`, свой mock-сценарий, stories, раздел flow doc — Фаза 1
+- [1.19] Передача открытых вопросов в design пачкой: блокирующие #3, #14, #26, #28, состояния без макета (Pressed / Focus, пустая History, длинный Itinerary, узкое окно, loading / error Booking Overview) — документ или комментарии к узлам Figma; ответы — в `docs/open-questions.md` — Фаза 1
+- [1.20] Визуальная регрессия по скриншотам (Playwright / `@chromatic-com/storybook` уже установлены): эталоны для stories и состояний flow, до перехода в Craft, чтобы полировка не ломала соседние экраны — Фаза 1 (раньше Фазы 5)
 
 ## Потом
 
@@ -49,13 +54,13 @@
 - `doc-reviewer` — документы обновлены вместе с кодом, глоссарий соблюдён. Может оказаться skill.
 
 **Skills** (создавать, когда задача повторилась второй раз)
-- `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `build-widget`, `record-decision`.
+- `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `record-decision`.
 
 **Документы**
 - `APPLICATION.md`: разделы «Personas» и «Mock PNR» относятся в основном к PNR Search — решить, когда появятся данные Booking.
 
 **Craft (Фаза 5)**
-- Полировка по Figma, визуальная регрессия по скриншотам.
+- Полировка по Figma. Визуальная регрессия — [1.20].
 
 ## Сделано
 
