@@ -39,7 +39,7 @@ src/
 
 ## Stories
 
-Экран — story на каждое состояние, `title: 'Pages/<Name>'`, `play` проверяет поведение (роли, тексты, переходы), не пиксели. Каждая story — тест в Chromium, включая a11y (`a11y.test: 'error'`): страница в `<main>`, у диалогов `aria-label`. Правила и исключения — skill `build-component`.
+Экран — story на каждое состояние, `title: 'Pages/<screen-name>'`, `play` проверяет поведение (роли, тексты, переходы), не пиксели. Каждая story — тест в Chromium, включая a11y (`a11y.test: 'error'`): страница в `<main>`, у диалогов `aria-label`. Правила и исключения — skill `build-component`.
 
 ## Документы (в том же изменении)
 
