@@ -17,3 +17,6 @@ build/
 
 *storybook.log
 storybook-static
+
+# QA reports (qa-tester)
+qa-report/

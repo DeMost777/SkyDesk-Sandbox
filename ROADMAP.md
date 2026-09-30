@@ -29,16 +29,11 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.7] Карта Figma `docs/figma-map.md`: экран или компонент → node id — Фаза 1
-- [1.8] Обновить skills `build-component` (Storybook уже есть, путь `src/components/skydesk/`) и `extract-tokens` (HSL и семантические токены) — Фаза 1
-- [1.9] Обновить формат вывода `figma-reader` под текущие токены — Фаза 1 · зависит от: 1.8
-- [1.10] Skill `create-screen`: добавить `src/lib/` с тестами, stories, документы, проверки перед push — Фаза 1
-- [1.12] Субагент `qa-tester`: проход состояний из flow doc в Playwright, скриншоты, ошибки консоли, отчёт — Фаза 1
 - [1.16] CI: GitHub Actions на каждый PR — `typecheck`, `lint:tokens`, `test`, `build`; сейчас эти проверки запускает только агент, а Vercel собирает preview без тестов — Фаза 1
 - [1.17] SessionStart hook и `.claude/settings.json`: `npm install` и разрешения для облачных сессий (skill `session-start-hook`) — Фаза 1
-- [1.18] Skill `build-widget` — до второго виджета (Passengers), чтобы виджеты не разошлись: `WidgetSection`, счётчик, данные из `Booking`, свой mock-сценарий, stories, раздел flow doc — Фаза 1 · зависит от: 1.8, 1.10
+- [1.18] Skill `build-widget` — до второго виджета (Passengers), чтобы виджеты не разошлись: `WidgetSection`, счётчик, данные из `Booking`, свой mock-сценарий, stories, раздел flow doc — Фаза 1
 - [1.19] Передача открытых вопросов в design пачкой: блокирующие #3, #14, #26, #28, состояния без макета (Pressed / Focus, пустая History, длинный Itinerary, узкое окно, loading / error Booking Overview) — документ или комментарии к узлам Figma; ответы — в `docs/open-questions.md` — Фаза 1
-- [1.20] Визуальная регрессия по скриншотам (Playwright / `@chromatic-com/storybook` уже установлены): эталоны для stories и состояний flow, до перехода в Craft, чтобы полировка не ломала соседние экраны — Фаза 1 (раньше Фазы 5) · зависит от: 1.12
+- [1.20] Визуальная регрессия по скриншотам (Playwright / `@chromatic-com/storybook` уже установлены): эталоны для stories и состояний flow, до перехода в Craft, чтобы полировка не ломала соседние экраны — Фаза 1 (раньше Фазы 5)
 
 ## Потом
 
@@ -87,3 +82,8 @@
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
 | 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |
+| 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
+| 1.8 | Skills `build-component` (путь `skydesk/<kebab-case>/`, stories-тесты, каталог, Figma-карта, токены) и `extract-tokens` (два слоя цвета, HSL, генератор палитры) обновлены под текущий код | `[1.8]` |
+| 1.9 | `figma-reader`: формат вывода под текущие токены (имена Figma, палитра, `unbound`), форматы «Токены», «Узел», «Сверка», вход через `docs/figma-map.md` | `[1.9]` |
+| 1.10 | Skill `create-screen`: подготовка (ROADMAP, flow doc, источники), `src/lib/` с тестами, stories, документы, проверки перед push, конец задачи | `[1.10]` |
+| 1.12 | Субагент `qa-tester` (`.claude/agents/qa-tester.md`): проход состояний flow doc и testing-plan в Playwright, скриншоты, ошибки консоли, отчёт в `qa-report/` (в `.gitignore`); tools — Read, Glob, Grep, Bash, Write, model — sonnet; в деле не запускался | `[1.12]` |

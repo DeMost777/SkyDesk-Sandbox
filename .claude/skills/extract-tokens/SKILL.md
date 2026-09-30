@@ -5,54 +5,33 @@ description: Steps for extracting design tokens (colors, typography, spacing, ra
 
 # Skill: Extract Tokens from Figma
 
-Инструкция для извлечения дизайн-токенов из Figma и переноса их в проект.
+Обновление токенов после изменений в Figma. Источник — файл «shadcn kit - Trava» (Foundations). Если пользователь не дал ссылку на файл — спросить (file key в репозитории не записан, open question #29). Читать Figma лучше субагентом `figma-reader`.
 
-## Когда использовать
-- При первоначальной настройке дизайн-системы
-- При обновлении токенов после изменений в Figma
-- При добавлении новых цветовых режимов или тем
+## Как устроены токены
+
+Цвет — в два слоя:
+
+1. **Палитра** — `src/tokens/palette.css` (переменные `--palette-<scale>-<step>`, HSL) и `palette.ts` (hex). Генерируется: `npm run tokens:palette` (`scripts/generate-palette.mjs`) — 22 шкалы Figma Primitives × 11 оттенков. Руками не править.
+2. **Семантические токены** — `src/tokens/index.css`: shadcn-имена, каждое — ссылка на шаг палитры (`--primary: var(--palette-teal-600)`), поэтому значение точное. В комментарии — шаг и hex.
+
+Привязка «имя в Figma → CSS-переменная → ключ Tailwind» — `src/tokens/semantic-colors.ts` (hex светлой темы — из Figma). `colors.test.ts` сверяет привязку с Figma; Storybook → Foundations / Colors показывает результат.
+
+Не цвет — радиусы, размеры шрифта, тени, `bg-hatch` — токены в `src/tokens/index.css` и `tailwind.config.ts`. Mono-шрифт — IBM Plex Mono (`public/fonts/`).
 
 ## Шаги
 
-### 1. Подключиться к Figma
-Использовать Figma MCP (`mcp__Figma__get_design_context` или `mcp__Figma__get_variable_defs`) с ссылкой на основной файл компонентов.
+1. **Прочитать Figma**: `get_variable_defs` для переменных, `get_design_context` для узла. Вернуть значения как есть, без интерпретации.
+2. **Палитра изменилась** — обновить `SCALES` / значения в `scripts/generate-palette.mjs`, запустить `npm run tokens:palette`.
+3. **Семантический цвет изменился** — поправить ссылку на шаг палитры в `src/tokens/index.css` и hex в `semantic-colors.ts`.
+4. **Нужен новый цвет** — завести семантический токен (переменная в `index.css`, ключ в `tailwind.config.ts`, при необходимости запись в `semantic-colors.ts`), а не использовать палитру в компоненте. HSL точный (`25 5.3% 44.7%`): округление сдвигает hex.
+5. **Новый токен-класс** (`text-heading`, `shadow-small`…) — добавить в `extendTailwindMerge` в `src/lib/utils.ts`.
+6. **Значения из Figma не выдумывать.** Расхождение с Figma допустимо только по решению пользователя и с записью в `semantic-colors.ts` (`kept` с причиной) и в `CLAUDE.md` → «Решения и gotchas». Пример — `destructive-foreground` `#fafafa` вместо red-50 из-за контраста.
+7. **Тёмную тему не трогать**: токены `.dark` остаются, но не используются и не тестируются.
 
-### 2. Извлечь переменные
-Получить из Figma:
-- **Colors** — все цветовые токены (primary, secondary, neutral, semantic)
-- **Typography** — font-family, font-size, line-height, font-weight
-- **Spacing** — padding, margin, gap значения
-- **Border radius** — радиусы скруглений
-- **Shadows** — box-shadow значения
+## Проверка
 
-### 3. Преобразовать в CSS-переменные
-Формат для `src/tokens/index.css`:
-```css
-:root {
-  /* Colors */
-  --color-primary: ...;
-  --color-primary-foreground: ...;
+`npm run typecheck && npm run lint:tokens && npm test && npm run build`. Тесты доступности Storybook упадут, если контраст токена ухудшился. Значения глазами сверять в Storybook → Foundations / Colors.
 
-  /* Radius */
-  --radius: ...;
+## Документы
 
-  /* Typography */
-  --font-sans: ...;
-}
-```
-
-### 4. Настроить Tailwind
-Обновить `tailwind.config.ts` — привязать CSS-переменные к утилитам Tailwind.
-
-### 5. Настроить shadcn/ui тему
-Обновить `src/components/ui/` компоненты — они должны использовать токены, а не хардкод.
-
-## Результат
-После выполнения: все компоненты автоматически используют токены из Figma. Изменение токена в одном месте обновляет всё приложение.
-
-## Статус
-- [ ] Figma-файл получен
-- [ ] Токены извлечены
-- [ ] CSS-переменные созданы
-- [ ] Tailwind настроен
-- [ ] shadcn/ui тема обновлена
+Изменение токена — в том же изменении: `CLAUDE.md` (если это решение), `docs/components.md` (если затронуты компоненты), `docs/open-questions.md` (если осталось неясное).
