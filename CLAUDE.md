@@ -180,6 +180,7 @@ skydesk-sandbox/
 ├── .env                    ← API-ключи (не коммитить)
 ├── docs/
 │   ├── components.md       ← каталог компонентов: назначение, props, состояния, Figma, stories
+│   ├── figma-map.md        ← карта Figma: экран или компонент → node id → код
 │   ├── open-questions.md   ← нерешённые вопросы — не выбирать ответ молча
 │   └── testing-plan.md     ← как проверить каждую фичу
 ├── .storybook/             ← конфиг Storybook: main.ts, preview.tsx

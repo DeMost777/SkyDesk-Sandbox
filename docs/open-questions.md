@@ -89,6 +89,10 @@
    Сейчас: кнопки ничего не делают, как клики в sidebar (#21); берём 36px.
    Решает: product / design. Добавлено 2026-09-30.
 
+29. **File key файлов Figma не записан.** В репозитории есть node id, но нет ключей файлов Skydesk и «shadcn kit - Trava»; без них `figma-reader` нельзя направить на узел из `docs/figma-map.md` — нужна ссылка от пользователя.
+   Сейчас: карта содержит node id, колонка file key — «—».
+   Решает: владелец проекта. Добавлено 2026-09-30.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».
