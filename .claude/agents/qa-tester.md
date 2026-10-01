@@ -23,6 +23,8 @@ model: sonnet
 
 ## Как проверять
 
+0. Сначала `npm run qa` (`scripts/qa/flows/`: `pnr-search`, `booking-overview`) — автоматический проход по адресам плана; его отчёт — `qa-report/report.md`. Дальше — то, чего в флоу нет: клавиатура, узкие окна, живые сценарии, не покрытые флоу.
+
 1. Поднять dev-сервер в фоне: `npm run dev` (порт 5173). Нет `node_modules` — `npm ci`. Браузер — установленный Chromium (`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`, `playwright install` не запускать; если версия Playwright не находит браузер — `executablePath: '/opt/pw-browsers/chromium'`).
 2. Playwright-скрипт пишется во временную папку, не в репозиторий. Для каждого состояния из flow doc и каждой строки таблицы testing-plan:
    - открыть адрес, дождаться состояния;

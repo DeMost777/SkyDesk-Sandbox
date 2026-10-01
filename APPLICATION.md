@@ -18,6 +18,7 @@
 Каталог компонентов — `docs/components.md` (назначение, props, состояния, Figma, stories).
 
 - На Vercel: `<ссылка preview>/storybook/` (ссылка «Storybook» в верхней навигации приложения).
+- Разделы Foundations: Colors (`src/tokens/colors.stories.tsx`), Typography, Spacing, Radius and Shadows, Layout, Overview — MDX в `src/foundations/` (три страницы генерируются: `npm run foundations`).
 - Локально: `npm run storybook` → `http://localhost:6006`. Для агента — MCP-сервер `storybook` из `.mcp.json` (`docs-list`, `docs-show`); в облаке Storybook поднимает хук SessionStart.
 - У каждого раздела страница **Docs**: назначение, таблица props, все stories.
 

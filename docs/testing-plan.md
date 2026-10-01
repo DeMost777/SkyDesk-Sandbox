@@ -37,6 +37,11 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 `npm test` запускает два проекта: `unit` (доменные правила в `src/lib`) и `storybook` (каждая story рендерится в Chromium, play-функции проверяют взаимодействия). Для `storybook` нужен браузер Playwright: локально один раз `npx playwright install chromium`.
 
+### Браузерный проход и Foundations
+
+- `npm run qa` (все flows) или `npm run qa -- booking-overview` — Playwright в Chromium поднимает dev-сервер сам, проходит адреса из этого плана (PNR Search 1–12 и живые сценарии; Booking Overview 1–7, Overview, Passengers) и пишет `qa-report/report.md` со скриншотами и ошибками консоли. Код возврата 1 — есть красная проверка или ошибка консоли. Состояния без проверки в флоу — только вручную.
+- `npm run foundations` после правки токенов: тест `src/foundations/foundations.test.ts` падает, пока страницы Foundations не перегенерированы или в `layout.mdx` нет нового размера `[Npx]`.
+
 ## PNR Search
 
 Открывать адреса от корня (`npm run dev` → `http://localhost:5173/…`). Для каждого — что должно быть на экране.
