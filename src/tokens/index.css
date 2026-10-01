@@ -109,6 +109,7 @@
     --badge-segment: var(--palette-blue-100);           /* S1, S2… */
     --badge-segment-border: var(--palette-blue-200);
     --badge-segment-foreground: var(--palette-blue-900);
+    --success: var(--palette-emerald-600);              /* positive indicator, the check: Figma "Success" #059669 (Passengers) */
     --focus-ring: var(--palette-gray-500);              /* band of the card focus ring: Gray/500 (Figma has Gray/400, 2.54:1) */
 
     /* Shadows */

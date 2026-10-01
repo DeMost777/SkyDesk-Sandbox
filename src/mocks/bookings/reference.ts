@@ -14,9 +14,27 @@ export const reference: Booking = {
   creationOffice: '7MTR',
   createdAt: '2025-10-08T13:44:00Z',
   passengers: [
-    passenger('P1', 'ADT', 'MILLER/JOHN LEE MR'),
-    passenger('P2', 'ADT', 'MILLER/CAMILA BROWN MRS'),
-    passenger('P3', 'CHD', 'MILLER/AMANDA MISS'),
+    {
+      ...passenger('P1', 'ADT', 'MILLER/JOHN LEE MR'),
+      dateOfBirth: '1998-09-22',
+      gender: 'MALE',
+      nationality: 'Sweden',
+      document: { number: 'K1092837465283746', countryOfIssue: 'GBR', expiresOn: '2027-11-12' },
+      frequentFlyers: [
+        { number: '123456789123', airline: 'SK' },
+        { number: '987654321098', airline: 'LO' },
+        { number: '555666777888', airline: 'DY' },
+      ],
+    },
+    // Date of birth known, no passport: ✓ Date of Birth │ ✗ Passport
+    { ...passenger('P2', 'ADT', 'MILLER/CAMILA BROWN MRS'), dateOfBirth: '1996-03-14', gender: 'FEMALE', nationality: 'Sweden' },
+    {
+      ...passenger('P3', 'CHD', 'MILLER/AMANDA MISS'),
+      dateOfBirth: '2018-07-05',
+      gender: 'FEMALE',
+      nationality: 'United Kingdom',
+      document: { number: 'P7788123', countryOfIssue: 'GBR', expiresOn: '2029-03-01' },
+    },
   ],
   segments: [
     segment('S1', 'CDG', 'LHR', '2026-06-14', 'AF 1180'),

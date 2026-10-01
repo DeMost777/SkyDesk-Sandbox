@@ -2,6 +2,7 @@ import * as React from 'react'
 import { AppSidebar } from '@/components/skydesk/app-sidebar'
 import { BookingHeader } from '@/components/skydesk/booking-header'
 import { OverviewWidget } from '@/components/skydesk/overview-widget'
+import { PassengersWidget } from '@/components/skydesk/passengers-widget'
 import type { EntityRef } from '@/lib/booking'
 import type { SandboxParams } from '@/lib/sandbox-url'
 import { findBooking } from '@/mocks/bookings'
@@ -40,6 +41,7 @@ export default function BookingOverviewPage({ params }: { params: SandboxParams 
             </div>
             <main className="min-h-0 flex-1 overflow-auto bg-page">
               <OverviewWidget booking={booking} onOpen={setOpened} />
+              <PassengersWidget booking={booking} />
               {opened && (
                 <p role="status" className="px-4 pb-4 text-center text-xs text-muted-foreground">
                   Sandbox: would open {opened.type} {opened.id} — its widget is not built yet.

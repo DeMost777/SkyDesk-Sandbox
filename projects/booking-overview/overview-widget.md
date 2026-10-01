@@ -63,7 +63,7 @@ Coverage { passengers: ['P1', …], segments: ['S1', …] }
 
 ## Mock scenarios
 
-Каждый — отдельный файл в `src/mocks/bookings/`. PNR детерминированные. Тест `booking.test.ts` проверяет согласованность каждого (ссылки на пассажиров и сегменты, уникальные id и номера билетов).
+Каждый — отдельный файл в `src/mocks/bookings/`. В `BBV14Q` у пассажиров теперь есть личные данные (для виджета Passengers). PNR детерминированные. Тест `booking.test.ts` проверяет согласованность каждого (ссылки на пассажиров и сегменты, уникальные id и номера билетов).
 
 | PNR | GDS | Что проверяет |
 |---|---|---|
@@ -76,6 +76,7 @@ Coverage { passengers: ['P1', …], segments: ['S1', …] }
 | `DEL3T3` | Amadeus | Deleted Pricing скрыт; если он был единственным — «No document»; Round |
 | `TIE5AM` | Sabre | Одинаковое время у нескольких документов: порядок не меняется между рендерами |
 | `WIDE55` | Sabre | 5 пассажиров × 4 сегмента, Multi trip: горизонтальный скролл и плотность |
+| `PAX7QD` | Amadeus | Виджет Passengers (`passengers-widget.md`): 6 пассажиров с разными данными, пустой пассажир, длинное имя, пять карт; для Overview — один Pricing на всех |
 
 `SCENARIO_PNRS` в `src/mocks/pnr-search.mock.ts` (сценарии PNR Search) не менялись: `7JRWT4`, `K2M9QP`, `ABC123` сохранили пассажиров, маршрут, Office и даты.
 

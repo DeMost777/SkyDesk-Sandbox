@@ -40,7 +40,8 @@
 | Виджет | Flow doc | Статус |
 |---|---|---|
 | Overview | `overview-widget.md` | построен (ROADMAP 3.1): матрица, карточки, скролл; карточки без stories, ждут фидбека команды |
-| Passengers, Flight information, Tickets, Pricing, Services, Remarks | — | не начаты |
+| Passengers | `passengers-widget.md` | построен (ROADMAP 3.2): карточки, индикаторы, раскрытие, подсказка бейджа; stories и тесты |
+| Flight information, Tickets, Pricing, Services, Remarks | — | не начаты |
 
 ## Not chosen
 
@@ -49,7 +50,7 @@
 
 ## States and how to reach them
 
-Адрес: `?page=booking-overview&pnr=<PNR>`, PNR — из таблицы сценариев в `overview-widget.md`. Верхняя навигация sandbox → «Booking Overview» открывает `BBV14Q`. Панель «Booking» над шапкой переключает между девятью сценариями (у каждой кнопки в подсказке — что проверяет сценарий).
+Адрес: `?page=booking-overview&pnr=<PNR>`, PNR — из таблицы сценариев в `overview-widget.md`. Верхняя навигация sandbox → «Booking Overview» открывает `BBV14Q`. Панель «Booking» над шапкой переключает между десятью сценариями (у каждой кнопки в подсказке — что проверяет сценарий).
 
 | Состояние | Адрес |
 |---|---|
@@ -61,8 +62,11 @@
 | Виджет свёрнут | клик по заголовку «Overview» |
 | Горизонтальный скролл колонок пассажиров | `?page=booking-overview&pnr=WIDE55` (5 пассажиров) |
 | Все статусы Pricing | `?page=booking-overview&pnr=PRC5TS` |
+| Passengers: все сочетания индикаторов, пустые данные, длинное имя, много карт | `?page=booking-overview&pnr=PAX7QD` |
+| Passengers: данные разных пассажиров | `?page=booking-overview&pnr=BBV14Q` |
+| Карточка пассажира раскрыта | клик по верхней строке карточки в виджете Passengers |
 
-Storybook: Pages / booking-overview (те же адреса), Skydesk / Booking Header, Skydesk / Widget Section.
+Storybook: Pages / booking-overview (те же адреса), Skydesk / Booking Header, Skydesk / Widget Section, Skydesk / Passengers Widget.
 
 Виджет Overview показывает матрицу Passenger × Segment по выбранному сценарию; клик по карточке пишет под виджетом «Sandbox: would open pricing PR-1 …».
 

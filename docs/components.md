@@ -1,6 +1,6 @@
 # Каталог компонентов
 
-> Что есть в `src/components/`: назначение, props, состояния, Figma, stories. Updated: 2026-09-30.
+> Что есть в `src/components/`: назначение, props, состояния, Figma, stories. Updated: 2026-10-01.
 > Правило: новый или изменённый компонент — строка здесь в том же изменении (CLAUDE.md → правило 10). Поведение экрана — в его flow doc; здесь — что лежит в компоненте.
 > Figma node — только те, что записаны в коде или документах. «—» значит, что в источниках узла нет: не выдумывать, спросить или записать в `docs/open-questions.md`.
 > Storybook: `npm run storybook`, названия ниже — как в боковой панели. Каждая story — тест (`npm test`), включая проверку доступности.
@@ -17,13 +17,15 @@
 |---|---|---|---|---|
 | Button, Badge, Input, Label | `ui/` | UI / Button, Badge, Input | shadcn kit (узел не записан) | стабильный |
 | Dialog, Popover, Command | `ui/` | UI / Dialog, Popover, Command | shadcn kit (узел не записан) | стабильный |
+| Tooltip | `ui/tooltip.tsx` | UI / Tooltip | `5232:85281` (Sky Desk Console - Design) | стабильный |
 | Sidebar (примитив) | `ui/sidebar.tsx` | через App Sidebar | `4920:69057` | стабильный |
 | Office Selector | `ui/office-selector.tsx` | UI / Office Selector | — | стабильный |
 | App Sidebar, History Item, части | `skydesk/app-sidebar/` | Skydesk / App Sidebar (+ History Item, Parts) | `548:16649`, `4920:69057`, `7936:79314` | стабильный |
 | Booking Header | `skydesk/booking-header/` | Skydesk / Booking Header | `8014:11426` | стабильный |
 | Widget Section | `skydesk/widget-section/` | Skydesk / Widget Section | `8014:11331`, `8014:11397` | стабильный |
 | Matrix Table, Cell | `skydesk/matrix-table/` | Skydesk / Matrix Table | `8014:11342` | стабильный |
-| Ref Badge, Passenger / Segment Header | `skydesk/matrix-table/` | Skydesk / Matrix Table / Headers | `8014:11347`, `8014:11380` | стабильный |
+| Ref Badge, Passenger / Segment Header | `skydesk/matrix-table/` | Skydesk / Matrix Table / Headers | `8014:11347`, `8014:11380`, `2697:190073` | стабильный |
+| Passengers Widget, Passenger Card | `skydesk/passengers-widget/` | Skydesk / Passengers Widget (+ Passenger Card) | `121:15017`, `15:10384`, `1347:120017` (Sky Desk Console - Design) | стабильный |
 | Overview Widget, Document Card, No Document | `skydesk/overview-widget/` | — (экспериментальный) | `7851:67417`, `8013:11314`, `7876:10095` | экспериментальный |
 
 **Экспериментальный** — вид не утверждён командой, поэтому stories нет (решение пользователя, 2026-09-28); состояния смотреть на странице Booking Overview.
@@ -38,6 +40,7 @@
 | `Label` | как `<label>` | — |
 | `Dialog` | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` | Default |
 | `Popover` | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverAnchor` | Default |
+| `Tooltip` | `Tooltip` (со своим provider, `delayDuration` 200), `TooltipTrigger`, `TooltipContent`. Только текст: нужное агенту — на странице | Default (открыт), OnHover, OnKeyboardFocus |
 | `Command` | `Command`, `CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`, `CommandEmpty`, `CommandSeparator`, `CommandShortcut`, `CommandDialog` | Default |
 
 Заметки: teal `primary` с текстом не проходит контраст AA (3.5:1, нужно 4.5:1) — stories помечены `a11y: todo`, нарушение видно в панели, но тест не падает: Button Default, Link, Small, CssCheck; Badge Default; Dialog Default; Office Selector LoadError (open question #14). Кольцо фокуса — `ring` (zinc-500 `#71717a`, как в Figma). Осознанное отличие от Figma — только `destructive-foreground` (CLAUDE.md → «Решения и gotchas»).
@@ -81,9 +84,19 @@
 - **Назначение:** табличная основа для виджетов «пассажир × сегмент» (Overview, дальше Services). Знает строки, колонки и ячейки, не знает, что в ячейке.
 - **Props `MatrixTable`:** `label`, `cornerLabel` («Segments»), `columns: {id, header}[]`, `rows: {id, header}[]`, `renderCell(row, column)`, `className`. **`MatrixCell`:** отступ 8px, зазор 6px, минимум 59px.
 - **Поведение:** первая колонка (140px) закреплена слева; колонки пассажиров минимум 172px и прокручиваются под ней, когда не помещаются (с четвёртого пассажира при 800px). Область прокрутки в фокусе с клавиатуры.
-- **Части:** `RefBadge` (`tone`: passenger оранжевый, segment синий, 30px), `PassengerHeader` (`P1 ADT`, имя в подсказке), `SegmentHeader` (`S1 KBP–FRA` / `14 Jun  SK 400`, год в подсказке).
-- **Stories:** Skydesk / Matrix Table (Default, ScrollsSideways, FourPassengers, EmptyCells, Keyboard); / Headers (Badges, Passengers, Segments).
+- **Части:** `RefBadge` (`tone`: passenger оранжевый, segment синий, 30px; `tooltip` — текст над бейджем при наведении, `Passenger 1`), `PassengerHeader` (`P1 ADT`, имя в подсказке), `SegmentHeader` (`S1 KBP–FRA` / `14 Jun  SK 400`, год в подсказке).
+- **Stories:** Skydesk / Matrix Table (Default, ScrollsSideways, FourPassengers, EmptyCells, Keyboard); / Headers (Badges, BadgeWithTooltip, Passengers, Segments).
 - **Figma:** `8014:11342` (таблица), `8014:11347` (заголовок пассажира), `8014:11380` (строка сегмента). Flow doc — `projects/booking-overview/overview-widget.md`.
+
+## `skydesk/passengers-widget/` — Passengers
+
+- **Назначение:** справочник по пассажирам бронирования: кто летит, какого типа и какие данные уже введены; карточка раскрывается до личных данных и карт лояльности.
+- **`PassengersWidget`:** `booking` (читает `passengers`), `className`. `WidgetSection` со счётчиком = число пассажиров и список карточек, зазор 16px.
+- **`PassengerCard`:** `passenger: Passenger`, `defaultOpen` (по умолчанию закрыта), `className`. Верхняя строка целиком — кнопка (`aria-expanded`, имя — бейдж и имя, описание — индикаторы); содержимое остаётся в DOM при сворачивании. Карточки открываются независимо. Hover меняет только курсор. Фокус — кольцо `shadow-focus-ring` вокруг всей строки.
+- **Индикаторы** (`passengerIndicators`, `src/lib/passenger.ts`; текст 14/16, как в карточке Figma): тип пассажира, затем Date of Birth (только без паспорта), Passport (всегда), Frequent flyer (только ✓, только при наличии карты). ✓ — `text-success`, ✗ — серый; для скринридера «Entered:» / «Missing:».
+- **Развёрнутая:** сетка 3×2 (Date of birth, Gender, Nationality / Passport or ID number, Country of issue, Date of expiration; значения mono, заглавными, пусто — `-`), затем блок Frequent flyer, если есть карты: номер и код авиакомпании в скобках.
+- **Stories:** Skydesk / Passengers Widget (Default, Reference, NoPersonalData, SeveralOpen, WidgetClosed); / Passenger Card (Default, PassportOnly, PassportAndFrequentFlyer, Child, NothingEntered, LongName, Expanded, ExpandedEmpty, ManyFrequentFlyers, FrequentFlyerSpacing, Toggles, Typography, Keyboard, Focus, Hover, BadgeTooltip).
+- **Figma:** файл Sky Desk Console - Design `Df5ZTDgyLMOCAIIYjqWqgc`: секция `121:15017`, карточка Collapsed `15:10384` / Expand `1347:120017`, список `177:25464`, индикаторы `2294:495311`. Flow doc — `projects/booking-overview/passengers-widget.md`.
 
 ## `skydesk/overview-widget/` — Overview (экспериментальный)
 

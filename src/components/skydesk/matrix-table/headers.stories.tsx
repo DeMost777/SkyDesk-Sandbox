@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect } from 'storybook/test'
+import { expect, within } from 'storybook/test'
 import { PassengerHeader, RefBadge, SegmentHeader } from './headers'
 
 // Figma 8014:11347 (passenger), 8014:11380 (segment). Flow doc: projects/booking-overview/overview-widget.md.
@@ -21,6 +21,21 @@ export const Badges: Story = {
       <RefBadge tone="segment">S1</RefBadge>
     </div>
   ),
+}
+
+/** With a tooltip the badge says which passenger it is (Passengers widget). */
+export const BadgeWithTooltip: Story = {
+  render: () => (
+    <div className="pt-12">
+      <RefBadge tone="passenger" tooltip="Passenger 1">
+        P1
+      </RefBadge>
+    </div>
+  ),
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    await userEvent.hover(canvas.getByText('P1'))
+    await expect(await within(canvasElement.ownerDocument.body).findByRole('tooltip')).toHaveTextContent('Passenger 1')
+  },
 }
 
 /** Badge and type; the name is only a tooltip. */
