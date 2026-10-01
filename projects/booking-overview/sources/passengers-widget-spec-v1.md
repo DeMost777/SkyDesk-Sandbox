@@ -1,6 +1,6 @@
 # Виджет Passengers — спецификация (V1)
 
-> Источник: текст, присланный пользователем 2026-10-01 вместе со скриншотами (`passengers/screenshot-1…4.webp`), записью экрана и ссылкой на Figma. Текст сохранён как прислан, с повторами; выводы из него — в `../passengers-widget.md`.
+> Источник: текст, присланный пользователем 2026-10-01 вместе со скриншотами (в репозиторий не добавлены, см. ниже), записью экрана и ссылкой на Figma. Текст сохранён как прислан, с повторами; выводы из него — в `../passengers-widget.md`.
 > Figma: файл «Sky Desk Console - Design», `Df5ZTDgyLMOCAIIYjqWqgc`, секция `Passenger` `121:15017`.
 > Запись экрана (`Screen_Recording_2026-10-01_at_09.19.14.mov`, 22 с, 9,5 МБ) в репозиторий не добавлена: что на ней видно — в разделе «Что показала запись» ниже.
 
@@ -137,15 +137,17 @@ Passengers Widget — отображает полную информацию о 
 
 ## Что показали скриншоты
 
-- **1:** 5 пассажиров (P1–P5), все свёрнуты; `ADT │ ✓ Date of Birth │ ✗ Passport`, справа `Show more ⌄`; бейдж счётчика `5` с иконкой пассажиров. Имена: `Landen Marie-louise Ms`, `Landen Anders Rolf Bjorn Mr`, `Landen Ingemar Rolf Nicklas Mr`, `Landen Bjorn William Patrik Mr`, `Sanglert Ellen Johanna Petronella Ms`.
-- **2:** то же, P1 развёрнут: `Date of birth 30/09/1966`, `Gender UNKNOWN`, `Nationality -`, `Passport or ID number -`, `Country of issue -`, `Date of expiration -`; `Show less ⌃`.
-- **3:** 1 пассажир `Dyjas Leandro Adrian Maximilian Mr`, тип `CHD │ ✓ Passport` (индикатора даты рождения нет — паспорт есть); развёрнут: `03/01/2023`, `MALE`, `POLAND`, `FC2262731`, `POL`, `21/02/2028`.
+Сами скриншоты в репозиторий не добавлены: на них данные, похожие на реальные (имена, даты рождения, номер документа). Ниже — только структура.
+
+- **1:** 5 пассажиров (P1–P5), все свёрнуты; у каждого `ADT │ ✓ Date of Birth │ ✗ Passport`, справа `Show more ⌄`; бейдж счётчика `5` с иконкой пассажиров. Имя — фамилия первой, затем имена, затем титул (`Surname Given-given Ms`), титул мельче и серее.
+- **2:** то же, P1 развёрнут: Date of birth (`DD/MM/YYYY`), Gender `UNKNOWN`, Nationality `-`, Passport or ID number `-`, Country of issue `-`, Date of expiration `-`; кнопка `Show less ⌃`; пунктирная линия под заголовком.
+- **3:** 1 пассажир, тип `CHD │ ✓ Passport` (индикатора даты рождения нет — паспорт есть), титул `Mr` у ребёнка; развёрнут: дата, `MALE`, Nationality названием заглавными (`POLAND`), номер документа, Country of issue трёхбуквенным кодом (`POL`), срок действия.
 - **4:** то же, фокус клавиатуры: двойное тёмное кольцо вокруг всей верхней строки карточки (имя, индикаторы и `Show less`), а не только вокруг кнопки.
 
 ## Что показала запись (production Skydesk, 22 с)
 
-- Страница Booking Overview в production: слева App Sidebar, рядом левая рейка с иконками и счётчиками (Passengers 1, Flights 2, Pricing 13, Tickets 6, Services 2, Messages 48 — для `9N4B5K`; Passengers 5, Flights 4, Pricing 1, Tickets 5, Services 25, Messages 31 — для `FQJNXC`), по центру виджеты-аккордеоны **Passengers, Flights, Pricing, Tickets, Services, Messages**, справа чат. Счётчики рейки совпадают со счётчиками виджетов.
-- Шапка: `9N4B5K │ Amadeus │ 1 passenger │ Created: 11/06/2026 17:25`; `FQJNXC │ Galileo │ 5 passengers │ Created: 25/01/2026 11:34`.
+- Страница Booking Overview в production: слева App Sidebar, рядом левая рейка с иконками и счётчиками (для бронирования с 1 пассажиром: Passengers 1, Flights 2, Pricing 13, Tickets 6, Services 2, Messages 48; для бронирования с 5 пассажирами: Passengers 5, Flights 4, Pricing 1, Tickets 5, Services 25, Messages 31), по центру виджеты-аккордеоны **Passengers, Flights, Pricing, Tickets, Services, Messages**, справа чат. Счётчики рейки совпадают со счётчиками виджетов.
+- Шапка: `PNR │ GDS │ N passenger(s) │ Created: DD/MM/YYYY HH:mm`, как в нашем `BookingHeader`.
 - Карточки пассажиров раскрываются независимо: P1 и P2 были развёрнуты одновременно, остальные свёрнуты.
 - Заголовок виджета (`Passengers`, `Flights`…) — кнопка на всю строку; при Tab фокус охватывает строку целиком.
 - Сворачивание виджета оставляет заголовок и счётчик.
