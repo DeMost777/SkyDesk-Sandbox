@@ -97,3 +97,4 @@
 | 1.9 | `figma-reader`: формат вывода под текущие токены (имена Figma, палитра, `unbound`), форматы «Токены», «Узел», «Сверка», вход через `docs/figma-map.md` | `[1.9]` |
 | 1.10 | Skill `create-screen`: подготовка (ROADMAP, flow doc, источники), `src/lib/` с тестами, stories, документы, проверки перед push, конец задачи | `[1.10]` |
 | 1.12 | Субагент `qa-tester` (`.claude/agents/qa-tester.md`): проход состояний flow doc и testing-plan в Playwright, скриншоты, ошибки консоли, отчёт в `qa-report/` (в `.gitignore`); tools — Read, Glob, Grep, Bash, Write, model — sonnet; в деле не запускался | `[1.12]` |
+| 1.23 | Схема проекта в FigJam: цель, как проект думает, роадмап, workflow задачи, структура, агенты и skills, логика продукта, глоссарий — [Workflow board](https://www.figma.com/board/lDIhcIk4fyJSJyCkRkWh6E/Workflow?node-id=2-2) | `[1.23]` |
