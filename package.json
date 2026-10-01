@@ -12,6 +12,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint:tokens": "node scripts/check-tokens.mjs",
+    "qa": "node scripts/qa/run.mjs",
+    "foundations": "node scripts/foundations.mjs",
     "tokens:palette": "node scripts/generate-palette.mjs"
   },
   "dependencies": {
@@ -44,6 +46,7 @@
     "autoprefixer": "^10.4.20",
     "playwright": "1.56.1",
     "postcss": "^8.4.49",
+    "remark-gfm": "^4.0.1",
     "storybook": "^10.6.0",
     "storybook-addon-pseudo-states": "^10.6.0",
     "tailwindcss": "^3.4.17",
