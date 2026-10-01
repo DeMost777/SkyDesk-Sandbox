@@ -44,9 +44,7 @@
 
 ## App Sidebar
 
-16. **Логотип Trava.** Figma-ассет не скачивается из среды сборки (сеть закрыта для `www.figma.com`).
-   Сейчас: знак перерисован SVG по скриншоту (`trava-logo.tsx`), цвет — `brand`. Заменить экспортом из Figma (узел `13:5988`).
-   Решает: design / владелец среды. Добавлено 2026-09-23.
+16. ~~**Логотип Trava.**~~ **Закрыт 2026-10-01.** Знак — векторный экспорт из Figma (Sky Desk Console — Design, узел `8053:329986`), прислан пользователем SVG-кодом. Фон — токен `brand` (совпадает с `#0D9488`), знак — `currentColor` (`brand-foreground`, stone-50; в Figma — белый).
 
 17. **Pressed и Focus у элементов sidebar.** Figma `4920:69057` задаёт Default / Hover / Active; в Figma shadcn kit `Sidebar Ring` = zinc-500 `#71717a`, код следует ему.
    Сейчас: Pressed и Focus — та же заливка `sidebar-accent`, что у Hover (правило пользователя, 2026-09-23). Открыто только кольцо фокуса: `sidebar-ring` (2px), в Figma кольца у пунктов sidebar нет; цвет — zinc-500 из переменной Sidebar Ring shadcn kit.

@@ -91,4 +91,5 @@
 | 1.8 | Skills `build-component` (путь `skydesk/<kebab-case>/`, stories-тесты, каталог, Figma-карта, токены) и `extract-tokens` (два слоя цвета, HSL, генератор палитры) обновлены под текущий код | `[1.8]` |
 | 1.9 | `figma-reader`: формат вывода под текущие токены (имена Figma, палитра, `unbound`), форматы «Токены», «Узел», «Сверка», вход через `docs/figma-map.md` | `[1.9]` |
 | 1.10 | Skill `create-screen`: подготовка (ROADMAP, flow doc, источники), `src/lib/` с тестами, stories, документы, проверки перед push, конец задачи | `[1.10]` |
+| 1.22 | Логотип Trava в App Sidebar заменён векторным экспортом из Figma (`8053:329986`); open question #16 закрыт | `[1.22]` |
 | 1.12 | Субагент `qa-tester` (`.claude/agents/qa-tester.md`): проход состояний flow doc и testing-plan в Playwright, скриншоты, ошибки консоли, отчёт в `qa-report/` (в `.gitignore`); tools — Read, Glob, Grep, Bash, Write, model — sonnet; в деле не запускался | `[1.12]` |
