@@ -40,7 +40,8 @@
 | Виджет | Flow doc | Статус |
 |---|---|---|
 | Overview | `overview-widget.md` | построен (ROADMAP 3.1): матрица, карточки, скролл; карточки без stories, ждут фидбека команды |
-| Passengers, Flight information, Tickets, Pricing, Services, Remarks | — | не начаты |
+| Passengers | `passengers-widget.md` | материалы собраны, готовность проверена (ROADMAP 3.2); ждёт ответов на open questions #30, #31, #35, #36 |
+| Flight information, Tickets, Pricing, Services, Remarks | — | не начаты |
 
 ## Not chosen
 

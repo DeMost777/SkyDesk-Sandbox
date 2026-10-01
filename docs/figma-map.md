@@ -9,6 +9,7 @@
 | Файл Figma | Что в нём | file key |
 |---|---|---|
 | Skydesk (экраны и компоненты) | экраны, Menu_Sidebar, виджеты Booking Overview | — (не записан в репозитории, вопрос #29) |
+| Sky Desk Console - Design (спецификации виджетов; секция Passenger) | страница спецификации виджета Passengers: компоненты, атомы, индикаторы, заметки | `Df5ZTDgyLMOCAIIYjqWqgc` |
 | shadcn kit - Trava | Foundations: Primitives (палитра), Color (семантические токены), Fonts, Icons; Components / ui | — (не записан, вопрос #29) |
 
 ## Экраны
@@ -40,6 +41,16 @@
 | Document Card: Pricing / Ticket (Default, Hover) | `7851:67417` | `skydesk/overview-widget/document-card.tsx` |
 | Document Card: Focus | `8013:11314` | `skydesk/overview-widget/document-card.tsx` |
 | No document | `7876:10095` | `skydesk/overview-widget/` |
+
+## Виджет Passengers (файл Sky Desk Console - Design, не построен)
+
+| Что | Node | Код |
+|---|---|---|
+| Секция `Passenger` (страница спецификации) | `121:15017` | `projects/booking-overview/passengers-widget.md` |
+| Карточка `passenger(v.current)`: Collapsed / Expand | `15:10384` / `1347:120017` | — |
+| Список карточек | `177:25464` | — |
+| Бейдж номера с подсказкой: Default / Hover | `2697:190071` / `2697:190073` | `skydesk/matrix-table/headers.tsx` (`RefBadge`, без подсказки) |
+| Индикаторы и сочетания | `2294:495311`, `2294:505086` | — |
 
 ## Примитивы shadcn
 
