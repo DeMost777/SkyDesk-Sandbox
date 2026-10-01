@@ -78,11 +78,11 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 
 `.github/workflows/ci.yml` запускается на каждом PR и на push в `main`: `npm ci`, установка Chromium для Playwright, `typecheck`, `lint:tokens`, `npm test`, `npm run build`, `build-storybook`.
 
-1. Открыть PR → во вкладке Checks появляется job `CI / check`; зелёный — все шаги прошли.
+1. Открыть PR → во вкладке Checks появляется job `check` (workflow CI); зелёный — все шаги прошли.
 2. Проверить, что CI ловит ошибки: в ветке сломать тип (например, присвоить строку числу) → job краснеет на шаге `npm run typecheck`. Откатить.
 3. Локально те же шаги: `npm run typecheck && npm run lint:tokens && npm test && npm run build && npm run build-storybook -- --output-dir /tmp/sb`.
 
-Обязательным check CI делает владелец репозитория: GitHub → Settings → Branches / Rulesets → require status check `CI / check` для `main` (это настройка репозитория, из кода её не включить).
+Обязательным check CI делает владелец репозитория: GitHub → Settings → Branches / Rulesets → require status check `check` для `main` (это настройка репозитория, из кода её не включить).
 
 ## Storybook как каталог компонентов
 

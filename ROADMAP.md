@@ -87,7 +87,7 @@
 | 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
 | 1.17 | SessionStart-хук и `.claude/settings.json` для облака (`npm install` + запуск Storybook), Storybook MCP для Claude Code (`.mcp.json`) | `[1.17]` |
 | 1.21 | Storybook как каталог для агента: autodocs, JSDoc над `meta`, `title` разделов (`UI/…`, `Skydesk/…`, `Pages/…`), props через react-docgen-typescript, `paths` в корневом `tsconfig.json` | `[1.21]` |
-| 1.16 | CI: GitHub Actions (`.github/workflows/ci.yml`) на каждый PR и push в `main` — `typecheck`, `lint:tokens`, `test` (stories в Chromium), `build`, `build-storybook`; check `CI / check` | `[1.16]` |
+| 1.16 | CI: GitHub Actions (`.github/workflows/ci.yml`) на каждый PR и push в `main` — `typecheck`, `lint:tokens`, `test` (stories в Chromium), `build`, `build-storybook`; check `check` (workflow CI) | `[1.16]` |
 | 1.8 | Skills `build-component` (путь `skydesk/<kebab-case>/`, stories-тесты, каталог, Figma-карта, токены) и `extract-tokens` (два слоя цвета, HSL, генератор палитры) обновлены под текущий код | `[1.8]` |
 | 1.9 | `figma-reader`: формат вывода под текущие токены (имена Figma, палитра, `unbound`), форматы «Токены», «Узел», «Сверка», вход через `docs/figma-map.md` | `[1.9]` |
 | 1.10 | Skill `create-screen`: подготовка (ROADMAP, flow doc, источники), `src/lib/` с тестами, stories, документы, проверки перед push, конец задачи | `[1.10]` |
