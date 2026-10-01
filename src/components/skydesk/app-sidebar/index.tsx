@@ -96,7 +96,7 @@ export function SidebarBrand({ onClick, className }: { onClick?: () => void; cla
 export function NewChatButton({ onClick, className }: { onClick?: () => void; className?: string }) {
   return (
     <SidebarMenuButton onClick={onClick} className={className}>
-      <SquareTerminal aria-hidden />
+      <SquareTerminal aria-hidden strokeWidth={2} />
       <span className="flex-1 truncate text-sidebar-primary">New chat</span>
     </SidebarMenuButton>
   )

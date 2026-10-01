@@ -9,6 +9,7 @@
 
 - **Токены:** цвета, радиусы, размеры шрифта и тени — только из `src/tokens/` (`npm run lint:tokens`). Страница токенов — Storybook → Foundations / Colors.
 - **Слои:** `ui/` — shadcn/ui примитивы; `skydesk/` — компоненты Skydesk на их основе. Компонент без знания предметной области (таблица, рамка виджета) — отдельно от компонента, который знает Pricing или Ticket.
+- **Иконки:** только Lucide, реестр и правила — `docs/icons.md`.
 - **Данные:** компоненты получают готовые значения или типы из `src/lib/` (`Booking`, `HistoryEntry`); mock-данные живут в `src/mocks/`, компонент их не импортирует.
 
 ## Сводка
@@ -57,7 +58,7 @@
 
 - **Назначение:** левая панель: логотип, New chat, History (недавние бронирования), пользователь. Flow doc — `projects/app-sidebar/README.md`.
 - **Props `AppSidebar`:** `history: HistoryEntry[]`, `user: AgentUser`, `activePnr`, `now`, `onBrandClick`, `onNewChat`, `onSelect(entry)`, `onUserClick`, `className`.
-- **Части:** `SidebarBrand`, `NewChatButton`, `SidebarUser`, `HistoryItem`, `TravaLogo` (знак перерисован SVG, вопрос #16).
+- **Части:** `SidebarBrand`, `NewChatButton`, `SidebarUser`, `HistoryItem`, `TravaLogo` (векторный экспорт из Figma `8053:329986`).
 - **`HistoryItem`:** `entry`, `now`, `isActive`, `onSelect`. Показывает `PNR · GDS code`, дату или «Today» и Itinerary (`A → B`, `A ⇆ B`, `A → B → C`).
 - **Состояния:** Default, Hover, Pressed, Focus, Active; варианты маршрута One way / Round / Multi city. Pressed и Focus в Figma нет: pressed = hover, focus = `sidebar-ring`, zinc-500 (вопрос #17). Клики ничего не делают в приложении (вопрос #21).
 - **Stories:** Skydesk / App Sidebar (Default, Clicks, ActiveItem, EmptyHistory, LongHistory); / History Item (Default, Hover, Pressed, Focus, Active, SelectsOnClick, OneWay, RoundTrip, MultiCity); / Parts (Header, New chat, Footer × Default / Hover / Pressed / Focus, FooterLongName).

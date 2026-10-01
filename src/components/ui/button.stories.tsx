@@ -40,7 +40,7 @@ export const Small: Story = {
   parameters: { a11y: { test: 'todo' } },
 }
 export const Icon: Story = {
-  args: { size: 'icon', 'aria-label': 'Search booking', children: <ArrowUp /> },
+  args: { size: 'icon', 'aria-label': 'Search booking', children: <ArrowUp strokeWidth={2} /> },
 }
 
 export const Disabled: Story = {

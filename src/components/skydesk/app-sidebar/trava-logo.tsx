@@ -1,20 +1,19 @@
 import { cn } from '@/lib/utils'
 
-// Trava mark, 32×32. Redrawn from the Figma render: the Figma asset host is not reachable from
-// the build environment. Replace with the exported asset — docs/open-questions.md, App Sidebar.
+// Trava mark, 32×32. Exported from Figma (Sky Desk Console — Design, node 8053:329986).
+// Background is the `brand` token (#0d9488 in Figma), the glyph is `currentColor` (brand-foreground).
 export function TravaLogo({ className }: { className?: string }) {
   return (
     <span
       aria-hidden
       className={cn('flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand text-brand-foreground', className)}
     >
-      <svg viewBox="0 0 32 32" fill="none" className="size-8 -scale-x-100">
+      <svg viewBox="0 0 32 32" fill="none" className="size-8">
         <path
-          d="M10.5 11.2C11.8 9.5 13.8 8.5 16 8.5c4 0 7 3.2 7 7.4H9.2c0 4.3 3 7.6 7 7.6 2.2 0 4.2-1 5.5-2.7"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          fill="currentColor"
+          d="M16.8832 7.17573C14.1343 6.52442 10.6981 7.48467 8.29285 8.62581C7.81716 8.8515 7.25513 8.6345 7.03753 8.14114C6.81993 7.64778 7.02915 7.06488 7.50484 6.83919C10.0459 5.63364 13.9501 4.46549 17.3051 5.2604C19.0202 5.66678 20.6108 6.59292 21.757 8.2892C22.8104 9.84812 23.4326 11.9746 23.517 14.7638L26.4112 15.9918C26.8954 16.1972 27.1273 16.7708 26.9292 17.2729C26.7312 17.7751 26.1781 18.0156 25.694 17.8102L23.5315 16.8927C23.4139 19.9428 22.4974 22.2757 21.0668 23.9399C19.416 25.8603 17.1689 26.7871 14.9581 26.9669C12.7576 27.1459 10.5251 26.592 8.83593 25.4625C7.13989 24.3284 5.90709 22.5402 6.0055 20.2945C6.0815 18.5604 6.58851 17.1096 7.52624 15.9828C8.45833 14.8628 9.74831 14.144 11.2567 13.7396C13.9687 13.0126 17.547 13.2582 21.5927 14.1805C21.448 12.0021 20.9208 10.475 20.2057 9.41675C19.3721 8.18308 18.2199 7.49245 16.8832 7.17573ZM21.6502 16.2077C17.5136 15.2195 14.1133 15.0031 11.7307 15.6418C10.4909 15.9742 9.57805 16.5242 8.96025 17.2666C8.3481 18.0021 7.95818 19.0072 7.89786 20.3838C7.83842 21.74 8.55912 22.9398 9.86241 23.8113C11.1725 24.6873 12.9852 25.1567 14.81 25.0083C16.6247 24.8606 18.3833 24.1093 19.6528 22.6324C20.8219 21.2725 21.6524 19.2084 21.6502 16.2077Z"
         />
       </svg>
     </span>

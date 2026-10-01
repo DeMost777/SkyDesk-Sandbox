@@ -90,7 +90,7 @@ export function OfficeSelector({
             className,
           )}
         >
-          <Home className="size-4 text-foreground shrink-0" strokeWidth={1.5} />
+          <Home className="size-4 text-foreground shrink-0" strokeWidth={2} />
           <span className="text-sm text-foreground leading-5 whitespace-nowrap">{triggerLabel}</span>
           {value ? (
             <span
@@ -108,7 +108,7 @@ export function OfficeSelector({
                   'size-4 text-foreground opacity-50 transition-transform duration-150',
                   open && 'rotate-180',
                 )}
-                strokeWidth={1.5}
+                strokeWidth={2}
               />
             </span>
           )}
@@ -128,7 +128,7 @@ export function OfficeSelector({
         >
           {/* Search header */}
           <div className="flex items-center h-11 px-3 border-b border-border gap-2">
-            <Search className="size-4 text-muted-foreground shrink-0" strokeWidth={1.5} />
+            <Search className="size-4 text-muted-foreground shrink-0" strokeWidth={2} />
             <input
               ref={inputRef}
               type="text"
@@ -160,7 +160,7 @@ export function OfficeSelector({
               </div>
             ) : error ? (
               <div className="flex flex-col items-center gap-1.5 py-4 px-2">
-                <AlertCircle className="size-4 text-destructive" strokeWidth={1.5} />
+                <AlertCircle className="size-4 text-destructive" strokeWidth={2} />
                 <p className="text-xs text-destructive text-center">Couldn't load offices.</p>
                 <button
                   type="button"
@@ -213,7 +213,7 @@ export function OfficeSelector({
                 onClick={onManageDefaults}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors rounded-b-md"
               >
-                <Settings className="size-4 shrink-0" strokeWidth={1.5} />
+                <Settings className="size-4 shrink-0" strokeWidth={2} />
                 <span>Manage default offices</span>
               </button>
             </div>

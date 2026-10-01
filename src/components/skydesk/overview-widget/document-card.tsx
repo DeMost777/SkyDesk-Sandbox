@@ -31,7 +31,7 @@ function SeeWidget() {
       className="absolute inset-y-0 -left-0.5 right-0 hidden items-center justify-center gap-2 bg-document-muted text-sm leading-5 text-foreground group-hover:flex group-active:flex"
     >
       See widget
-      <SquareArrowOutUpRight className="size-4" />
+      <SquareArrowOutUpRight className="size-4" strokeWidth={2} />
     </span>
   )
 }
@@ -42,7 +42,7 @@ export function DocumentCard({ document, onOpen }: { document: OverviewDocument;
   if (document.type === 'pricing') {
     return (
       <button type="button" onClick={open} className={cn(CARD, 'items-center gap-1.5 border-pricing-accent')}>
-        <Timer aria-hidden className="size-4 shrink-0 text-pricing-foreground" />
+        <Timer aria-hidden className="size-4 shrink-0 text-pricing-foreground" strokeWidth={2} />
         <span className="flex-1 text-sm leading-5 text-pricing-foreground">Pricing</span>
         <StatusBadge document={document} />
         <SeeWidget />
@@ -53,7 +53,7 @@ export function DocumentCard({ document, onOpen }: { document: OverviewDocument;
   return (
     <button type="button" onClick={open} className={cn(CARD, 'flex-col border-ticket-accent')}>
       <span className="flex min-h-[22px] w-full items-center gap-1.5">
-        <Ticket aria-hidden className="size-4 shrink-0 text-icon" />
+        <Ticket aria-hidden className="size-4 shrink-0 text-icon" strokeWidth={2} />
         <span className="flex-1 text-sm leading-5">Ticket</span>
         <StatusBadge document={document} />
       </span>

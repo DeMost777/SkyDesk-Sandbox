@@ -10,9 +10,11 @@ description: Pattern for creating a prototype screen in src/pages/ from its flow
 ## Перед кодом
 
 1. Задача записана в `ROADMAP.md` → «Сейчас» (`CLAUDE.md`, правило 11); ветка создана от свежего `main`.
-2. В `projects/<flow>/README.md` есть flow doc: принцип → решения → отброшенное → состояния и как их открыть → open questions. Нет — сначала написать его (правило 4), в шапке `Phase: Coverage`.
+2. В `projects/<flow>/README.md` есть flow doc: принцип → решения → отброшенное → состояния и как их открыть → open questions. Нет — сначала написать его (правило 4), в шапке `Phase: Coverage`. Для новой фичи или виджета перед flow doc — интервью о готовности материалов (skill `feature-interview`): карточка готовности не «заблокирована».
 3. Источники при расхождении — по порядку из `CLAUDE.md` → «Источники истины». Узлы Figma — `docs/figma-map.md`, читать субагентом `figma-reader`. Чего источники не показывают — спросить или записать в `docs/open-questions.md`, не выдумывать.
 4. Прочитать `CLAUDE.md`: глоссарий и «Решения и gotchas» действуют на каждый экран.
+
+5. Иконки — только Lucide, сначала реестр `docs/icons.md` (https://lucide.dev/icons/).
 
 ## Структура
 

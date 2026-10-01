@@ -29,7 +29,6 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.22] Интервью для новой фичи или виджета: стандартный набор вопросов и запрос материалов (Figma file key и node id, скриншоты, спецификация, поля данных, сценарии и edge cases, тексты, поведение), результат — «карточка готовности» в flow doc и список недостающего; оформить как skill. Первый прогон — на Passengers (3.2) — Фаза 1
 - [1.18] Skill `build-widget` — по двум готовым виджетам (Overview и Passengers): что у виджетов общее (`WidgetSection`, счётчик, данные из `Booking`, свой mock-сценарий, stories, раздел flow doc), что специфично. Проверка на третьем виджете — Фаза 1 · зависит от: 3.2, 1.22
 - [1.19] Передача открытых вопросов в design пачкой: блокирующие #3, #14, #26, #28, состояния без макета (Pressed / Focus, пустая History, длинный Itinerary, узкое окно, loading / error Booking Overview) — документ или комментарии к узлам Figma; ответы — в `docs/open-questions.md` — Фаза 1
 - [1.20] Визуальная регрессия по скриншотам (Playwright / `@chromatic-com/storybook` уже установлены): эталоны для stories и состояний flow, до перехода в Craft, чтобы полировка не ломала соседние экраны — Фаза 1 (раньше Фазы 5)
@@ -56,6 +55,7 @@
 - `doc-reviewer` — документы обновлены вместе с кодом, глоссарий соблюдён. Может оказаться skill.
 
 **Skills** (создавать, когда задача повторилась второй раз)
+- Проверить `feature-interview` на следующей фиче, не на Passengers (там он собран задним числом); поправить области и статусы.
 - `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `record-decision`.
 
 **Storybook**
@@ -88,6 +88,9 @@
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
 | 3.2 | Виджет Passengers: модель `Passenger` (дата рождения, пол, документ, Frequent flyer), правила в `src/lib/passenger.ts`, mock-сценарий `PAX7QD` и данные в `BBV14Q`, `PassengerCard` и `PassengersWidget` (индикаторы, раскрытие, фокус), `ui/tooltip` и подсказка на бейдже, токен `success`; stories и тесты; flow doc, источники и open questions #30–40 | `[3.2]` |
+| 1.24 | Иконки: только Lucide, реестр `docs/icons.md`, правило в `CLAUDE.md`, ссылки в skills `build-component` и `create-screen`, open question #41 | `[1.24]` (в коммитах `[1.16]`) |
+| 1.25 | Иконки: `strokeWidth={1.5}` у всех иконок, набора Figma отдельно от Lucide нет (#41 закрыт) | `[1.25]` (в коммитах `[1.17]`) |
+| 1.26 | Иконки: `strokeWidth` 1.5 → 2 (1.5 слишком тонко), правило обновлено | `[1.26]` (в коммитах `[1.18]`) |
 | 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |
 | 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
 | 1.17 | SessionStart-хук и `.claude/settings.json` для облака (`npm install` + запуск Storybook), Storybook MCP для Claude Code (`.mcp.json`) | `[1.17]` |
@@ -96,4 +99,7 @@
 | 1.8 | Skills `build-component` (путь `skydesk/<kebab-case>/`, stories-тесты, каталог, Figma-карта, токены) и `extract-tokens` (два слоя цвета, HSL, генератор палитры) обновлены под текущий код | `[1.8]` |
 | 1.9 | `figma-reader`: формат вывода под текущие токены (имена Figma, палитра, `unbound`), форматы «Токены», «Узел», «Сверка», вход через `docs/figma-map.md` | `[1.9]` |
 | 1.10 | Skill `create-screen`: подготовка (ROADMAP, flow doc, источники), `src/lib/` с тестами, stories, документы, проверки перед push, конец задачи | `[1.10]` |
+| 1.22 | Логотип Trava в App Sidebar заменён векторным экспортом из Figma (`8053:329986`); open question #16 закрыт | `[1.22]` |
 | 1.12 | Субагент `qa-tester` (`.claude/agents/qa-tester.md`): проход состояний flow doc и testing-plan в Playwright, скриншоты, ошибки консоли, отчёт в `qa-report/` (в `.gitignore`); tools — Read, Glob, Grep, Bash, Write, model — sonnet; в деле не запускался | `[1.12]` |
+| 1.23 | Схема проекта в FigJam: цель, как проект думает, роадмап, workflow задачи, структура, агенты и skills, логика продукта, глоссарий — [Workflow board](https://www.figma.com/board/lDIhcIk4fyJSJyCkRkWh6E/Workflow?node-id=2-2) | `[1.23]` |
+| 1.22 | Skill `feature-interview`: запрос материалов, чтение и сохранение источников, проверка готовности по областям, open questions с «Блокирует», карточка готовности в flow doc; эталон — Passengers | `[1.22]` |
