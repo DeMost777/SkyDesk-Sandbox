@@ -113,8 +113,8 @@ export function PassengerCard({ passenger, defaultOpen = false, className }: Pas
                     )}
                   >
                     <span>{flyer.number}</span>
-                    {/* Figma pulls the code in with a text indent of -0.45em */}
-                    <span className="text-muted-foreground [text-indent:-0.45em]">({flyer.airline})</span>
+                    {/* 2px between the number and the code (gap-0.5), as asked; the Figma container is broken here: a text indent pulls the code into the number */}
+                    <span className="text-muted-foreground">({flyer.airline})</span>
                   </li>
                 ))}
               </ul>

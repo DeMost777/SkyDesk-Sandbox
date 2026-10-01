@@ -106,6 +106,16 @@ export const ExpandedEmpty: Story = {
   },
 }
 
+/** The code in brackets stands 2px from the number. */
+export const FrequentFlyerSpacing: Story = {
+  args: { passenger: dateOfBirth, defaultOpen: true },
+  play: async ({ canvas }) => {
+    const number = canvas.getByText('4400123456')
+    const code = canvas.getByText('(AY)')
+    await expect(Math.round(code.getBoundingClientRect().left - number.getBoundingClientRect().right)).toBe(2)
+  },
+}
+
 /** Many cards keep their order and wrap onto the next line. */
 export const ManyFrequentFlyers: Story = {
   args: { passenger: longName, defaultOpen: true },
