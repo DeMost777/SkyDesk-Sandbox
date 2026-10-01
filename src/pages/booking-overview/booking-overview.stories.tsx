@@ -49,6 +49,21 @@ export const DeletedPricing: Story = {
   },
 }
 
+/** Passengers comes after Overview; its counter is the number of passengers, the cards start closed. */
+export const Passengers: Story = {
+  args: at('PAX7QD'),
+  play: async ({ canvas, userEvent }) => {
+    await expect(canvas.getByRole('button', { name: 'Passengers' })).toHaveAccessibleDescription('6')
+    // a widget title is a heading whose text also carries its counter: "Overview6"
+    const headings = canvas.getAllByRole('heading', { level: 2 }).map((h) => h.textContent ?? '')
+    await expect(headings.findIndex((t) => t.startsWith('Passengers'))).toBeGreaterThan(headings.findIndex((t) => t.startsWith('Overview')))
+    const first = canvas.getByRole('button', { name: /Kallio Anna Maria/ })
+    await expect(first).toHaveAttribute('aria-expanded', 'false')
+    await userEvent.click(first)
+    await expect(first).toHaveAttribute('aria-expanded', 'true')
+  },
+}
+
 /** Sandbox only: in the product a Booking arrives from PNR Search. */
 export const NoBooking: Story = {
   args: at('XYZ789'),
@@ -60,7 +75,7 @@ export const NoBooking: Story = {
 export const SwitchScenario: Story = {
   play: async ({ canvas, userEvent }) => {
     // The sandbox bar navigates by address; here it only has to offer every scenario.
-    await expect(canvas.getAllByRole('button', { pressed: false })).toHaveLength(8)
+    await expect(canvas.getAllByRole('button', { pressed: false })).toHaveLength(9)
     await expect(canvas.getByRole('button', { name: 'BBV14Q', pressed: true })).toBeVisible()
     await userEvent.hover(canvas.getByRole('button', { name: 'WIDE55' }))
   },

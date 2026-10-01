@@ -1,6 +1,6 @@
 # Roadmap
 
-> Карта работ: что строим, что в работе, что дальше. Updated: 2026-09-30.
+> Карта работ: что строим, что в работе, что дальше. Updated: 2026-10-01.
 > Это не автопилот: сессия не обязана брать задачу отсюда. Обычно задачу ставит пользователь в разговоре — она записывается в «Сейчас» и выполняется. Как вести файл — `CLAUDE.md` → «Правила работы», правило 11.
 > Как делать задачу — в flow doc фичи. Неизвестное — в `docs/open-questions.md`. Здесь — только что и в каком порядке.
 
@@ -23,7 +23,7 @@
 
 ## Сейчас
 
-- [3.2] Виджет Passengers: сначала проверка готовности данных и материалов (интервью), затем mock-данные и сценарии, компоненты, stories, flow doc, документы — Фаза 3
+—
 
 ## Дальше
 
@@ -39,6 +39,9 @@
 Без порядка. Сюда попадает всё, что замечено по ходу.
 
 **Booking Overview**
+- Виджет Passengers: `CNN` / `INS`, FOID и частичная дата рождения — не в V1 (решение пользователя, 2026-10-01); отдельный Pressed карточки, если design нарисует.
+- Подсказка с `Passenger N` в матрице Overview (сейчас нативный `title` с именем): `RefBadge` уже умеет `tooltip`, решить, менять ли.
+- Остальные виджеты страницы по production: Flights, Pricing, Tickets, Services, Messages. Порядок и состояние по умолчанию — open question #40.
 - Stories карточек Pricing / Ticket, «No document» и виджета Overview — после фидбека команды (состояния: Default, Hover, Focus; проверять поведение, не пиксели).
 - Виджет Services на общей `MatrixTable` (в Figma и в записи пользователя он уже есть).
 - Левая рейка Booking Overview (Passengers, Flights, Tickets, Services, Remarks). Блок: open question #26.
@@ -84,6 +87,7 @@
 | 1.15 | Open question #22 закрыт: светлые токены приведены к Figma (`popover`, `input`, `*-foreground`, sidebar, `chart-2`); `ring` и `sidebar-ring` — zinc-500 по правке в Figma; `destructive-foreground` осознанно `#fafafa` из-за контраста | `[1.15]` |
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
+| 3.2 | Виджет Passengers: модель `Passenger` (дата рождения, пол, документ, Frequent flyer), правила в `src/lib/passenger.ts`, mock-сценарий `PAX7QD` и данные в `BBV14Q`, `PassengerCard` и `PassengersWidget` (индикаторы, раскрытие, фокус), `ui/tooltip` и подсказка на бейдже, токен `success`; stories и тесты; flow doc, источники и open questions #30–40 | `[3.2]` |
 | 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |
 | 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
 | 1.17 | SessionStart-хук и `.claude/settings.json` для облака (`npm install` + запуск Storybook), Storybook MCP для Claude Code (`.mcp.json`) | `[1.17]` |

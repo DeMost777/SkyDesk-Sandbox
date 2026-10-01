@@ -50,6 +50,7 @@ const config: Config = {
         surface: 'hsl(var(--surface))',
         page: 'hsl(var(--page))',
         icon: 'hsl(var(--icon))',
+        success: 'hsl(var(--success))',
         document: { DEFAULT: 'hsl(var(--document))', muted: 'hsl(var(--document-muted))' },
         pricing: { accent: 'hsl(var(--pricing-accent))', foreground: 'hsl(var(--pricing-foreground))' },
         ticket: { accent: 'hsl(var(--ticket-accent))' },

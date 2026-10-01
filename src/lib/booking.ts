@@ -6,12 +6,39 @@ import type { GDS } from './office'
 /** ADT adult, CHD child, INF infant. */
 export type PassengerType = 'ADT' | 'CHD' | 'INF'
 
+/** As the GDS and the Passengers widget say it; no colour (decision of 2026-10-01). */
+export type Gender = 'MALE' | 'FEMALE' | 'UNKNOWN'
+
+/** A passport or an ID card. */
+export interface TravelDocument {
+  /** The Passport indicator is ✓ when this is set (decision of 2026-10-01). */
+  number?: string
+  /** ISO 3166 alpha-3: 'POL'. */
+  countryOfIssue?: string
+  /** ISO date. */
+  expiresOn?: string
+}
+
+/** A loyalty card of one airline. */
+export interface FrequentFlyer {
+  number: string
+  /** Airline code as issued; mocks use IATA: 'SK'. */
+  airline: string
+}
+
 export interface Passenger {
   /** Position in the PNR: 'P1', 'P2'… Unique within a Booking. */
   ref: string
   type: PassengerType
-  /** As in the GDS: 'LINDQVIST/ANNA MRS'. */
+  /** As in the GDS: 'LINDQVIST/ANNA MRS' (surname, given names, title). */
   name: string
+  /** ISO date. Everything below is optional: a missing value is a state of the data, not an error. */
+  dateOfBirth?: string
+  gender?: Gender
+  /** Country name: 'Poland'. */
+  nationality?: string
+  document?: TravelDocument
+  frequentFlyers?: FrequentFlyer[]
 }
 
 /** One flight leg A → B; a part of the Itinerary. */
@@ -118,6 +145,7 @@ export function formatSegmentDate(isoDate: string): string {
   return `${formatSegmentDay(isoDate)} ${year}`
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const TICKET_NUMBER = /^\d{3}-\d{10}$/
 const PNR = /^[A-Z0-9]{6}$/
 
@@ -147,6 +175,14 @@ export function validateBooking(booking: Booking): string[] {
   }
   for (const ticket of booking.tickets) {
     if (!TICKET_NUMBER.test(ticket.number)) problems.push(`ticket ${ticket.id}: number ${ticket.number} is not 421-1234567890`)
+  }
+  for (const p of booking.passengers) {
+    if (p.dateOfBirth && !ISO_DATE.test(p.dateOfBirth)) problems.push(`passenger ${p.ref}: date of birth ${p.dateOfBirth} is not YYYY-MM-DD`)
+    const expires = p.document?.expiresOn
+    if (expires && !ISO_DATE.test(expires)) problems.push(`passenger ${p.ref}: date of expiration ${expires} is not YYYY-MM-DD`)
+    for (const flyer of p.frequentFlyers ?? []) {
+      if (!flyer.number || !flyer.airline) problems.push(`passenger ${p.ref}: frequent flyer needs a number and an airline`)
+    }
   }
   return problems
 }

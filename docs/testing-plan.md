@@ -120,7 +120,7 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 Автоматически: `npm test` — `src/lib/booking.test.ts` (каждый сценарий из `src/mocks/bookings/` согласован: ссылки покрытия, уникальные id и номера билетов, Office в своей GDS, все типы пассажиров ADT / CHD / INF; сводка для PNR Search совпадает с прежней; маршрут, формат даты) и `src/lib/overview-matrix.test.ts` (эталонная ячейка из спецификации, Deleted и «No document», все статусы Pricing, порядок и равные времена, покрытие, счётчик, цель клика).
 
 Вручную на `?page=booking-overview&pnr=BBV14Q` (или верхняя навигация → «Booking Overview»):
-1. Слева App Sidebar, History без выделенного элемента. Сверху панель «Booking» с девятью PNR — клик открывает другое бронирование.
+1. Слева App Sidebar, History без выделенного элемента. Сверху панель «Booking» с десятью PNR — клик открывает другое бронирование.
 2. Шапка 44px: `BBV14Q | Sabre | 3 passengers | Created: 08/10/2025 13:44` (время серое и мельче), справа иконки History и панели. Tab проходит: панель слева → History → чат.
 3. Под шапкой полоса «Booking Overview» на сером фоне; область ниже — `#f5f5f5`.
 4. Виджет Overview по центру области, ширина 800px; слева chevron вниз, справа бейдж с иконкой и счётчиком (BBV14Q — 6, K2M9QP — 1, DEL3T3 — 1). Клик или Enter по заголовку сворачивает содержимое и меняет chevron.
@@ -137,7 +137,21 @@ Overview на `?page=booking-overview&pnr=<PNR>` (сценарии — `overview
 - `PRC5TS`: все статусы Pricing бейджами; Active — без бейджа. `DEL3T3`: Deleted не виден, счётчик 1. `TIE5AM`: порядок Pricing, Pricing, Ticket.
 - Дата сегмента без года (`14 Jun`), в одной строке с рейсом; наведение показывает полную дату с годом.
 
-Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все девять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55` открываются без шага GDS Required, `ABC123` проходит его.
+Автоматически: stories Pages / booking-overview, Skydesk / Booking Header, Skydesk / Widget Section. PNR Search находит все десять: введите PNR на `/` — `BBV14Q`, `PRC5TS`, `CVR4GE`, `DEL3T3`, `TIE5AM`, `WIDE55`, `PAX7QD` открываются без шага GDS Required, `ABC123` проходит его.
+
+## Виджет Passengers
+
+Автоматически: `src/lib/passenger.test.ts` (разбор имени GDS, порядок и регистр, титул, паспорт по номеру, все сочетания индикаторов, пустые значения, формат даты, подсказка бейджа) и stories Skydesk / Passengers Widget (+ Passenger Card): индикаторы по доступному описанию, раскрытие (по вычисленному `display`, а не по атрибуту `hidden`), Tab, Enter и Space, фокус, подсказка бейджа.
+
+Вручную на `?page=booking-overview&pnr=PAX7QD` (виджет идёт после Overview, шесть пассажиров, счётчик 6):
+1. Все карточки закрыты. P1: `ADT │ ✓ Date of Birth │ ✗ Passport │ ✓ Frequent flyer`; P2: `ADT │ ✓ Passport`; P3: `✓ Passport │ ✓ Frequent flyer`; P4: `CHD │ ✓ Passport`; P5: `INF │ ✗ Date of Birth │ ✗ Passport`; P6: длинное имя, `✓ Date of Birth │ ✗ Passport │ ✓ Frequent flyer`.
+2. Имя — фамилия первой, затем имена, затем серый титул (`Kallio Anna Maria Ms`); у P5 титула нет.
+3. Клик по любому месту верхней строки раскрывает карточку, справа `Show less`; несколько карточек открыты одновременно. Курсор на строке — рука, фон не меняется.
+4. P1 раскрыта: Date of birth `12/04/1985`, Gender `FEMALE`, Nationality `FINLAND`, паспорт, страна и срок — прочерки; блок Frequent flyer: `4400123456 (AY) │ 9810004455 (SK)`.
+5. P5 раскрыта: шесть прочерков и нет блока Frequent flyer. P6: пять карт в строку, на узком окне переносятся.
+6. Наведение на бейдж `P1` — подсказка «Passenger 1».
+7. Tab с заголовка виджета переходит на P1: кольцо вокруг всей верхней строки; Enter и Space открывают и закрывают. Скринридер читает «P1 Kallio Anna Maria Ms», описание — «ADT Entered: Date of Birth Missing: Passport Entered: Frequent flyer».
+8. `BBV14Q` (по умолчанию): три пассажира с разными данными; `K2M9QP`: один без личных данных.
 
 ## Последний прогон
 

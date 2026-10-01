@@ -3,6 +3,7 @@ import type { GDS } from '@/lib/office'
 import { allPricingStatuses } from './all-pricing-statuses'
 import { coverage } from './coverage'
 import { deletedPricing } from './deleted-pricing'
+import { passengersData } from './passengers'
 import { pricingOnly } from './pricing-only'
 import { reference } from './reference'
 import { repriced } from './repriced'
@@ -30,6 +31,7 @@ export const BOOKING_SCENARIOS: BookingScenario[] = [
   { purpose: 'Deleted Pricing: hidden, No document', booking: deletedPricing },
   { purpose: 'Same timestamp: stable order', booking: sameTimestamp },
   { purpose: 'Wide: 5 passengers × 4 segments, horizontal scroll', booking: wide },
+  { purpose: 'Passengers: every indicator combination, empty data, several frequent flyers, a long name', booking: passengersData },
 ]
 
 export const MOCK_BOOKING_DETAILS: Booking[] = BOOKING_SCENARIOS.map((s) => s.booking)

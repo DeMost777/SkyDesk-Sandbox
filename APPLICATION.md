@@ -23,12 +23,13 @@
 
 | Раздел | Stories |
 |---|---|
-| UI | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Office Selector |
+| UI | Button (включая `CssCheck` — проверка, что токены загрузились), Input, Badge, Dialog, Popover, Command, Tooltip, Office Selector |
 | Foundations / Colors | Palette (22 шкалы Figma Primitives), Semantic (Figma-имя → CSS-переменная → Tailwind → hex; только Light), Charts and unbound |
 | Skydesk / Matrix Table, Matrix Table / Headers | Табличная основа Passenger × Segment: Default, ScrollsSideways (первая колонка закреплена), FourPassengers, EmptyCells, Keyboard; RefBadge, PassengerHeader, SegmentHeader. Карточки Overview без stories |
+| Skydesk / Passengers Widget (+ Passenger Card) | Виджет Passengers: Default (`PAX7QD`), Reference, NoPersonalData, SeveralOpen, WidgetClosed; карточка: все сочетания индикаторов, Expanded, ExpandedEmpty, LongName, ManyFrequentFlyers, Toggles, Keyboard, Focus, Hover, BadgeTooltip |
 | Skydesk / Booking Header, Widget Section | Шапка бронирования (Default, One passenger, Keyboard); рамка виджета (Expanded, Collapsed, Toggle, Keyboard, Zero / No count) |
 | Skydesk / App Sidebar | Весь sidebar: Default, Active Item, Empty History, Long History. History Item: Default / Hover / Pressed / Focus / Active, One Way / Round Trip / Multi City. Parts: Header, New chat, Footer × Default / Hover / Pressed / Focus |
-| Pages / booking-overview | Default (`BBV14Q`), One passenger, Wide, Deleted pricing, No booking, Switch scenario |
+| Pages / booking-overview | Default (`BBV14Q`), One passenger, Wide, Deleted pricing, Passengers (`PAX7QD`), No booking, Switch scenario |
 | Pages / PNR Search | Все состояния PNR Search — те же адреса, что в flow doc: Empty, PNR Required, Loading, GDS Required, Found ×3, Not Found ×3, Error ×2 |
 
 ## Адреса

@@ -139,6 +139,14 @@
    Решает: design / product. Добавлено 2026-10-01.
    **Решено 2026-10-01 (пользователь):** Код авиакомпании как выдан; в mock — IATA (`SK`).
 
+39. **Регистр составных имён.** Виджет Passengers приводит каждое слово к «первая буква заглавная, остальные строчные», как на скриншотах production: `Marie-louise`, `Van Der Hoeven-lindqvist Maria-antonia`. Для имён с дефисом выглядит неровно (обычно `Marie-Louise`). Оставить как в production или писать заглавную и после дефиса?
+   Сейчас: как в production (`capitalize` слов по пробелам).
+   Решает: design. Добавлено 2026-10-01.
+
+40. **Порядок и состояние по умолчанию виджетов Booking Overview.** В production (запись экрана): Passengers, Flights, Pricing, Tickets, Services, Messages; свёрнуты они или развёрнуты при открытии, из записи не ясно (один Booking открылся свёрнутым, другой развёрнутым). У нас Overview идёт первым, Passengers вторым, все развёрнуты (решение 2026-09-29).
+   Сейчас: Overview, затем Passengers; виджеты развёрнуты, карточки пассажиров закрыты.
+   Решает: product / design. Добавлено 2026-10-01.
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».

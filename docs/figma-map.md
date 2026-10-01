@@ -42,15 +42,15 @@
 | Document Card: Focus | `8013:11314` | `skydesk/overview-widget/document-card.tsx` |
 | No document | `7876:10095` | `skydesk/overview-widget/` |
 
-## Виджет Passengers (файл Sky Desk Console - Design, не построен)
+## Виджет Passengers (файл Sky Desk Console - Design)
 
 | Что | Node | Код |
 |---|---|---|
-| Секция `Passenger` (страница спецификации) | `121:15017` | `projects/booking-overview/passengers-widget.md` |
-| Карточка `passenger(v.current)`: Collapsed / Expand | `15:10384` / `1347:120017` | — |
-| Список карточек | `177:25464` | — |
-| Бейдж номера с подсказкой: Default / Hover | `2697:190071` / `2697:190073` | `skydesk/matrix-table/headers.tsx` (`RefBadge`, без подсказки) |
-| Индикаторы и сочетания | `2294:495311`, `2294:505086` | — |
+| Секция `Passenger` (страница спецификации) | `121:15017` | `skydesk/passengers-widget/`, `projects/booking-overview/passengers-widget.md` |
+| Карточка `passenger(v.current)`: Collapsed / Expand | `15:10384` / `1347:120017` | `skydesk/passengers-widget/passenger-card.tsx` |
+| Список карточек | `177:25464` | `skydesk/passengers-widget/index.tsx` |
+| Бейдж номера с подсказкой: Default / Hover | `2697:190071` / `2697:190073` | `skydesk/matrix-table/headers.tsx` (`RefBadge`, prop `tooltip`), `ui/tooltip.tsx` |
+| Индикаторы и сочетания | `2294:495311`, `2294:505086` | `src/lib/passenger.ts` (`passengerIndicators`), `passenger-card.tsx` |
 
 ## Примитивы shadcn
 

@@ -1,7 +1,7 @@
 # Flow: виджет Passengers
 
 > Flow doc. Read it before the code; update it in the same change as the behavior.
-> Updated: 2026-10-01. Phase: **coverage** (CLAUDE.md → «Фаза»). Статус: **вопросы #30–38 закрыты пользователем (2026-10-01), код не начат** (ROADMAP 3.2). Допущения, которые пользователь ещё не подтвердил — раздел «Допущения».
+> Updated: 2026-10-01. Phase: **coverage** (CLAUDE.md → «Фаза»). Статус: **построен** (ROADMAP 3.2): модель и правила в `src/lib/`, mock-сценарии, `PassengerCard` и `PassengersWidget`, `ui/tooltip`, stories и тесты. Вопросы #30–38 закрыты пользователем (2026-10-01), допущения подтверждены.
 > Источники: `sources/passengers-widget-spec-v1.md` (спецификация, Figma, скриншоты, запись экрана). Общий контекст — `README.md`.
 
 **Principle:** Passengers — справочник по людям в бронировании: кто летит, какого типа, и какие данные по каждому уже введены. Агент сразу видит, чего не хватает (паспорт, дата рождения), и раскрывает карточку только за подробностями. Skydesk показывает факты, а не оценивает бронирование.
@@ -55,61 +55,57 @@
 
 ## Допущения
 
-Источники молчат, пользователь не подтверждал. Берём значения ниже; если что-то не так — поправим до или после сборки.
+Источники молчали; пользователь подтвердил (2026-10-01):
 
-- **INF** — обычная карточка со своим `P`, теми же индикаторами и без привязки к взрослому.
-- **Регистр имени:** в данных GDS-формат заглавными (`SURNAME/GIVEN-GIVEN MIDDLE MS`), в UI каждое слово — с заглавной, остальное строчными, как на скриншотах (`Given-given`).
-- **Hover** на верхней строке карточки: тот же фон `accent`, что у заголовка `WidgetSection`; в Figma hover карточки нет. **Pressed** не отличается от hover.
+- **INF** — обычная карточка со своим `P`, теми же индикаторами и без привязки к взрослому. Тип показывается кодом `INF`; маркер `INF` в конце GDS-имени — не титул, в имени не показывается.
+- **Регистр имени:** в данных GDS-формат заглавными (`SURNAME/GIVEN-GIVEN MIDDLE MS`), в UI в каждом слове заглавная только первая буква, как на скриншотах (`Marie-louise`, `Van Der Hoeven-lindqvist`). Для составных фамилий с дефисом это выглядит неровно — вопрос #39.
+- **Hover** на верхней строке карточки меняет **только курсор** (рука); фон не меняется (решение пользователя, 2026-10-01). Pressed не отличается от hover.
 - **Длинное имя** переносится на следующую строку, не обрезается.
-- **Подсказка «Passenger N»** — только в виджете Passengers; `RefBadge` в матрице Overview не меняем (там сейчас `title` с именем).
-- **Место на странице:** Passengers идёт после Overview; порядок виджетов страницы — отдельный вопрос (в production Passengers первый).
-- **Новые mock-данные** — вымышленные имена, не из скриншотов; реальных PNR и данных пассажиров в репозитории нет.
+- **Подсказка «Passenger N»** — только в виджете Passengers; `RefBadge` в матрице Overview остался с нативным `title` (имя пассажира). Prop `tooltip` у `RefBadge` необязателен.
+- **Место на странице:** Passengers идёт после Overview (решение пользователя, 2026-10-01); порядок остальных виджетов — вопрос #40.
+- **Mock-данные** — вымышленные; реальных PNR и данных пассажиров в репозитории нет.
 
 ## Данные
 
-Сейчас `Passenger` = `{ ref, type, name }` (`src/lib/booking.ts`). Для виджета нужно (предложение; уточнится после ответов #30–#38):
+`Passenger` (`src/lib/booking.ts`): прежние `ref`, `type`, `name` плюс необязательные поля. Пустое значение — состояние данных, а не ошибка: остальные виджеты читают только `ref`/`type`/`name`, и все прежние сценарии работают без изменений.
 
 ```
 Passenger {
-  ref, type, name                       // как сейчас; name — GDS-формат 'SURNAME/GIVEN MIDDLE MR'
-  title?                                // 'Mr' — если выносим из name
+  ref, type, name          // name — GDS-формат 'SURNAME/GIVEN MIDDLE TITLE'; титул берётся из него (parseGdsName)
   dateOfBirth?: ISO date
   gender?: 'MALE' | 'FEMALE' | 'UNKNOWN'
-  nationality?: string
-  document?: { number?, countryOfIssue?, expiresOn? }   // Passport or ID
-  frequentFlyers?: { number, airline }[]
+  nationality?: string     // название страны: 'Finland'
+  document?: { number?, countryOfIssue?, expiresOn? }   // Passport or ID; countryOfIssue — ISO alpha-3
+  frequentFlyers?: { number, airline }[]                // airline — код как выдан, в mock IATA
 }
 ```
 
-Все поля, кроме `ref`/`type`/`name`, необязательны: пустое — это состояние, а не ошибка. `Overview` и остальные виджеты читают только `ref`/`type`/`name`, существующие mock-сценарии не ломаются.
+Титул отдельным полем не хранится: он суффикс `name`, как в GDS (`MR`, `MRS`, `MS`, `MISS`, `MSTR`, `DR`); нераспознанное слово остаётся в имени.
 
-Доменные правила — `src/lib/passenger.ts` (чистые функции + тесты): `passengerIndicators(p)` по таблице выше, `displayName(p)`, `hasPassport(p)`, форматирование даты. Виджет их вызывает.
+Доменные правила — `src/lib/passenger.ts` (чистые функции, `passenger.test.ts`): `parseGdsName`, `displayName`, `displayTitle`, `hasPassport`, `passengerIndicators`, `personalInformation`, `formatPassengerDate`, `passengerTooltip`. `validateBooking` проверяет формат дат и карты в каждом сценарии.
 
 ## Состояния и как их открыть
 
-Адрес — как у Overview: `?page=booking-overview&pnr=<PNR>`; сценарии добавятся в панель «Booking». Нужные состояния:
+Адрес — как у Overview: `?page=booking-overview&pnr=<PNR>`; виджет идёт после Overview.
 
-| Состояние | Что показывает | Сценарий |
+| Состояние | Что показывает | Адрес |
 |---|---|---|
-| 1 пассажир | счётчик 1, одна карточка | существующий `K2M9QP` + данные |
-| 5 пассажиров, все ADT, без паспортов | `✓ Date of Birth │ ✗ Passport`; развёрнутый пустой паспорт — прочерки | новый (по скриншотам 1–2) |
-| CHD с паспортом | `CHD │ ✓ Passport`, без индикатора даты рождения, полные данные | новый (по скриншотам 3–4) |
-| Паспорт и Frequent flyer | `✓ Passport │ ✓ Frequent flyer`; блок FF в развёрнутой | новый (по Figma) |
-| Нет ничего | `✗ Date of Birth │ ✗ Passport`, все прочерки, нет блока FF | новый |
-| Несколько FF | три карты через разделители | новый |
-| Длинное имя / много FF | перенос, не ломает строку | новый |
-| INF | обычная карточка, тип `INF`, дата рождения | новый |
-| Раскрыто несколько карточек | независимо | любой сценарий |
-| Фокус, hover, подсказка бейджа | Tab по карточкам, подсказка «Passenger N» | stories |
+| Все сочетания индикаторов, 6 пассажиров, счётчик 6 | P1 `✓ Date of Birth │ ✗ Passport │ ✓ Frequent flyer`; P2 `✓ Passport`; P3 `✓ Passport │ ✓ Frequent flyer`; P4 `CHD │ ✓ Passport`; P5 `INF │ ✗ Date of Birth │ ✗ Passport`; P6 длинное имя | `pnr=PAX7QD` |
+| Разные данные у 3 пассажиров (страница по умолчанию) | P1 паспорт и 3 карты, P2 только дата рождения, P3 `CHD` с паспортом | `pnr=BBV14Q` |
+| Один пассажир без личных данных | `✗ Date of Birth │ ✗ Passport`, в раскрытой одни прочерки | `pnr=K2M9QP` |
+| Раскрыта карточка | клик по верхней строке; открыть можно несколько | любой |
+| Раскрыта карточка без данных | шесть прочерков, нет блока Frequent flyer | `PAX7QD`, P5 |
+| Много карт, длинное имя | карты и имя переносятся | `PAX7QD`, P6 |
+| Фокус, подсказка бейджа | Tab, кольцо вокруг всей строки; наведение на `P1` — «Passenger 1» | любой |
 
-Storybook: `Skydesk / Passenger Card` (Collapsed, Expanded, ×состояния данных, Keyboard, Tooltip), `Skydesk / Passengers Widget`. По правилу 10 — JSDoc над `meta`, строка в `docs/components.md`.
+Storybook: Skydesk / Passengers Widget и / Passenger Card (все состояния выше, Toggles, Keyboard, Focus, Hover, BadgeTooltip); Skydesk / Matrix Table / Headers → BadgeWithTooltip; UI / Tooltip; Pages / booking-overview → Passengers.
 
-## Новые компоненты и зависимости
+## Компоненты и зависимости
 
-- `PassengerCard` (`skydesk/passengers-widget/`) — карточка; `PassengersWidget` — `WidgetSection` + список.
-- `RefBadge` с подсказкой «Passenger N»: в коде сейчас нативный `title`; в Figma — `Tooltip` из shadcn (`5232:85281`). Нужен примитив `ui/tooltip.tsx` и **новая зависимость `@radix-ui/react-tooltip`** (её в `package.json` нет) — решение пользователя.
-- Токен для зелёного check: в `src/tokens/` нет `success`; Figma использует `Success` `#059669` (`emerald-600`). Нужен семантический токен (`extract-tokens`), не палитра в компоненте.
-- Пунктирная линия под заголовком карточки — токен или `border-dashed` + `border-border`.
+- `PassengersWidget` и `PassengerCard` (`src/components/skydesk/passengers-widget/`): `WidgetSection` со счётчиком и список карточек, зазор 16px. Карточка — `li`: радиус 12 (`rounded-xl`), рамка `border`, тень `shadow-small`, отступы 16 × 12. Верхняя строка — одна кнопка (`aria-expanded`, `aria-controls`); имя кнопки — бейдж и имя, описание — индикаторы; ✓ и ✗ — иконки, слова «Entered:» и «Missing:» только для скринридера. Тело скрыто классом `hidden` и атрибутом (одного атрибута мало: `flex` его перебивает; это поймала проверка вычисленного `display`).
+- `ui/tooltip.tsx` — shadcn Tooltip на `@radix-ui/react-tooltip` (**новая зависимость**, решение пользователя, 2026-10-01); `RefBadge` получил необязательный `tooltip`.
+- Токен `success` (`--success` → `emerald-600` `#059669`, `text-success`): зелёная галочка. Заведён в `src/tokens/index.css` и `tailwind.config.ts`.
+- Пунктир под заголовком карточки и перед блоком Frequent flyer — `border-dashed border-border`.
 
 ## Not chosen
 
@@ -119,10 +115,12 @@ Storybook: `Skydesk / Passenger Card` (Collapsed, Expanded, ×состояния
 
 ## Known gaps
 
-- Всё: виджет не построен; данных пассажира в модели нет.
-- Левая рейка с теми же счётчиками (open question #26): теперь известно, что её счётчики равны счётчикам виджетов (запись production); что делает клик — неизвестно.
-- FOID (решено: не показываем в V1), `CNN` / `INS` (решено: добавим по запросу), Pressed / Hover карточки целиком (в Figma только hover бейджа — допущение выше).
+- Левая рейка с теми же счётчиками (open question #26): счётчики равны счётчикам виджетов (запись production); что делает клик — неизвестно.
+- `CNN` / `INS`, FOID, частичная дата рождения — решено не делать в V1 (#30, #34, #36).
+- Узкие окна: сетка личных данных — 2 колонки до 640px, 3 после; в Figma только десктоп.
+- Pressed карточки совпадает с hover (курсор); отдельного вида в Figma нет.
+- Порядок виджетов страницы и состояние по умолчанию (#40).
 
 ## Open questions
 
-Закрыты (#30–38). Остались допущения выше.
+Закрыты #30–38. Открыты: #39 (регистр составных имён), #40 (порядок и состояние по умолчанию виджетов страницы).

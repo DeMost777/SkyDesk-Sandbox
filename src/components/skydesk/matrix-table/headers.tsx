@@ -1,11 +1,21 @@
 import { formatSegmentDate, formatSegmentDay, segmentRoute, type Passenger, type Segment } from '@/lib/booking'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 
 // Headers of a Passenger × Segment table. Figma 8014:11347 (passenger), 8014:11380 (segment).
 
-/** `P1` / `S1`: a 30px badge — orange for a passenger, blue for a segment. */
-export function RefBadge({ tone, children }: { tone: 'passenger' | 'segment'; children: React.ReactNode }) {
-  return (
+/** `P1` / `S1`: a 30px badge — orange for a passenger, blue for a segment. With `tooltip` it shows that text on hover (Figma 2697:190073). */
+export function RefBadge({
+  tone,
+  tooltip,
+  children,
+}: {
+  tone: 'passenger' | 'segment'
+  /** Text shown over the badge on hover: `Passenger 1`. */
+  tooltip?: string
+  children: React.ReactNode
+}) {
+  const badge = (
     <span
       className={cn(
         // 21px: Figma badge height in the header (text trimmed to cap height)
@@ -17,6 +27,13 @@ export function RefBadge({ tone, children }: { tone: 'passenger' | 'segment'; ch
     >
       {children}
     </span>
+  )
+  if (!tooltip) return badge
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{badge}</TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
   )
 }
 
