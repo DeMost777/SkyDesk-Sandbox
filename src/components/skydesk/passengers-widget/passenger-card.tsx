@@ -46,16 +46,19 @@ export function PassengerCard({ passenger, defaultOpen = false, className }: Pas
       >
         <span className="flex min-w-0 flex-1 flex-col gap-1.5">
           <span id={`${id}-name`} className="flex items-start gap-2">
-            <RefBadge tone="passenger" tooltip={passengerTooltip(passenger.ref)}>
-              {passenger.ref}
-            </RefBadge>
+            <span className="-mb-px flex">
+              <RefBadge tone="passenger" tooltip={passengerTooltip(passenger.ref)}>
+                {passenger.ref}
+              </RefBadge>
+            </span>
             <span className="min-w-0 text-sm leading-5 [overflow-wrap:anywhere]">
               {displayName(passenger)}
               {/* a real space, not a margin: the accessible name reads "Anna Maria Ms", not "MariaMs" */}
               {title && <>{' '}<span className="text-muted-foreground">{title}</span></>}
             </span>
           </span>
-          <span id={`${id}-indicators`} className="flex flex-wrap items-center gap-2 text-xs leading-4 text-muted-foreground">
+          {/* 14px text on a 16px line: Figma card 1347:120017 (the standalone indicator atom is 12px, the card is not) */}
+          <span id={`${id}-indicators`} className="flex flex-wrap items-center gap-2 text-sm leading-4 text-muted-foreground">
             <span>{passenger.type}</span>
             {indicators.map((indicator) => (
               <React.Fragment key={indicator.id}>
@@ -86,7 +89,7 @@ export function PassengerCard({ passenger, defaultOpen = false, className }: Pas
       {/* hidden, not unmounted: the content stays in the DOM when the card is closed.
           The `hidden` attribute alone loses to `flex`, so the class hides it too. */}
       <div id={`${id}-details`} hidden={!open} className={cn('flex-col gap-2', open ? 'flex' : 'hidden')}>
-        <hr className="border-dashed border-border" />
+        <hr className="-mb-px h-0 border-t border-dashed border-border" />
         <dl className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-3">
           {personalInformation(passenger).map((field) => (
             <div key={field.label} className="min-w-0">
@@ -97,8 +100,8 @@ export function PassengerCard({ passenger, defaultOpen = false, className }: Pas
         </dl>
         {flyers.length > 0 && (
           <>
-            <hr className="border-dashed border-border" />
-            <div>
+            <hr className="-mb-px h-0 border-t border-dashed border-border" />
+            <div className="flex flex-col gap-1">
               <p className="text-sm leading-5 text-muted-foreground">Frequent flyer</p>
               <ul className="flex flex-wrap items-center gap-y-1">
                 {flyers.map((flyer, index) => (
@@ -110,7 +113,8 @@ export function PassengerCard({ passenger, defaultOpen = false, className }: Pas
                     )}
                   >
                     <span>{flyer.number}</span>
-                    <span className="text-muted-foreground">({flyer.airline})</span>
+                    {/* Figma pulls the code in with a text indent of -0.45em */}
+                    <span className="text-muted-foreground [text-indent:-0.45em]">({flyer.airline})</span>
                   </li>
                 ))}
               </ul>

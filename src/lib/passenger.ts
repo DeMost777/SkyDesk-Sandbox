@@ -29,9 +29,14 @@ export function parseGdsName(name: string): ParsedName {
   return { surname: surname.trim(), given: words.join(' '), ...(title ? { title } : {}) }
 }
 
-// 'MARIE-LOUISE' → 'Marie-louise': only the first letter of a word is a capital, as in the product.
+// 'MARIE-LOUISE' → 'Marie-Louise': a capital after a space and after a hyphen (decision of 2026-10-01).
 const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-const capitalizeWords = (text: string) => text.split(/\s+/).filter(Boolean).map(capitalize).join(' ')
+const capitalizeWords = (text: string) =>
+  text
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.split('-').map(capitalize).join('-'))
+    .join(' ')
 
 /** Surname first, then the given names: `Lindqvist Anna Maria` (decision of 2026-10-01). */
 export function displayName(passenger: Pick<Passenger, 'name'>): string {

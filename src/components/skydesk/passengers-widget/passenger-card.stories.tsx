@@ -79,7 +79,7 @@ export const LongName: Story = {
   args: { passenger: longName },
   render: (args) => inList(args, 'w-[360px]'),
   play: async ({ canvas }) => {
-    await expect(description(canvas, /Van Der Hoeven-lindqvist Maria-antonia Christina Elisabeth Dr/)).toBeVisible()
+    await expect(description(canvas, /Van Der Hoeven-Lindqvist Maria-Antonia Christina Elisabeth Dr/)).toBeVisible()
   },
 }
 
@@ -130,6 +130,36 @@ export const Toggles: Story = {
     await expect(shown()).toBe(false)
     // Closed, not removed: the content stays in the DOM.
     await expect(panel()).toBeInTheDocument()
+  },
+}
+
+/**
+ * Type as in Figma (card 1347:120017): name, title and indicators 14px, the badge and "Show more" 12px, all
+ * Geist 400; values in IBM Plex Mono. The indicator atom alone is 12px in Figma — in the card it is 14px.
+ * The closed card is 68px high and the open one 232px with three loyalty cards, as the Figma frames.
+ */
+export const Typography: Story = {
+  args: { passenger: passportAndCards },
+  play: async ({ canvas, userEvent }) => {
+    const style = (el: Element) => {
+      const cs = getComputedStyle(el)
+      return `${cs.fontSize}/${cs.lineHeight} ${cs.fontWeight}`
+    }
+    const header = description(canvas, /Nordqvist Elsa/)
+    const card = header.closest('li')!
+    await expect(style(canvas.getByText('Nordqvist Elsa'))).toBe('14px/20px 400')
+    await expect(style(canvas.getByText('Mrs'))).toBe('14px/20px 400')
+    await expect(style(canvas.getByText('ADT'))).toBe('14px/16px 400')
+    await expect(style(canvas.getByText('Passport'))).toBe('14px/16px 400')
+    await expect(style(canvas.getByText('P3'))).toBe('12px/16px 400')
+    await expect(style(canvas.getByText('Show more'))).toBe('12px/16px 400')
+    await expect(Math.round(card.getBoundingClientRect().height)).toBe(68)
+    await userEvent.click(header)
+    await expect(style(canvas.getByText('Date of birth'))).toBe('14px/20px 400')
+    const value = canvas.getByText('SWE5518204')
+    await expect(style(value)).toBe('14px/20px 400')
+    await expect(getComputedStyle(value).fontFamily).toContain('IBM Plex Mono')
+    await expect(Math.round(card.getBoundingClientRect().height)).toBe(232)
   },
 }
 

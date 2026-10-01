@@ -39,9 +39,9 @@ describe('parseGdsName', () => {
 })
 
 describe('displayName and displayTitle', () => {
-  it('puts the surname first and capitalises like the product', () => {
+  it('puts the surname first and capitalises each word and each part after a hyphen', () => {
     expect(displayName({ name: 'LINDQVIST/ANNA MARIA MRS' })).toBe('Lindqvist Anna Maria')
-    expect(displayName({ name: 'VAN DER BERG/MARIE-LOUISE DR' })).toBe('Van Der Berg Marie-louise')
+    expect(displayName({ name: 'VAN DER BERG/MARIE-LOUISE DR' })).toBe('Van Der Berg Marie-Louise')
   })
 
   it('leaves the title out of the name', () => {

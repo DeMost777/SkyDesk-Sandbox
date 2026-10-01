@@ -145,7 +145,7 @@ Overview на `?page=booking-overview&pnr=<PNR>` (сценарии — `overview
 
 Вручную на `?page=booking-overview&pnr=PAX7QD` (виджет идёт после Overview, шесть пассажиров, счётчик 6):
 1. Все карточки закрыты. P1: `ADT │ ✓ Date of Birth │ ✗ Passport │ ✓ Frequent flyer`; P2: `ADT │ ✓ Passport`; P3: `✓ Passport │ ✓ Frequent flyer`; P4: `CHD │ ✓ Passport`; P5: `INF │ ✗ Date of Birth │ ✗ Passport`; P6: длинное имя, `✓ Date of Birth │ ✗ Passport │ ✓ Frequent flyer`.
-2. Имя — фамилия первой, затем имена, затем серый титул (`Kallio Anna Maria Ms`); у P5 титула нет.
+2. Имя — фамилия первой, затем имена, затем серый титул (`Kallio Anna Maria Ms`); у P5 титула нет; составные имена с заглавной после дефиса (`Maria-Antonia`). Всё, включая `ADT` и индикаторы, — 14px (кроме бейджа `P1` и `Show more`, они 12px), вес обычный; закрытая карточка 68px, открытая с тремя картами 232px.
 3. Клик по любому месту верхней строки раскрывает карточку, справа `Show less`; несколько карточек открыты одновременно. Курсор на строке — рука, фон не меняется.
 4. P1 раскрыта: Date of birth `12/04/1985`, Gender `FEMALE`, Nationality `FINLAND`, паспорт, страна и срок — прочерки; блок Frequent flyer: `4400123456 (AY) │ 9810004455 (SK)`.
 5. P5 раскрыта: шесть прочерков и нет блока Frequent flyer. P6: пять карт в строку, на узком окне переносятся.
