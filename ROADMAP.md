@@ -29,7 +29,6 @@
 
 Сверху — следующая. Порядок меняет только пользователь.
 
-- [1.22] Интервью для новой фичи или виджета: стандартный набор вопросов и запрос материалов (Figma file key и node id, скриншоты, спецификация, поля данных, сценарии и edge cases, тексты, поведение), результат — «карточка готовности» в flow doc и список недостающего; оформить как skill. Первый прогон — на Passengers (3.2) — Фаза 1
 - [1.18] Skill `build-widget` — по двум готовым виджетам (Overview и Passengers): что у виджетов общее (`WidgetSection`, счётчик, данные из `Booking`, свой mock-сценарий, stories, раздел flow doc), что специфично. Проверка на третьем виджете — Фаза 1 · зависит от: 3.2, 1.22
 - [1.19] Передача открытых вопросов в design пачкой: блокирующие #3, #14, #26, #28, состояния без макета (Pressed / Focus, пустая History, длинный Itinerary, узкое окно, loading / error Booking Overview) — документ или комментарии к узлам Figma; ответы — в `docs/open-questions.md` — Фаза 1
 - [1.20] Визуальная регрессия по скриншотам (Playwright / `@chromatic-com/storybook` уже установлены): эталоны для stories и состояний flow, до перехода в Craft, чтобы полировка не ломала соседние экраны — Фаза 1 (раньше Фазы 5)
@@ -56,6 +55,7 @@
 - `doc-reviewer` — документы обновлены вместе с кодом, глоссарий соблюдён. Может оказаться skill.
 
 **Skills** (создавать, когда задача повторилась второй раз)
+- Проверить `feature-interview` на следующей фиче, не на Passengers (там он собран задним числом); поправить области и статусы.
 - `new-flow`, `verify-in-browser`, `close-task`, `add-mock-scenario`, `record-decision`.
 
 **Storybook**
@@ -99,3 +99,4 @@
 | 1.22 | Логотип Trava в App Sidebar заменён векторным экспортом из Figma (`8053:329986`); open question #16 закрыт | `[1.22]` |
 | 1.12 | Субагент `qa-tester` (`.claude/agents/qa-tester.md`): проход состояний flow doc и testing-plan в Playwright, скриншоты, ошибки консоли, отчёт в `qa-report/` (в `.gitignore`); tools — Read, Glob, Grep, Bash, Write, model — sonnet; в деле не запускался | `[1.12]` |
 | 1.23 | Схема проекта в FigJam: цель, как проект думает, роадмап, workflow задачи, структура, агенты и skills, логика продукта, глоссарий — [Workflow board](https://www.figma.com/board/lDIhcIk4fyJSJyCkRkWh6E/Workflow?node-id=2-2) | `[1.23]` |
+| 1.22 | Skill `feature-interview`: запрос материалов, чтение и сохранение источников, проверка готовности по областям, open questions с «Блокирует», карточка готовности в flow doc; эталон — Passengers | `[1.22]` |
