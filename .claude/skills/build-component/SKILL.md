@@ -16,6 +16,7 @@ description: Pattern for building a UI component in Skydesk Sandbox on top of sh
 5. **Доменные правила — в `src/lib/`** чистыми функциями с тестами; компонент их вызывает, не повторяет.
 6. **Тёмная тема не используется** — не проверять и не рисовать.
 7. **Глоссарий из `CLAUDE.md`** — в тексте UI и в именах: Office, а не PCC; Itinerary, Segment, Pricing, Ticket.
+8. **Иконки — только Lucide** — сначала реестр `docs/icons.md`, потом каталог https://lucide.dev/icons/; новая иконка → строка в реестре.
 
 ## Где лежит
 

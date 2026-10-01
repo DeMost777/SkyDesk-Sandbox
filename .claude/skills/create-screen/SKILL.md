@@ -14,6 +14,8 @@ description: Pattern for creating a prototype screen in src/pages/ from its flow
 3. Источники при расхождении — по порядку из `CLAUDE.md` → «Источники истины». Узлы Figma — `docs/figma-map.md`, читать субагентом `figma-reader`. Чего источники не показывают — спросить или записать в `docs/open-questions.md`, не выдумывать.
 4. Прочитать `CLAUDE.md`: глоссарий и «Решения и gotchas» действуют на каждый экран.
 
+5. Иконки — только Lucide, сначала реестр `docs/icons.md` (https://lucide.dev/icons/).
+
 ## Структура
 
 ```

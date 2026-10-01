@@ -147,6 +147,10 @@
    Решает: product / design. Добавлено 2026-10-01.
    **Решено 2026-10-01 (пользователь):** виджет развёрнут по умолчанию, карточки пассажиров свёрнуты; Passengers идёт после Overview. Порядок остальных виджетов по production (Flights, Pricing, Tickets…) — когда их начнут строить.
 
+## Иконки
+
+41. ~~Иконки: набор Figma и единый стиль.~~ Решено 2026-09-29 (пользователь): отдельного набора в Figma нет, используется Lucide; `strokeWidth` везде 2 (`docs/icons.md`).
+
 ## Терминология
 
 7. **Reservation vs Booking.** Заголовок экрана (Figma): «How can I help with your reservation today?». Во всех документах и в Not Found — «booking».

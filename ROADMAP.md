@@ -88,6 +88,9 @@
 | 2.1 | Каркас Booking Overview: страница `?page=booking-overview&pnr=…`, шапка бронирования (`BookingHeader`), рамка виджета (`WidgetSection`, до 800px по центру), панель сценариев, ссылка «Open booking» в строке Found (PNR Search → Booking), токены `page` / `icon` / `shadow-header`; stories и тесты | `[2.1]` |
 | 3.1 | Виджет Overview: `MatrixTable` со stories (закреплённая колонка сегментов, горизонтальный скролл), `OverviewWidget`, карточки Pricing / Ticket (Default, Hover, Focus), «No document»; токены матрицы; карточки без stories до фидбека | `[3.1]` |
 | 3.2 | Виджет Passengers: модель `Passenger` (дата рождения, пол, документ, Frequent flyer), правила в `src/lib/passenger.ts`, mock-сценарий `PAX7QD` и данные в `BBV14Q`, `PassengerCard` и `PassengersWidget` (индикаторы, раскрытие, фокус), `ui/tooltip` и подсказка на бейдже, токен `success`; stories и тесты; flow doc, источники и open questions #30–40 | `[3.2]` |
+| 1.24 | Иконки: только Lucide, реестр `docs/icons.md`, правило в `CLAUDE.md`, ссылки в skills `build-component` и `create-screen`, open question #41 | `[1.24]` (в коммитах `[1.16]`) |
+| 1.25 | Иконки: `strokeWidth={1.5}` у всех иконок, набора Figma отдельно от Lucide нет (#41 закрыт) | `[1.25]` (в коммитах `[1.17]`) |
+| 1.26 | Иконки: `strokeWidth` 1.5 → 2 (1.5 слишком тонко), правило обновлено | `[1.26]` (в коммитах `[1.18]`) |
 | 1.6 | Каталог компонентов `docs/components.md`: сводка, `ui/` и `skydesk/` — назначение, props, состояния, Figma node, stories; правило в CLAUDE.md (правило 10) | `[1.6]` |
 | 1.7 | Карта Figma `docs/figma-map.md`: экраны и компоненты → node id → код; file key не найден — open question #29 | `[1.7]` |
 | 1.17 | SessionStart-хук и `.claude/settings.json` для облака (`npm install` + запуск Storybook), Storybook MCP для Claude Code (`.mcp.json`) | `[1.17]` |
