@@ -74,6 +74,16 @@ npm run typecheck && npm run lint:tokens && npm test && npm run build
 - **Нет доступа у Office:** адрес 11 → в Office Selector выбрать `5GW5` → кнопка поиска → Found через `5GW5`.
 - **Смена ввода сбрасывает результат:** на любом результате изменить PNR или Office → результат исчезает.
 
+## CI
+
+`.github/workflows/ci.yml` запускается на каждом PR и на push в `main`: `npm ci`, установка Chromium для Playwright, `typecheck`, `lint:tokens`, `npm test`, `npm run build`, `build-storybook`.
+
+1. Открыть PR → во вкладке Checks появляется job `check` (workflow CI); зелёный — все шаги прошли.
+2. Проверить, что CI ловит ошибки: в ветке сломать тип (например, присвоить строку числу) → job краснеет на шаге `npm run typecheck`. Откатить.
+3. Локально те же шаги: `npm run typecheck && npm run lint:tokens && npm test && npm run build && npm run build-storybook -- --output-dir /tmp/sb`.
+
+Обязательным check CI делает владелец репозитория: GitHub → Settings → Branches / Rulesets → require status check `check` для `main` (это настройка репозитория, из кода её не включить).
+
 ## Storybook как каталог компонентов
 
 1. `npm run storybook` → у каждого раздела в дереве есть страница **Docs**: описание, таблица props, stories. У Button `variant` и `size` — выбор из списка, не «Set object».
